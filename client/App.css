@@ -3,9 +3,9 @@
   padding: 0;
   margin: 0;
 }
-body {
-    /* font-family: "Press Start 2P" !important; */
-    font-family: 'Montserrat', sans-serif !important;
+body {  
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
 }
 
 #main-container-area {

@@ -1,15 +1,14 @@
 import React from 'react';
+import './HomepageComp.less';
 
-const HomepageComp = (props) => {
+const HomepageComp = () => {
   return (
-    <h1 className="text-center">
-      Please login to enjoy our app!!
-    </h1>
+    <div id="homepage-comp">
+      <h1 className="text-center">
+        Please login to enjoy our app!!
+      </h1>
+    </div>
   );
 };
-
-// WelcomeComp.propTypes = {
-//
-// };
 
 export default HomepageComp;

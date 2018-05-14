@@ -99,7 +99,7 @@ export default class SignupComp extends Component {
                 <Button color="danger" className="pull-right close-button" size="lg" onClick={this.close}>X</Button>
               </div>
               <div className="container">
-                <div className="row">
+                <div className="">
                   <div className="modal-header col-xs-12">
                     <h1 className="text-center">Sign up</h1>
                     <div>All fields are required*</div>

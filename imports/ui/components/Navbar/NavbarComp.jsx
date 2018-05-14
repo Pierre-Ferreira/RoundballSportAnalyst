@@ -30,7 +30,7 @@ export default class NavbarComp extends Component {
         <Navbar inverse fluid id="navbar-comp">
           <Navbar.Header>
             <Navbar.Brand>
-              Crypto Learning Club
+              Oddball Sport Analyst
             </Navbar.Brand>
           <Navbar.Toggle />
           </Navbar.Header>
