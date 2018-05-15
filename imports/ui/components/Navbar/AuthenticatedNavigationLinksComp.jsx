@@ -33,11 +33,17 @@ export default class AuthenticatedNavigationLinksComp extends Component {
       authMenuItems = (
         <div id="superuser-menu-items">
           <NavDropdown eventKey={3} title="Admin" id="basic-nav-dropdown">
-            <MenuItem eventKey="1">
-              <NavLink to="/admin/blockchain_api">Blockchain API</NavLink>
+            <MenuItem eventKey="2">
+              <NavLink to="/admin/game_setup_editor">Games Setup</NavLink>
             </MenuItem>
             <MenuItem eventKey="2">
-              <NavLink to="/admin/import_existing">Import</NavLink>
+              <NavLink to="">Games List</NavLink>
+            </MenuItem>
+            <MenuItem eventKey="2">
+              <NavLink to="">Payments</NavLink>
+            </MenuItem>
+            <MenuItem eventKey="1">
+              <NavLink to="/admin/blockchain_api">Payouts</NavLink>
             </MenuItem>
           </NavDropdown>
           <NavLink to="/auth/login" onClick={this.logoutFN}>Logout</NavLink>
@@ -46,6 +52,19 @@ export default class AuthenticatedNavigationLinksComp extends Component {
     } else {
       authMenuItems = (
         <div id="clients-menu-items">
+          <NavDropdown eventKey={1} title="Games" id="basic-nav-dropdown">
+            <MenuItem eventKey="1">
+              <NavLink to="">History</NavLink>
+            </MenuItem>
+          </NavDropdown>
+          <NavDropdown eventKey={2} title="Tokens" id="basic-nav-dropdown">
+            <MenuItem eventKey="1">
+              <NavLink to="">Purchase</NavLink>
+            </MenuItem>
+            <MenuItem eventKey="2">
+              <NavLink to="">History</NavLink>
+            </MenuItem>
+          </NavDropdown>
           <NavDropdown eventKey={3} title={this.props.username} id="basic-nav-dropdown">
             <MenuItem eventKey="1">
               <NavLink to="/myteam">My Team</NavLink>
@@ -57,12 +76,6 @@ export default class AuthenticatedNavigationLinksComp extends Component {
             <MenuItem eventKey="3">
               <NavLink to="/auth/login" onClick={this.logoutFN}>Logout</NavLink>
             </MenuItem>
-
-            {/* <MenuItem eventKey="1">Action</MenuItem>
-            <MenuItem eventKey="2">Another action</MenuItem>
-            <MenuItem eventKey="3">Something else here</MenuItem>
-            <MenuItem divider />
-            <MenuItem eventKey="4">Separated link</MenuItem> */}
           </NavDropdown>
         </div>
       );

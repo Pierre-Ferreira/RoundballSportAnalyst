@@ -135,6 +135,7 @@ export default class SignupComp extends Component {
                         />
                       </div>
                       <div className="form-group">
+                        <div><b>Username cannot be changed later.</b></div>
                         <input
                           type="text"
                           id="signup-username"
@@ -164,6 +165,7 @@ export default class SignupComp extends Component {
                           value={this.props.cellNo}
                         />
                       </div>
+                      <div><b>Introducer cannot be changed later.</b></div>
                       <div className="form-group introducer-group">
                         <input
                           type="text"

@@ -53,7 +53,7 @@ export default class MyTeamComp extends Component {
                                     ${downline.emails[0].address}
                                     ${moment(downline.joinedDate).format('Do MMM YYYY')}`;
                 return (
-                  <h3 className="col-md-8 offset-md-2">
+                  <h3 className="col-md-10 offset-md-1">
                     {downlineInfoStr}
                   </h3>
                 );

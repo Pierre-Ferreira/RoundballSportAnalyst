@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Navbar } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import AuthenticatedNavigationLinksContainer from '../../containers/Navbar/AuthenticatedNavigationLinksContainer';
 import PublicNavigationLinksContainer from '../../containers/Navbar/PublicNavigationLinksContainer';
 import './NavbarComp.less';
@@ -29,8 +30,10 @@ export default class NavbarComp extends Component {
       <div>
         <Navbar inverse fluid id="navbar-comp">
           <Navbar.Header>
-            <Navbar.Brand>
-              Oddball Sport Analyst
+            <Navbar.Brand >
+              <NavLink to="/main/welcome">
+                  Oddball Sport Analyst
+              </NavLink>
             </Navbar.Brand>
           <Navbar.Toggle />
           </Navbar.Header>
