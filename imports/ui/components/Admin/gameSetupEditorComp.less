@@ -10,7 +10,7 @@
       font-family: 'Graduate', cursive;
     }
     .select-game-area {
-      padding: 10px 10px 0px 10px;
+      padding: 10px 15px 0px 15px;
       #game-select-field {
         font-size: 15px;
         font-weight: 800;
@@ -21,11 +21,12 @@
         font-size: 25px;
         font-weight: 900;
         height: 45px;
+        padding: 0px;
       }
       hr {
         margin-top: 1rem;
         margin-bottom: 1rem;
-        margin: 10px -10px;
+        margin: 10px -15px;
         border: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         background-color: #e9ecef;
@@ -69,7 +70,9 @@
       box-shadow: none;
     }
     .modal-scroll-area {
-      height: 300px;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+      height: 320px;
       overflow-y: scroll;
       overflow-x: hidden;
       margin-bottom: 15px;
@@ -85,6 +88,16 @@
     .modal-scroll-area::-webkit-scrollbar-thumb {
       background-color: #8b0400;
       outline: 2px solid cyan;
+    }
+    .save-btn-area {
+      padding: 0px;
+      margin: 0px;
+      #game-setup-editor-form-save {
+        font-size: 25px;
+        font-weight: 900;
+        height: 45px;
+        padding: 0px;
+      }
     }
   }
 }

@@ -15,6 +15,7 @@ Meteor.methods({
       gameVisitorTeam: String,
       gameVisitorAlias: String,
       gameActive: Boolean,
+      createdAt: Date,
     });
     if (gameInfo.gameDate.gameSequenceNo === 0) throw new Meteor.Error(403, 'Game No is required');
     if (gameInfo.gameDate.length === 0) throw new Meteor.Error(403, 'Game Date is required');
@@ -34,7 +35,9 @@ Meteor.methods({
     }
   },
   'game_setup.update': (gameSetupId, gameInfo) => {
+    check(gameSetupId, String);
     check(gameInfo, {
+      gameSequenceNo: Number,
       gameDate: Date,
       gameKickoff: String,
       gameVenue: String,
@@ -44,6 +47,7 @@ Meteor.methods({
       gameVisitorTeam: String,
       gameVisitorAlias: String,
       gameActive: Boolean,
+      createdAt: Date,
     });
     if (gameInfo.gameDate.length === 0) throw new Meteor.Error(403, 'Game Date is required');
     if (gameInfo.gameKickoff.length === 0) throw new Meteor.Error(403, 'Kickoff is required');
@@ -55,10 +59,10 @@ Meteor.methods({
     if (gameInfo.gameVisitorAlias.length === 0) throw new Meteor.Error(403, 'Visitor Alias is required');
     if (gameInfo.gameActive.length === 0) throw new Meteor.Error(403, 'Active is required');
     if (!Meteor.userId()) {
-      throw new Meteor.Error(403, 'GamesSetup entry not created. User not logged in.');
+      throw new Meteor.Error(403, 'GamesSetup entry not updated. User not logged in.');
     } else {
       GamesSetup.update({ _id: gameSetupId }, gameInfo);
-      console.log('inserted: ', GamesSetup.find(gameInfo).fetch()[0]);
+      console.log('updated: ', GamesSetup.find(gameInfo).fetch()[0]);
     }
   },
 });

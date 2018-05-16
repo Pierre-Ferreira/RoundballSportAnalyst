@@ -8,7 +8,7 @@ const mapTrackerToProps = (state, props) => {
   return {
     loading: !handle.ready(),
     GamesSetupList: GamesSetup.find({}, {
-      sort: { createdAt: -1 },
+      sort: { gameSequenceNo: -1 },
     }).fetch(),
   };
 };

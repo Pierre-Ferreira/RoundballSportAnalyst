@@ -31,6 +31,7 @@ export default class gameSetupEditorComp extends Component {
     this.handleHostTeamChange = this.handleHostTeamChange.bind(this);
     this.handleGameActiveChange = this.handleGameActiveChange.bind(this);
     this.newGame = this.newGame.bind(this);
+    this.handleGameSetupChange = this.handleGameSetupChange.bind(this);
   }
 
   onChangeInput() {
@@ -61,7 +62,6 @@ export default class gameSetupEditorComp extends Component {
 
   newGame() {
     this.setState({
-      feedbackMessage: '',
       gameSetupId: '',
       gameSequenceNo: '',
       gameDateDay: '',
@@ -140,33 +140,85 @@ export default class gameSetupEditorComp extends Component {
       gameVisitorTeam: this.state.gameVisitorTeam,
       gameVisitorAlias: this.state.gameVisitorAlias,
       gameActive: this.state.gameActive,
-      gameSequenceNo: this.props.GamesSetupList.length + 1,
+      gameSequenceNo: this.state.gameSequenceNo || this.props.GamesSetupList.length + 1,
+      createdAt: this.props.createdAt || new Date(),
     };
-    Meteor.call('game_setup.create', gameInfo, (err, result) => {
-      if (err) {
-        this.setState({
-          feedbackMessage: `ERROR: ${err.reason}`,
-          feedbackMessageType: 'danger',
-        });
-      } else {
-        this.setState({
-          feedbackMessage: 'Game Info Saved!',
-          feedbackMessageType: 'success',
-        });
-        this.newGame();
-        setTimeout(() => {
+    if (this.state.gameSetupId) {
+      Meteor.call('game_setup.update', this.state.gameSetupId, gameInfo, (err, result) => {
+        if (err) {
           this.setState({
-            feedbackMessage: '',
-            feedbackMessageType: '',
+            feedbackMessage: `ERROR: ${err.reason}`,
+            feedbackMessageType: 'danger',
           });
-        }, 3000);
+        } else {
+          this.setState({
+            feedbackMessage: 'Game Info Saved!',
+            feedbackMessageType: 'success',
+          });
+          // this.newGame();
+          setTimeout(() => {
+            this.setState({
+              feedbackMessage: '',
+              feedbackMessageType: '',
+            });
+          }, 3000);
+        }
+      });
+    } else {
+      Meteor.call('game_setup.create', gameInfo, (err, result) => {
+        if (err) {
+          this.setState({
+            feedbackMessage: `ERROR: ${err.reason}`,
+            feedbackMessageType: 'danger',
+          });
+        } else {
+          this.setState({
+            feedbackMessage: 'Game Info Saved!',
+            feedbackMessageType: 'success',
+          });
+          this.newGame();
+          setTimeout(() => {
+            this.setState({
+              feedbackMessage: '',
+              feedbackMessageType: '',
+            });
+          }, 3000);
+        }
+      });
+    }
+  }
+
+  handleGameSetupChange(e) {
+    const selectedGameSetupId = e.target.value;
+    let selectedGameSetupInfo = '';
+    this.props.GamesSetupList.forEach((gameItem) => {
+      if (selectedGameSetupId === gameItem._id) {
+        selectedGameSetupInfo = gameItem;
       }
+    })
+    const gameDateDay = selectedGameSetupInfo.gameDate.getDate();
+    const gameDateMonth = selectedGameSetupInfo.gameDate.getMonth() + 1;
+    const gameDateYear = selectedGameSetupInfo.gameDate.getFullYear();
+    this.setState({
+      gameSetupId: selectedGameSetupId,
+      gameSequenceNo: selectedGameSetupInfo.gameSequenceNo,
+      gameDateDay,
+      gameDateMonth,
+      gameDateYear,
+      gameKickoff: selectedGameSetupInfo.gameKickoff,
+      gameVenue: selectedGameSetupInfo.gameVenue,
+      gameCity: selectedGameSetupInfo.gameCity,
+      gameHostTeam: selectedGameSetupInfo.gameHostTeam,
+      gameHostAlias: selectedGameSetupInfo.gameHostAlias,
+      gameVisitorTeam: selectedGameSetupInfo.gameVisitorTeam,
+      gameVisitorAlias: selectedGameSetupInfo.gameVisitorAlias,
+      gameActive: selectedGameSetupInfo.gameActive,
     });
   }
 
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
-    const gameSequenceNo = this.props.GamesSetupList.length + 1;
+    const gameSequenceNo = this.state.gameSequenceNo || this.props.GamesSetupList.length + 1;
     return (
       <div id="game-setup-editor-comp">
         <div className="modal show">
@@ -187,10 +239,11 @@ export default class gameSetupEditorComp extends Component {
                   onChange={this.handleGameSetupChange}
                 >
                   <option value="">Select..</option>
-                  <option value="Bulls">Bulls</option>
-                  <option value="Crusaders">Crusaders</option>
-                  <option value="Lions">Lions</option>
-                  <option value="Stormers">Stormers</option>
+                  {this.props.GamesSetupList.map((listItem, i) => {
+                    const gameDateTime = `${moment(listItem.gameDate).format('DD-MM-YYYY')} ${listItem.gameKickoff}`;
+                    const displayStr = `${listItem.gameHostTeam} vs ${listItem.gameVisitorTeam} (${gameDateTime}) Game #${listItem.gameSequenceNo}`;
+                    return (<option value={listItem._id}>{displayStr}</option>)
+                  })}
                 </select>
                 <Button className="new-button" bsSize="large" block onClick={this.newGame}>New Game</Button>
                 <hr />
@@ -362,7 +415,7 @@ export default class gameSetupEditorComp extends Component {
                     </div>
                   </div>
                   <hr />
-                  <div className="form-group text-center col-md-12">
+                  <div className="form-group save-btn-area text-center col-md-12">
                     <input
                       type="submit"
                       id="game-setup-editor-form-save"
