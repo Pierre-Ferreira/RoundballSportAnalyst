@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Button } from 'react-bootstrap';
-import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
+import moment from 'moment/moment'
 import './gameSetupEditorComp.less';
 
 export default class gameSetupEditorComp extends Component {
@@ -11,6 +10,8 @@ export default class gameSetupEditorComp extends Component {
     super(props);
     this.state = {
       feedbackMessage: '',
+      gameSetupId: '',
+      gameSequenceNo: '',
       gameDateDay: '',
       gameDateMonth: '',
       gameDateYear: '',
@@ -29,6 +30,7 @@ export default class gameSetupEditorComp extends Component {
     this.handleVisitorTeamChange = this.handleVisitorTeamChange.bind(this);
     this.handleHostTeamChange = this.handleHostTeamChange.bind(this);
     this.handleGameActiveChange = this.handleGameActiveChange.bind(this);
+    this.newGame = this.newGame.bind(this);
   }
 
   onChangeInput() {
@@ -38,11 +40,8 @@ export default class gameSetupEditorComp extends Component {
     const gameKickoff = document.getElementById('game-kickoff').value.trim();
     const gameVenue = document.getElementById('game-venue').value.trim();
     const gameCity = document.getElementById('game-city').value.trim();
-    const gameHostTeam = document.getElementById('game-host-team').value.trim();
     const gameHostAlias = document.getElementById('game-host-alias').value.trim();
-    const gameVisitorTeam = document.getElementById('game-visitor-team').value.trim();
     const gameVisitorAlias = document.getElementById('game-visitor-alias').value.trim();
-    const gameActive = document.getElementById('game-active').value.trim();
 
     this.setState({
       gameDateDay,
@@ -51,16 +50,32 @@ export default class gameSetupEditorComp extends Component {
       gameKickoff,
       gameVenue,
       gameCity,
-      gameHostTeam,
       gameHostAlias,
-      gameVisitorTeam,
       gameVisitorAlias,
-      gameActive,
     });
   }
 
   close() {
     this.props.history.goBack();
+  }
+
+  newGame() {
+    this.setState({
+      feedbackMessage: '',
+      gameSetupId: '',
+      gameSequenceNo: '',
+      gameDateDay: '',
+      gameDateMonth: '',
+      gameDateYear: '',
+      gameKickoff: '',
+      gameVenue: '',
+      gameCity: '',
+      gameHostTeam: '',
+      gameHostAlias: '',
+      gameVisitorTeam: '',
+      gameVisitorAlias: '',
+      gameActive: true,
+    });
   }
 
   handleHostTeamChange(e) {
@@ -77,9 +92,10 @@ export default class gameSetupEditorComp extends Component {
     });
   }
   handleGameActiveChange(e) {
-    console.log('e.target.value:',e.target.value)
+    let val = e.target.value;
+    val = (val === 'false') ? true : false;
     this.setState({
-      gameActive: !(e.target.value),
+      gameActive: val,
     });
   }
 
@@ -89,21 +105,95 @@ export default class gameSetupEditorComp extends Component {
       feedbackMessage: 'Busy...',
       feedbackMessageType: 'success',
     });
-    console.log('STATE:', this.state)
+    console.log('STATE:', this.state);
+    if (!this.state.gameDateYear || !this.state.gameDateMonth || !this.state.gameDateDay) {
+      this.setState({
+        feedbackMessage: 'ERROR: Game Date is required',
+        feedbackMessageType: 'danger',
+      });
+      return
+    }
+    const gameDate = new Date(
+      this.state.gameDateYear,
+      this.state.gameDateMonth - 1,
+      this.state.gameDateDay,
+      12,
+      0,
+      0,
+    );
+    console.log('gameDate:',gameDate)
+    if (!moment(gameDate).isValid()) {
+      this.setState({
+        feedbackMessage: 'ERROR: Date is not valid',
+        feedbackMessageType: 'danger',
+      });
+      return;
+    }
+
+    const gameInfo = {
+      gameDate,
+      gameKickoff: this.state.gameKickoff,
+      gameVenue: this.state.gameVenue,
+      gameCity: this.state.gameCity,
+      gameHostTeam: this.state.gameHostTeam,
+      gameHostAlias: this.state.gameHostAlias,
+      gameVisitorTeam: this.state.gameVisitorTeam,
+      gameVisitorAlias: this.state.gameVisitorAlias,
+      gameActive: this.state.gameActive,
+      gameSequenceNo: this.props.GamesSetupList.length + 1,
+    };
+    Meteor.call('game_setup.create', gameInfo, (err, result) => {
+      if (err) {
+        this.setState({
+          feedbackMessage: `ERROR: ${err.reason}`,
+          feedbackMessageType: 'danger',
+        });
+      } else {
+        this.setState({
+          feedbackMessage: 'Game Info Saved!',
+          feedbackMessageType: 'success',
+        });
+        this.newGame();
+        setTimeout(() => {
+          this.setState({
+            feedbackMessage: '',
+            feedbackMessageType: '',
+          });
+        }, 3000);
+      }
+    });
   }
 
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
+    const gameSequenceNo = this.props.GamesSetupList.length + 1;
     return (
       <div id="game-setup-editor-comp">
         <div className="modal show">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="close-button-area">
-                <Button color="danger" className="pull-right close-button" size="lg" onClick={this.close}>X</Button>
+                <Button color="danger" className="pull-right close-button" onClick={this.close}>X</Button>
               </div>
               <div className="modal-header">
                 <div className="text-center">Game Setup Editor</div>
+              </div>
+              <div className="select-game-area">
+                <select
+                  name="gameSelectField"
+                  id="game-select-field"
+                  className="form-control input-lg col-md-12 select-dropdown-fields"
+                  value={this.state.gameSetupId}
+                  onChange={this.handleGameSetupChange}
+                >
+                  <option value="">Select..</option>
+                  <option value="Bulls">Bulls</option>
+                  <option value="Crusaders">Crusaders</option>
+                  <option value="Lions">Lions</option>
+                  <option value="Stormers">Stormers</option>
+                </select>
+                <Button className="new-button" bsSize="large" block onClick={this.newGame}>New Game</Button>
+                <hr />
               </div>
               <div className="modal-body container">
                 {(feedbackMessage) ?
@@ -117,6 +207,10 @@ export default class gameSetupEditorComp extends Component {
                   onSubmit={this.handleSubmit}
                 >
                   <div className='modal-scroll-area'>
+                    <div className="form-group row">
+                      <div className="col-md-5 field-headers">Game No:</div>
+                      <div className="col-md-6 field-headers">{gameSequenceNo}</div>
+                    </div>
                     <div className="form-group row">
                       <div className="col-md-5 field-headers">Game Date:</div>
                       <input
@@ -189,10 +283,21 @@ export default class gameSetupEditorComp extends Component {
                         onChange={this.handleHostTeamChange}
                       >
                         <option value="">Select..</option>
+                        <option value="Blues">Blues</option>
+                        <option value="Brumbies">Brumbies</option>
                         <option value="Bulls">Bulls</option>
+                        <option value="Chiefs">Chiefs</option>
                         <option value="Crusaders">Crusaders</option>
+                        <option value="Highlanders">Highlanders</option>
+                        <option value="Hurricanes">Hurricanes</option>
+                        <option value="Jaguares">Jaguares</option>
                         <option value="Lions">Lions</option>
+                        <option value="Rebels">Rebels</option>
+                        <option value="Reds">Reds</option>
+                        <option value="Sharks">Sharks</option>
                         <option value="Stormers">Stormers</option>
+                        <option value="Sunwolves">Sunwolves</option>
+                        <option value="Waratahs">Waratahs</option>
                       </select>
                     </div>
                     <div className="form-group row">
@@ -216,10 +321,21 @@ export default class gameSetupEditorComp extends Component {
                         onChange={this.handleVisitorTeamChange}
                       >
                         <option value="">Select..</option>
+                        <option value="Blues">Blues</option>
+                        <option value="Brumbies">Brumbies</option>
                         <option value="Bulls">Bulls</option>
+                        <option value="Chiefs">Chiefs</option>
                         <option value="Crusaders">Crusaders</option>
+                        <option value="Highlanders">Highlanders</option>
+                        <option value="Hurricanes">Hurricanes</option>
+                        <option value="Jaguares">Jaguares</option>
                         <option value="Lions">Lions</option>
+                        <option value="Rebels">Rebels</option>
+                        <option value="Reds">Reds</option>
+                        <option value="Sharks">Sharks</option>
                         <option value="Stormers">Stormers</option>
+                        <option value="Sunwolves">Sunwolves</option>
+                        <option value="Waratahs">Waratahs</option>
                       </select>
                     </div>
                     <div className="form-group row">

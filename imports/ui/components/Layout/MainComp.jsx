@@ -15,7 +15,7 @@ import IntroducerSearchContainer from '../../containers/Auth/IntroducerSearchCon
 import blockchainAPIPaymentsContainer from '../../containers/Admin/blockchainAPIPaymentsContainer';
 import UserSettingsComp from '../Main/UserSettings/UserSettingsComp';
 import MyTeamComp from '../Main/MyTeamComp';
-import gameSetupEditorComp from '../Admin/gameSetupEditorComp';
+import gameSetupEditorContainer from '../../containers/Admin/gameSetupEditorContainer';
 // Auth Members components.
 import WelcomeContainer from '../../containers/Main/WelcomeContainer';
 // Helper components.
@@ -44,7 +44,7 @@ export default class MainPage extends Component {
               {/* <Route exact path="/" component={HomepageComp} /> */}
               <PublicRouteComp exact path="/" component={HomepageComp} />
               <AuthenticatedRouteComp exact path="/admin/blockchain_api" component={blockchainAPIPaymentsContainer} {...this.props} />
-              <AuthenticatedRouteComp exact path="/admin/game_setup_editor" component={gameSetupEditorComp} {...this.props} />
+              <AuthenticatedRouteComp exact path="/admin/game_setup_editor" component={gameSetupEditorContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/signup" component={SignupContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/signup/introducer_search" component={IntroducerSearchContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/login" component={LoginContainer} {...this.props} />
