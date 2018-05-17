@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux-meteor';
-import gameSetupEditorComp from '../../components/Admin/gameSetupEditorComp';
+import GameSetupEditorComp from '../../components/Admin/GameSetupEditorComp';
 import GamesSetup from '../../../api/games_setup/collection';
 
 const mapTrackerToProps = (state, props) => {
@@ -24,4 +24,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapTrackerToProps, mapStateToProps, mapDispatchToProps)(gameSetupEditorComp);
+export default connect(mapTrackerToProps, mapStateToProps, mapDispatchToProps)(GameSetupEditorComp);

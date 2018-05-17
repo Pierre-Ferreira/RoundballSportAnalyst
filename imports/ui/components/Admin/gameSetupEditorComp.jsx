@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Button } from 'react-bootstrap';
 import moment from 'moment/moment'
-import './gameSetupEditorComp.less';
+import './GameSetupEditorComp.less';
 
-export default class gameSetupEditorComp extends Component {
+export default class GameSetupEditorComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
