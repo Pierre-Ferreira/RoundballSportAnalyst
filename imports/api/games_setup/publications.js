@@ -5,6 +5,6 @@ import GamesSetup from './collection';
 Meteor.publish('games_setup_list', () => {
   return GamesSetup.find({});
 });
-Meteor.publish('games_setup_list_active', () => {
+Meteor.publish('2games_setup_list_active', () => {
   return GamesSetup.find({ gameActive: true });
 });

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ActiveGamesLayoutContainer from '../../containers/Main/ActiveGamesLayoutContainer'
 
 export default class WelcomeComp extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class WelcomeComp extends Component {
   render() {
     return (
       <h1 className="text-center">
-        Welcome {this.props.userInfo.firstName} {this.props.userInfo.lastName} ({this.props.userInfo.clcNo})
+        <ActiveGamesLayoutContainer />
       </h1>
     );
   }

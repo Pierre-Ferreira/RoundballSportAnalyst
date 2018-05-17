@@ -34,6 +34,13 @@ export default class gameSetupEditorComp extends Component {
     this.handleGameSetupChange = this.handleGameSetupChange.bind(this);
   }
 
+  componentWillUnmount() {
+    // console.log('subscriptionId BEF:', this.props.handle.subscriptionId)
+    // const test = this.props.handle.stop();
+    // console.log('subscriptionId AFT:', this.props.handle.subscriptionId)
+    // Meteor.unsubscribe(this.props.handle)
+  }
+
   onChangeInput() {
     const gameDateDay = document.getElementById('game-date-day').value.trim();
     const gameDateMonth = document.getElementById('game-date-month').value.trim();
@@ -241,7 +248,11 @@ export default class gameSetupEditorComp extends Component {
                   <option value="">Select..</option>
                   {this.props.GamesSetupList.map((listItem, i) => {
                     const gameDateTime = `${moment(listItem.gameDate).format('DD-MM-YYYY')} ${listItem.gameKickoff}`;
-                    const displayStr = `${listItem.gameHostTeam} vs ${listItem.gameVisitorTeam} (${gameDateTime}) Game #${listItem.gameSequenceNo}`;
+                    const activeStr = (listItem.gameActive) ? 'A' : 'N'
+                    const displayStr = `${listItem.gameHostTeam} vs ${listItem.gameVisitorTeam}
+                                        (${gameDateTime})
+                                        Game #${listItem.gameSequenceNo}
+                                        (${activeStr})`;
                     return (<option value={listItem._id}>{displayStr}</option>)
                   })}
                 </select>

@@ -7,6 +7,7 @@ const mapTrackerToProps = (state, props) => {
   const handle = Meteor.subscribe('games_setup_list');
   return {
     loading: !handle.ready(),
+    handle,
     GamesSetupList: GamesSetup.find({}, {
       sort: { gameSequenceNo: -1 },
     }).fetch(),
