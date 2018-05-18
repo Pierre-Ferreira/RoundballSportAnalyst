@@ -28,7 +28,7 @@ export default class WelcomeComp extends Component {
   render() {
     return (
       <h1 className="text-center">
-        <ActiveGamesLayoutContainer />
+        <ActiveGamesLayoutContainer {...this.props} />
       </h1>
     );
   }

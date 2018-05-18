@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Alert } from 'react-bootstrap';
 import moment from 'moment/moment';
 import './ActiveGamesLayoutComp.less';
-import ActiveGamePanelComp from './ActiveGamePanelComp'
+import ActiveGamePanelContainer from '../../containers/Main/ActiveGamePanelContainer'
 
 export default class ActiveGamesLayoutComp extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class ActiveGamesLayoutComp extends Component {
         <div className="container">
           <div className="row justify-content-md-center">
             <div className="col-md-10 active-games-layout-area">
-              <div className="col-md-6 offset-md-3 heading-area">
+              <div className=" heading-area col-md-6 offset-md-3 row">
                 <div className="text-center">This Weekend's Games</div>
                 <hr />
               </div>
@@ -33,7 +33,10 @@ export default class ActiveGamesLayoutComp extends Component {
                   }
                   panelsRowDisplay.push(
                     <div className="col-xs-4">
-                      <ActiveGamePanelComp gameSetup={gameSetup} />
+                      <ActiveGamePanelContainer
+                        history={this.props.history}
+                        gameSetup={gameSetup}
+                      />
                     </div>);
                   if ((i % 2 === 0 && i !== 0)) {
                     return (

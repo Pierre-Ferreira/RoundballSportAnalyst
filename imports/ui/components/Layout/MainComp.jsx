@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Grid } from 'react-bootstrap';
-import { ModalContainer, ModalRoute } from 'react-router-modal';
+// import { ModalContainer, ModalRoute } from 'react-router-modal';
 import 'react-router-modal/css/react-router-modal.css';
 // Public components.
 import HomepageComp from '../Main/HomepageComp';
 import SignupContainer from '../../containers/Auth/SignupContainer';
 import LoginContainer from '../../containers/Auth/LoginContainer';
 import ResetPasswordContainer from '../../containers/Auth/ResetPasswordContainer';
-import VerifyEmailContainer from '../../containers/Auth/VerifyEmailContainer'
+import VerifyEmailContainer from '../../containers/Auth/VerifyEmailContainer';
 import ForgotPasswordContainer from '../../containers/Auth/ForgotPasswordContainer';
 import IntroducerSearchContainer from '../../containers/Auth/IntroducerSearchContainer';
 // Auth Admin components.
@@ -35,9 +35,9 @@ export default class MainPage extends Component {
 
   render() {
     const { authenticated } = this.props;
-    const backgroundStyle = authenticated ? 'background-auth' : 'background-public'
+    const backgroundStyle = authenticated ? 'background-auth' : 'background-public';
     return (
-      <div id='main-page-comp' className={backgroundStyle}>
+      <div id="main-page-comp" className={backgroundStyle}>
         <Grid>
           <div>
             <Switch>
