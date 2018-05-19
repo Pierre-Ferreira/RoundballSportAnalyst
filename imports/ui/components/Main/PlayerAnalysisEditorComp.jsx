@@ -36,7 +36,17 @@ export default class PlayerAnalysisEditorComp extends Component {
     this.handleGameSetupChange = this.handleGameSetupChange.bind(this);
     this.handleHostTeamTriesChange = this.handleHostTeamTriesChange.bind(this);
     this.handleVisitorTeamTriesChange = this.handleVisitorTeamTriesChange.bind(this);
-  }
+    this.handleHostTeamConvsChange = this.handleHostTeamConvsChange.bind(this);
+    this.handleVisitorTeamConvsChange = this.handleVisitorTeamConvsChange.bind(this);
+    this.handleHostTeamPenaltiesChange = this.handleHostTeamPenaltiesChange.bind(this);
+    this.handleVisitorTeamPenaltiesChange = this.handleVisitorTeamPenaltiesChange.bind(this);
+    this.handleHostTeamDropgoalsChange = this.handleHostTeamDropgoalsChange.bind(this);
+    this.handleVisitorTeamDropgoalsChange = this.handleVisitorTeamDropgoalsChange.bind(this);
+    this.handleHostTeamYellowCardsChange = this.handleHostTeamYellowCardsChange.bind(this);
+    this.handleVisitorTeamYellowCardsChange = this.handleVisitorTeamYellowCardsChange.bind(this);
+    this.handleHostTeamRedCardsChange = this.handleHostTeamRedCardsChange.bind(this);
+    this.handleVisitorTeamRedCardsChange = this.handleVisitorTeamRedCardsChange.bind(this);
+  };
 
   componentWillMount() {
     const { gameId } = this.props.match.params;
@@ -96,6 +106,7 @@ export default class PlayerAnalysisEditorComp extends Component {
       gameVisitorAlias: e.target.value,
     });
   }
+
   handleGameActiveChange(e) {
     let val = e.target.value;
     val = (val === 'false') ? true : false;
@@ -113,6 +124,66 @@ export default class PlayerAnalysisEditorComp extends Component {
   handleVisitorTeamTriesChange(e) {
     this.setState({
       gameVisitorTeamTries: e.target.value,
+    });
+  }
+
+  handleHostTeamConvsChange(e) {
+    this.setState({
+      gameHostTeamConvs: e.target.value,
+    });
+  }
+
+  handleVisitorTeamConvsChange(e) {
+    this.setState({
+      gameVisitorTeamConvs: e.target.value,
+    });
+  }
+
+  handleHostTeamPenaltiesChange(e) {
+    this.setState({
+      gameHostTeamPenalties: e.target.value,
+    });
+  }
+
+  handleVisitorTeamPenaltiesChange(e) {
+    this.setState({
+      gameVisitorTeamPenalties: e.target.value,
+    });
+  }
+
+  handleHostTeamDropgoalsChange(e) {
+    this.setState({
+      gameHostTeamDropgoals: e.target.value,
+    });
+  }
+
+  handleVisitorTeamDropgoalsChange(e) {
+    this.setState({
+      gameVisitorTeamDropgoals: e.target.value,
+    });
+  }
+
+  handleHostTeamYellowCardsChange(e) {
+    this.setState({
+      gameHostTeamYellowCards: e.target.value,
+    });
+  }
+
+  handleVisitorTeamYellowCardsChange(e) {
+    this.setState({
+      gameVisitorTeamYellowCards: e.target.value,
+    });
+  }
+
+  handleHostTeamRedCardsChange(e) {
+    this.setState({
+      gameHostTeamRedCards: e.target.value,
+    });
+  }
+
+  handleVisitorTeamRedCardsChange(e) {
+    this.setState({
+      gameVisitorTeamRedCards: e.target.value,
     });
   }
 
@@ -212,7 +283,7 @@ export default class PlayerAnalysisEditorComp extends Component {
       if (selectedGameSetupId === gameItem._id) {
         selectedGameSetupInfo = gameItem;
       }
-    })
+    });
     const gameDateDay = selectedGameSetupInfo.gameDate.getDate();
     const gameDateMonth = selectedGameSetupInfo.gameDate.getMonth() + 1;
     const gameDateYear = selectedGameSetupInfo.gameDate.getFullYear();
@@ -237,18 +308,20 @@ export default class PlayerAnalysisEditorComp extends Component {
     const { feedbackMessage, feedbackMessageType } = this.state;
     const gameSequenceNo = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameSequenceNo : 'Loading...';
     const gameDate = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameDate : 'Loading...';
-    const gameHostAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameHostAlias : 'Loading...';
-    const gameVisitorAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVisitorAlias : 'Loading...';
+    const gameHostTeam = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameHostTeam : 'Loading...';
+    const gameVisitorTeam = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVisitorTeam : 'Loading...';
     const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
     const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
     const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
     const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const hostConvsArr = noValuesArr.filter((val, i) => {
-      return (i <= this.state.gameHostTeamTries)
-    })
+      return (i <= this.state.gameHostTeamTries);
+    });
     const visitorConvsArr = noValuesArr.filter((val, i) => {
-      return (i <= this.state.gameVisitorTeamTries)
-    })
+      return (i <= this.state.gameVisitorTeamTries);
+    });
+    const gameHostScore = 99;
+    const gameVisitorScore = 85;
     return (
       <div id="player-analysis-editor-comp">
         <div className="modal show">
@@ -277,7 +350,12 @@ export default class PlayerAnalysisEditorComp extends Component {
                   <div className="game-row2">{gameVenue}</div>
                   <div className="game-row2">{gameCity}</div>
                   <div className="game-row3">({gameKickoff})</div>
-                  <div className="game-row1">{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
+                  <div className="game-row4">{gameHostTeam} <span className="game-vs">vs</span> {gameVisitorTeam}</div>
+                </div>
+                <div className="section-row form-group row justify-content-md-center">
+                  <div className="game-row4 col-md-2">{gameHostScore}</div>
+                  <div className="col-md-4 game-row1 text-center">Score</div>
+                  <div className="game-row4 col-md-2">{gameVisitorScore}</div>
                 </div>
                 <div className="section-row form-group row justify-content-md-center">
                   <select
@@ -310,7 +388,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                   >
                     {hostConvsArr.map(val => <option value={val}>{val}</option>)}
                   </select>
-                  <div className="col-md-4 game-row1 text-center">Convs</div>
+                  <div className="col-md-4 game-row1 text-center">Conversions</div>
                   <select
                     name="form-field-name"
                     id="game-visitor-team-convs"
@@ -319,6 +397,90 @@ export default class PlayerAnalysisEditorComp extends Component {
                     onChange={this.handleVisitorTeamConvsChange}
                   >
                     {visitorConvsArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                </div>
+                <div className="section-row form-group row justify-content-md-center">
+                  <select
+                    name="form-field-name"
+                    id="game-host-team-penalties"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameHostTeamPenalties}
+                    onChange={this.handleHostTeamPenaltiesChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                  <div className="col-md-4 game-row1 text-center">Penalty kicks</div>
+                  <select
+                    name="form-field-name"
+                    id="game-visitor-team-penalties"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameVisitorTeamPenalties}
+                    onChange={this.handleVisitorTeamPenaltiesChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                </div>
+                <div className="section-row form-group row justify-content-md-center">
+                  <select
+                    name="form-field-name"
+                    id="game-host-team-dropgoals"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameHostTeamDropgoals}
+                    onChange={this.handleHostTeamDropgoalsChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                  <div className="col-md-4 game-row1 text-center">Dropgoals</div>
+                  <select
+                    name="form-field-name"
+                    id="game-visitor-team-dropgoals"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameVisitorTeamDropgoals}
+                    onChange={this.handleVisitorTeamDropgoalsChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                </div>
+                <div className="section-row form-group row justify-content-md-center">
+                  <select
+                    name="form-field-name"
+                    id="game-host-team-yellowcards"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameHostTeamYellowCards}
+                    onChange={this.handleHostTeamYellowCardsChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                  <div className="col-md-4 game-row1 text-center">Yellow cards</div>
+                  <select
+                    name="form-field-name"
+                    id="game-visitor-team-yellowcards"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameVisitorTeamYellowCards}
+                    onChange={this.handleVisitorTeamYellowCardsChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                </div>
+                <div className="section-row form-group row justify-content-md-center">
+                  <select
+                    name="form-field-name"
+                    id="game-host-team-redcards"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameHostTeamRedCards}
+                    onChange={this.handleHostTeamRedCardsChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                  <div className="col-md-4 game-row1 text-center">Red cards</div>
+                  <select
+                    name="form-field-name"
+                    id="game-visitor-team-redcards"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameVisitorTeamRedCards}
+                    onChange={this.handleVisitorTeamRedCardsChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
                   </select>
                 </div>
                 <hr />
