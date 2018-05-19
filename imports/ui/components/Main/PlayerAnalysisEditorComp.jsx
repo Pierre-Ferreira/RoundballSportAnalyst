@@ -10,79 +10,77 @@ export default class PlayerAnalysisEditorComp extends Component {
     super(props);
     this.state = {
       feedbackMessage: '',
-      gameSetupId: '',
-      gameSequenceNo: '',
-      gameDateDay: '',
-      gameDateMonth: '',
-      gameDateYear: '',
-      gameKickoff: '',
-      gameVenue: '',
-      gameCity: '',
-      gameHostTeam: '',
-      gameHostAlias: '',
-      gameVisitorTeam: '',
-      gameVisitorAlias: '',
-      gameActive: true,
+      // gameSetupId: '',
+      // gameSequenceNo: '',
+      // gameDateDay: '',
+      // gameDateMonth: '',
+      // gameDateYear: '',
+      // gameKickoff: '',
+      // gameVenue: '',
+      // gameCity: '',
+      // gameHostTeam: '',
+      // gameHostAlias: '',
+      // gameVisitorTeam: '',
+      // gameVisitorAlias: '',
+      // gameActive: true,
+      gameHostTeamTries: 0,
+      gameVisitorTeamTries: 0,
     };
     this.close = this.close.bind(this);
-    this.onChangeInput = this.onChangeInput.bind(this);
+    // this.onChangeInput = this.onChangeInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleVisitorTeamChange = this.handleVisitorTeamChange.bind(this);
     this.handleHostTeamChange = this.handleHostTeamChange.bind(this);
     this.handleGameActiveChange = this.handleGameActiveChange.bind(this);
-    this.newGame = this.newGame.bind(this);
+    // this.newGame = this.newGame.bind(this);
     this.handleGameSetupChange = this.handleGameSetupChange.bind(this);
+    this.handleHostTeamTriesChange = this.handleHostTeamTriesChange.bind(this);
+    this.handleVisitorTeamTriesChange = this.handleVisitorTeamTriesChange.bind(this);
   }
 
-  componentWillUnmount() {
-    // console.log('subscriptionId BEF:', this.props.handle.subscriptionId)
-    // const test = this.props.handle.stop();
-    // console.log('subscriptionId AFT:', this.props.handle.subscriptionId)
-    // Meteor.unsubscribe(this.props.handle)
-  }
-
-  onChangeInput() {
-    const gameDateDay = document.getElementById('game-date-day').value.trim();
-    const gameDateMonth = document.getElementById('game-date-month').value.trim();
-    const gameDateYear = document.getElementById('game-date-year').value.trim();
-    const gameKickoff = document.getElementById('game-kickoff').value.trim();
-    const gameVenue = document.getElementById('game-venue').value.trim();
-    const gameCity = document.getElementById('game-city').value.trim();
-    const gameHostAlias = document.getElementById('game-host-alias').value.trim();
-    const gameVisitorAlias = document.getElementById('game-visitor-alias').value.trim();
-
-    this.setState({
-      gameDateDay,
-      gameDateMonth,
-      gameDateYear,
-      gameKickoff,
-      gameVenue,
-      gameCity,
-      gameHostAlias,
-      gameVisitorAlias,
+  componentWillMount() {
+    const { gameId } = this.props.match.params;
+    Meteor.call('game_setup.fetch', gameId, (err, result) => {
+      if (err) {
+        console.log('game_setup.fetch ERR:', err)
+        this.setState({
+          feedbackMessage: err.reason,
+          feedbackMessageType: 'danger',
+        });
+      } else {
+        console.log('game_setup.fetch RESULT:', result)
+        this.setState({
+          gameSetupInfo: result,
+        });
+      }
     });
   }
+
+  // onChangeInput() {
+  //   const gameDateDay = document.getElementById('game-date-day').value.trim();
+  //   const gameDateMonth = document.getElementById('game-date-month').value.trim();
+  //   const gameDateYear = document.getElementById('game-date-year').value.trim();
+  //   const gameKickoff = document.getElementById('game-kickoff').value.trim();
+  //   const gameVenue = document.getElementById('game-venue').value.trim();
+  //   const gameCity = document.getElementById('game-city').value.trim();
+  //   const gameHostAlias = document.getElementById('game-host-alias').value.trim();
+  //   const gameVisitorAlias = document.getElementById('game-visitor-alias').value.trim();
+  //
+  //   this.setState({
+  //     gameDateDay,
+  //     gameDateMonth,
+  //     gameDateYear,
+  //     gameKickoff,
+  //     gameVenue,
+  //     gameCity,
+  //     gameHostAlias,
+  //     gameVisitorAlias,
+  //   });
+  // }
+
 
   close() {
     this.props.history.goBack();
-  }
-
-  newGame() {
-    this.setState({
-      gameSetupId: '',
-      gameSequenceNo: '',
-      gameDateDay: '',
-      gameDateMonth: '',
-      gameDateYear: '',
-      gameKickoff: '',
-      gameVenue: '',
-      gameCity: '',
-      gameHostTeam: '',
-      gameHostAlias: '',
-      gameVisitorTeam: '',
-      gameVisitorAlias: '',
-      gameActive: true,
-    });
   }
 
   handleHostTeamChange(e) {
@@ -103,6 +101,18 @@ export default class PlayerAnalysisEditorComp extends Component {
     val = (val === 'false') ? true : false;
     this.setState({
       gameActive: val,
+    });
+  }
+
+  handleHostTeamTriesChange(e) {
+    this.setState({
+      gameHostTeamTries: e.target.value,
+    });
+  }
+
+  handleVisitorTeamTriesChange(e) {
+    this.setState({
+      gameVisitorTeamTries: e.target.value,
     });
   }
 
@@ -225,9 +235,22 @@ export default class PlayerAnalysisEditorComp extends Component {
 
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
-    const gameSequenceNo = this.state.gameSequenceNo || this.props.GamesSetupList.length + 1;
+    const gameSequenceNo = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameSequenceNo : 'Loading...';
+    const gameDate = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameDate : 'Loading...';
+    const gameHostAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameHostAlias : 'Loading...';
+    const gameVisitorAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVisitorAlias : 'Loading...';
+    const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
+    const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
+    const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
+    const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+    const hostConvsArr = noValuesArr.filter((val, i) => {
+      return (i <= this.state.gameHostTeamTries)
+    })
+    const visitorConvsArr = noValuesArr.filter((val, i) => {
+      return (i <= this.state.gameVisitorTeamTries)
+    })
     return (
-      <div id="game-setup-editor-comp">
+      <div id="player-analysis-editor-comp">
         <div className="modal show">
           <div className="modal-dialog">
             <div className="modal-content">
@@ -235,40 +258,80 @@ export default class PlayerAnalysisEditorComp extends Component {
                 <Button color="danger" className="pull-right close-button" onClick={this.close}>X</Button>
               </div>
               <div className="modal-header">
-                <div className="text-center">Game Setup Editor</div>
+                <div className="text-center">Game Analysis Editor</div>
+                <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
               </div>
-
+              {(feedbackMessage) ?
+                <Alert bsStyle={feedbackMessageType}>
+                  {feedbackMessage}
+                </Alert>
+              : null }
+              <form
+                id="player-analysis-editor-form"
+                className="form col-md-12 center-block"
+                onSubmit={this.handleSubmit}
+              >
               <div className="modal-body container">
-                <div>
-                  <div className="game-row1">Game #{gameSequenceNo} (193/200)</div>
+                <div className="text-center">
                   <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
-                  <div className="game-row1">{gameHostAlias} <span className='game-vs'>vs</span> {gameVisitorAlias}</div>
                   <div className="game-row2">{gameVenue}</div>
                   <div className="game-row2">{gameCity}</div>
                   <div className="game-row3">({gameKickoff})</div>
+                  <div className="game-row1">{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
                 </div>
-                {(feedbackMessage) ?
-                  <Alert bsStyle={feedbackMessageType}>
-                    {feedbackMessage}
-                  </Alert>
-                : null }
-                <form
-                  id="game-setup-editor-form"
-                  className="form col-md-12 center-block"
-                  onSubmit={this.handleSubmit}
-                >
-
-                  <hr />
-                  <div className="form-group save-btn-area text-center col-md-12">
-                    <input
-                      type="submit"
-                      id="game-setup-editor-form-save"
-                      className="btn btn-primary btn-lg btn-block"
-                      value="SAVE"
-                    />
-                  </div>
-                </form>
+                <div className="section-row form-group row justify-content-md-center">
+                  <select
+                    name="form-field-name"
+                    id="game-host-team-tries"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameHostTeamTries}
+                    onChange={this.handleHostTeamTriesChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                  <div className="col-md-4 game-row1 text-center">Tries</div>
+                  <select
+                    name="form-field-name"
+                    id="game-visitor-team-tries"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameVisitorTeamTries}
+                    onChange={this.handleVisitorTeamTriesChange}
+                  >
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                </div>
+                <div className="section-row form-group row justify-content-md-center">
+                  <select
+                    name="form-field-name"
+                    id="game-host-team-convs"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameHostTeamConvs}
+                    onChange={this.handleHostTeamConvsChange}
+                  >
+                    {hostConvsArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                  <div className="col-md-4 game-row1 text-center">Convs</div>
+                  <select
+                    name="form-field-name"
+                    id="game-visitor-team-convs"
+                    className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
+                    value={this.state.gameVisitorTeamConvs}
+                    onChange={this.handleVisitorTeamConvsChange}
+                  >
+                    {visitorConvsArr.map(val => <option value={val}>{val}</option>)}
+                  </select>
+                </div>
+                <hr />
+                <div className="form-group save-btn-area text-center col-md-12">
+                  <input
+                    type="submit"
+                    id="game-setup-editor-form-save"
+                    className="btn btn-primary btn-lg btn-block"
+                    value="SAVE"
+                  />
+                </div>
               </div>
+              </form>
             </div>
           </div>
         </div>

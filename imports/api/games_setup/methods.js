@@ -3,6 +3,15 @@ import GamesSetup from './collection';
 import './hooks';
 
 Meteor.methods({
+  'game_setup.fetch': (gameId) => {
+    check(gameId, String)
+    if (gameId.length === 0) throw new Meteor.Error(403, 'Game ID is required');
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(403, 'GamesSetup not fetched. User not logged in.');
+    } else {
+      return GamesSetup.findOne({ _id: gameId });
+    }
+  },
   'game_setup.create': (gameInfo) => {
     check(gameInfo, {
       gameSequenceNo: Number,
@@ -17,7 +26,7 @@ Meteor.methods({
       gameActive: Boolean,
       createdAt: Date,
     });
-    if (gameInfo.gameDate.gameSequenceNo === 0) throw new Meteor.Error(403, 'Game No is required');
+    if (gameInfo.gameSequenceNo.length === 0) throw new Meteor.Error(403, 'Game No is required');
     if (gameInfo.gameDate.length === 0) throw new Meteor.Error(403, 'Game Date is required');
     if (gameInfo.gameKickoff.length === 0) throw new Meteor.Error(403, 'Kickoff is required');
     if (gameInfo.gameVenue.length === 0) throw new Meteor.Error(403, 'Venue is required');
