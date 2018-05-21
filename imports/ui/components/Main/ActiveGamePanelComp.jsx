@@ -49,7 +49,11 @@ export default class ActiveGamePanelComp extends Component {
 
   showPlayerAnalysisEditor(gameId) {
     console.log('gameId:', gameId);
-    this.props.history.push(`/game/analysis/${gameId}`)
+    if (Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+      this.props.history.push(`/game/running/editor/${gameId}`)
+    } else {
+      this.props.history.push(`/game/analysis/${gameId}`)
+    }
   }
 
   render() {

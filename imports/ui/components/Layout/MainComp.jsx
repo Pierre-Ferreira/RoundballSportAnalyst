@@ -16,9 +16,10 @@ import blockchainAPIPaymentsContainer from '../../containers/Admin/blockchainAPI
 import UserSettingsComp from '../Main/UserSettings/UserSettingsComp';
 import MyTeamComp from '../Main/MyTeamComp';
 import GameSetupEditorContainer from '../../containers/Admin/GameSetupEditorContainer';
-import PlayerAnalysisEditorContainer from '../../containers/Main/PlayerAnalysisEditorContainer'
+import GameRunningEditorContainer from '../../containers/Main/GameRunningEditorContainer';
 // Auth Members components.
 import WelcomeContainer from '../../containers/Main/WelcomeContainer';
+import PlayerAnalysisEditorContainer from '../../containers/Main/PlayerAnalysisEditorContainer';
 // Helper components.
 import AuthenticatedRouteComp from '../Routes/AuthenticatedRouteComp';
 import PublicRouteComp from '../Routes/PublicRouteComp';
@@ -56,6 +57,7 @@ export default class MainPage extends Component {
               <AuthenticatedRouteComp exact path="/settings" component={UserSettingsComp} {...this.props} />
               <AuthenticatedRouteComp exact path="/myteam" component={MyTeamComp} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/analysis/:gameId" component={PlayerAnalysisEditorContainer} {...this.props} />
+              <AuthenticatedRouteComp exact path="/game/running/editor/:gameSetupId" component={GameRunningEditorContainer} {...this.props} />
               <Redirect to="/" />
             </Switch>
           </div>
