@@ -10,30 +10,25 @@ export default class PlayerAnalysisEditorComp extends Component {
     super(props);
     this.state = {
       feedbackMessage: '',
-      // gameSetupId: '',
-      // gameSequenceNo: '',
-      // gameDateDay: '',
-      // gameDateMonth: '',
-      // gameDateYear: '',
-      // gameKickoff: '',
-      // gameVenue: '',
-      // gameCity: '',
-      // gameHostTeam: '',
-      // gameHostAlias: '',
-      // gameVisitorTeam: '',
-      // gameVisitorAlias: '',
-      // gameActive: true,
-      gameHostTeamTries: 0,
-      gameVisitorTeamTries: 0,
+      PlayerGameAnalysisId: '',
+      playerHostTeamTries: '0',
+      playerVisitorTeamTries: '0',
+      playerHostTeamConvs: '0',
+      playerVisitorTeamConvs: '0',
+      playerHostTeamPenalties: '0',
+      playerVisitorTeamPenalties: '0',
+      playerHostTeamDropgoals: '0',
+      playerVisitorTeamDropgoals: '0',
+      playerHostTeamYellowCards: '0',
+      playerVisitorTeamYellowCards: '0',
+      playerHostTeamRedCards: '0',
+      playerVisitorTeamRedCards: '0',
+      playerHostScore: 0,
+      playerVisitorScore: 0,
     };
     this.close = this.close.bind(this);
-    // this.onChangeInput = this.onChangeInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleVisitorTeamChange = this.handleVisitorTeamChange.bind(this);
-    this.handleHostTeamChange = this.handleHostTeamChange.bind(this);
-    this.handleGameActiveChange = this.handleGameActiveChange.bind(this);
-    // this.newGame = this.newGame.bind(this);
-    this.handleGameSetupChange = this.handleGameSetupChange.bind(this);
+    this.calculateScores = this.calculateScores.bind(this);
     this.handleHostTeamTriesChange = this.handleHostTeamTriesChange.bind(this);
     this.handleVisitorTeamTriesChange = this.handleVisitorTeamTriesChange.bind(this);
     this.handleHostTeamConvsChange = this.handleHostTeamConvsChange.bind(this);
@@ -52,138 +47,161 @@ export default class PlayerAnalysisEditorComp extends Component {
     const { gameId } = this.props.match.params;
     Meteor.call('game_setup.fetch', gameId, (err, result) => {
       if (err) {
-        console.log('game_setup.fetch ERR:', err)
         this.setState({
           feedbackMessage: err.reason,
           feedbackMessageType: 'danger',
         });
       } else {
-        console.log('game_setup.fetch RESULT:', result)
         this.setState({
           gameSetupInfo: result,
+        });
+        Meteor.call('player_game_analysis.fetch', gameId, (err, result) => {
+          if (err) {
+            this.setState({
+              feedbackMessage: err.reason,
+              feedbackMessageType: 'danger',
+            });
+          } else {
+            this.setState({
+              PlayerGameAnalysisId: result._id,
+              playerHostScore: result.playerHostScore,
+              playerVisitorScore: result.playerVisitorScore,
+              playerHostTeamTries: result.playerHostTeamTries,
+              playerVisitorTeamTries: result.playerVisitorTeamTries,
+              playerHostTeamConvs: result.playerHostTeamConvs,
+              playerVisitorTeamConvs: result.playerVisitorTeamConvs,
+              playerHostTeamPenalties: result.playerHostTeamPenalties,
+              playerVisitorTeamPenalties: result.playerVisitorTeamPenalties,
+              playerHostTeamDropgoals: result.playerHostTeamDropgoals,
+              playerVisitorTeamDropgoals: result.playerVisitorTeamDropgoals,
+              playerHostTeamYellowCards: result.playerHostTeamYellowCards,
+              playerVisitorTeamYellowCards: result.playerVisitorTeamYellowCards,
+              playerHostTeamRedCards: result.playerHostTeamRedCards,
+              playerVisitorTeamRedCards: result.playerVisitorTeamRedCards,
+            });
+          }
         });
       }
     });
   }
 
-  // onChangeInput() {
-  //   const gameDateDay = document.getElementById('game-date-day').value.trim();
-  //   const gameDateMonth = document.getElementById('game-date-month').value.trim();
-  //   const gameDateYear = document.getElementById('game-date-year').value.trim();
-  //   const gameKickoff = document.getElementById('game-kickoff').value.trim();
-  //   const gameVenue = document.getElementById('game-venue').value.trim();
-  //   const gameCity = document.getElementById('game-city').value.trim();
-  //   const gameHostAlias = document.getElementById('game-host-alias').value.trim();
-  //   const gameVisitorAlias = document.getElementById('game-visitor-alias').value.trim();
-  //
-  //   this.setState({
-  //     gameDateDay,
-  //     gameDateMonth,
-  //     gameDateYear,
-  //     gameKickoff,
-  //     gameVenue,
-  //     gameCity,
-  //     gameHostAlias,
-  //     gameVisitorAlias,
-  //   });
-  // }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (
+      prevState.playerHostTeamTries !== this.state.playerHostTeamTries ||
+      prevState.playerHostTeamDropgoals !== this.state.playerHostTeamDropgoals ||
+      prevState.playerHostTeamConvs !== this.state.playerHostTeamConvs ||
+      prevState.playerHostTeamPenalties !== this.state.playerHostTeamPenalties ||
+      prevState.playerVisitorTeamTries !== this.state.playerVisitorTeamTries ||
+      prevState.playerVisitorTeamConvs !== this.state.playerVisitorTeamConvs ||
+      prevState.playerVisitorTeamPenalties !== this.state.playerVisitorTeamPenalties ||
+      prevState.playerVisitorTeamDropgoals !== this.state.playerVisitorTeamDropgoals
+    ) { this.calculateScores(); }
+  }
 
+  calculateScores() {
+    let playerHostScore = 0;
+    let playerVisitorScore = 0;
+    playerHostScore += this.state.playerHostTeamTries * 5;
+    playerHostScore += this.state.playerHostTeamDropgoals * 3;
+    playerHostScore += this.state.playerHostTeamConvs * 2;
+    playerHostScore += this.state.playerHostTeamPenalties * 3;
+    playerVisitorScore += this.state.playerVisitorTeamTries * 5;
+    playerVisitorScore += this.state.playerVisitorTeamConvs * 2;
+    playerVisitorScore += this.state.playerVisitorTeamPenalties * 3;
+    playerVisitorScore += this.state.playerVisitorTeamDropgoals * 3;
+    this.setState({
+      playerHostScore,
+      playerVisitorScore,
+    });
+  }
 
   close() {
     this.props.history.goBack();
   }
 
-  handleHostTeamChange(e) {
-    this.setState({
-      gameHostTeam: e.target.value,
-      gameHostAlias: e.target.value,
-    });
-  }
-
-  handleVisitorTeamChange(e) {
-    this.setState({
-      gameVisitorTeam: e.target.value,
-      gameVisitorAlias: e.target.value,
-    });
-  }
-
-  handleGameActiveChange(e) {
-    let val = e.target.value;
-    val = (val === 'false') ? true : false;
-    this.setState({
-      gameActive: val,
-    });
-  }
-
   handleHostTeamTriesChange(e) {
-    this.setState({
-      gameHostTeamTries: e.target.value,
-    });
+    if (Number(e.target.value) < Number(this.state.playerHostTeamConvs)) {
+      this.setState({
+        playerHostTeamTries: e.target.value,
+        playerHostTeamConvs: e.target.value,
+      });
+    } else {
+      this.setState({
+        playerHostTeamTries: e.target.value,
+      });
+    }
   }
 
   handleVisitorTeamTriesChange(e) {
-    this.setState({
-      gameVisitorTeamTries: e.target.value,
-    });
+    if (Number(e.target.value) < Number(this.state.playerVisitorTeamConvs)) {
+      this.setState({
+        playerVisitorTeamTries: e.target.value,
+        playerVisitorTeamConvs: e.target.value,
+      });
+    } else {
+      this.setState({
+        playerVisitorTeamTries: e.target.value,
+      });
+    }
   }
 
   handleHostTeamConvsChange(e) {
     this.setState({
-      gameHostTeamConvs: e.target.value,
+      playerHostTeamConvs: e.target.value,
     });
   }
 
   handleVisitorTeamConvsChange(e) {
     this.setState({
-      gameVisitorTeamConvs: e.target.value,
+      playerVisitorTeamConvs: e.target.value,
     });
   }
 
   handleHostTeamPenaltiesChange(e) {
     this.setState({
-      gameHostTeamPenalties: e.target.value,
+      playerHostTeamPenalties: e.target.value,
     });
   }
 
   handleVisitorTeamPenaltiesChange(e) {
     this.setState({
-      gameVisitorTeamPenalties: e.target.value,
+      playerVisitorTeamPenalties: e.target.value,
     });
   }
 
   handleHostTeamDropgoalsChange(e) {
     this.setState({
-      gameHostTeamDropgoals: e.target.value,
+      playerHostTeamDropgoals: e.target.value,
     });
   }
 
   handleVisitorTeamDropgoalsChange(e) {
     this.setState({
-      gameVisitorTeamDropgoals: e.target.value,
+      playerVisitorTeamDropgoals: e.target.value,
     });
   }
 
   handleHostTeamYellowCardsChange(e) {
     this.setState({
-      gameHostTeamYellowCards: e.target.value,
+      playerHostTeamYellowCards: e.target.value,
     });
   }
 
   handleVisitorTeamYellowCardsChange(e) {
     this.setState({
-      gameVisitorTeamYellowCards: e.target.value,
+      playerVisitorTeamYellowCards: e.target.value,
     });
   }
 
   handleHostTeamRedCardsChange(e) {
     this.setState({
-      gameHostTeamRedCards: e.target.value,
+      playerHostTeamRedCards: e.target.value,
     });
   }
 
   handleVisitorTeamRedCardsChange(e) {
     this.setState({
-      gameVisitorTeamRedCards: e.target.value,
+      playerVisitorTeamRedCards: e.target.value,
     });
   }
 
@@ -194,151 +212,151 @@ export default class PlayerAnalysisEditorComp extends Component {
       feedbackMessageType: 'success',
     });
     console.log('STATE:', this.state);
-    if (!this.state.gameDateYear || !this.state.gameDateMonth || !this.state.gameDateDay) {
-      this.setState({
-        feedbackMessage: 'ERROR: Game Date is required',
-        feedbackMessageType: 'danger',
-      });
-      return
-    }
-    const gameDate = new Date(
-      this.state.gameDateYear,
-      this.state.gameDateMonth - 1,
-      this.state.gameDateDay,
-      12,
-      0,
-      0,
-    );
-    console.log('gameDate:',gameDate)
-    if (!moment(gameDate).isValid()) {
-      this.setState({
-        feedbackMessage: 'ERROR: Date is not valid',
-        feedbackMessageType: 'danger',
-      });
-      return;
-    }
-
-    const gameInfo = {
-      gameDate,
-      gameKickoff: this.state.gameKickoff,
-      gameVenue: this.state.gameVenue,
-      gameCity: this.state.gameCity,
-      gameHostTeam: this.state.gameHostTeam,
-      gameHostAlias: this.state.gameHostAlias,
-      gameVisitorTeam: this.state.gameVisitorTeam,
-      gameVisitorAlias: this.state.gameVisitorAlias,
-      gameActive: this.state.gameActive,
-      gameSequenceNo: this.state.gameSequenceNo || this.props.GamesSetupList.length + 1,
-      createdAt: this.props.createdAt || new Date(),
+    const { gameId } = this.props.match.params;
+    const playerGameAnalysisInfo = {
+      gameSetupId: gameId,
+      playerHostScore: this.state.playerHostScore,
+      playerVisitorScore: this.state.playerVisitorScore,
+      playerHostTeamTries: this.state.playerHostTeamTries,
+      playerVisitorTeamTries: this.state.playerVisitorTeamTries,
+      playerHostTeamConvs: this.state.playerHostTeamConvs,
+      playerVisitorTeamConvs: this.state.playerVisitorTeamConvs,
+      playerHostTeamPenalties: this.state.playerHostTeamPenalties,
+      playerVisitorTeamPenalties: this.state.playerVisitorTeamPenalties,
+      playerHostTeamDropgoals: this.state.playerHostTeamDropgoals,
+      playerVisitorTeamDropgoals: this.state.playerVisitorTeamDropgoals,
+      playerHostTeamYellowCards: this.state.playerHostTeamYellowCards,
+      playerVisitorTeamYellowCards: this.state.playerVisitorTeamYellowCards,
+      playerHostTeamRedCards: this.state.playerHostTeamRedCards,
+      playerVisitorTeamRedCards: this.state.playerVisitorTeamRedCards,
+      playerWinner: (this.state.playerHostScore > this.state.playerVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
     };
-    if (this.state.gameSetupId) {
-      Meteor.call('game_setup.update', this.state.gameSetupId, gameInfo, (err, result) => {
-        if (err) {
-          this.setState({
-            feedbackMessage: `ERROR: ${err.reason}`,
-            feedbackMessageType: 'danger',
-          });
-        } else {
-          this.setState({
-            feedbackMessage: 'Game Info Saved!',
-            feedbackMessageType: 'success',
-          });
-          // this.newGame();
-          setTimeout(() => {
-            this.setState({
-              feedbackMessage: '',
-              feedbackMessageType: '',
-            });
-          }, 3000);
-        }
-      });
-    } else {
-      Meteor.call('game_setup.create', gameInfo, (err, result) => {
-        if (err) {
-          this.setState({
-            feedbackMessage: `ERROR: ${err.reason}`,
-            feedbackMessageType: 'danger',
-          });
-        } else {
-          this.setState({
-            feedbackMessage: 'Game Info Saved!',
-            feedbackMessageType: 'success',
-          });
-          this.newGame();
-          setTimeout(() => {
-            this.setState({
-              feedbackMessage: '',
-              feedbackMessageType: '',
-            });
-          }, 3000);
-        }
-      });
-    }
-  }
 
-  handleGameSetupChange(e) {
-    const selectedGameSetupId = e.target.value;
-    let selectedGameSetupInfo = '';
-    this.props.GamesSetupList.forEach((gameItem) => {
-      if (selectedGameSetupId === gameItem._id) {
-        selectedGameSetupInfo = gameItem;
-      }
-    });
-    const gameDateDay = selectedGameSetupInfo.gameDate.getDate();
-    const gameDateMonth = selectedGameSetupInfo.gameDate.getMonth() + 1;
-    const gameDateYear = selectedGameSetupInfo.gameDate.getFullYear();
-    this.setState({
-      gameSetupId: selectedGameSetupId,
-      gameSequenceNo: selectedGameSetupInfo.gameSequenceNo,
-      gameDateDay,
-      gameDateMonth,
-      gameDateYear,
-      gameKickoff: selectedGameSetupInfo.gameKickoff,
-      gameVenue: selectedGameSetupInfo.gameVenue,
-      gameCity: selectedGameSetupInfo.gameCity,
-      gameHostTeam: selectedGameSetupInfo.gameHostTeam,
-      gameHostAlias: selectedGameSetupInfo.gameHostAlias,
-      gameVisitorTeam: selectedGameSetupInfo.gameVisitorTeam,
-      gameVisitorAlias: selectedGameSetupInfo.gameVisitorAlias,
-      gameActive: selectedGameSetupInfo.gameActive,
-    });
+
+    // if (!this.state.gameDateYear || !this.state.gameDateMonth || !this.state.gameDateDay) {
+    //   this.setState({
+    //     feedbackMessage: 'ERROR: Game Date is required',
+    //     feedbackMessageType: 'danger',
+    //   });
+    //   return
+    // }
+    // const gameDate = new Date(
+    //   this.state.gameDateYear,
+    //   this.state.gameDateMonth - 1,
+    //   this.state.gameDateDay,
+    //   12,
+    //   0,
+    //   0,
+    // );
+    // console.log('gameDate:',gameDate)
+    // if (!moment(gameDate).isValid()) {
+    //   this.setState({
+    //     feedbackMessage: 'ERROR: Date is not valid',
+    //     feedbackMessageType: 'danger',
+    //   });
+    //   return;
+    // }
+    //
+    // const gameInfo = {
+    //   gameDate,
+    //   gameKickoff: this.state.gameKickoff,
+    //   gameVenue: this.state.gameVenue,
+    //   gameCity: this.state.gameCity,
+    //   gameHostTeam: this.state.gameHostTeam,
+    //   gameHostAlias: this.state.gameHostAlias,
+    //   gameVisitorTeam: this.state.gameVisitorTeam,
+    //   gameVisitorAlias: this.state.gameVisitorAlias,
+    //   gameActive: this.state.gameActive,
+    //   gameSequenceNo: this.state.gameSequenceNo || this.props.GamesSetupList.length + 1,
+    //   createdAt: this.props.createdAt || new Date(),
+    // };
+    // if (this.state.gameSetupId) {
+    //   Meteor.call('game_setup.update', this.state.gameSetupId, gameInfo, (err, result) => {
+    //     if (err) {
+    //       this.setState({
+    //         feedbackMessage: `ERROR: ${err.reason}`,
+    //         feedbackMessageType: 'danger',
+    //       });
+    //     } else {
+    //       this.setState({
+    //         feedbackMessage: 'Game Info Saved!',
+    //         feedbackMessageType: 'success',
+    //       });
+    //       // this.newGame();
+    //       setTimeout(() => {
+    //         this.setState({
+    //           feedbackMessage: '',
+    //           feedbackMessageType: '',
+    //         });
+    //       }, 3000);
+    //     }
+    //   });
+    // } else {
+      Meteor.call('player_game_analysis.create', playerGameAnalysisInfo, (err, result) => {
+        if (err) {
+          this.setState({
+            feedbackMessage: `ERROR: ${err.reason}`,
+            feedbackMessageType: 'danger',
+          });
+        } else {
+          console.log('player_game_analysis.create RES:', result)
+          this.setState({
+            feedbackMessage: 'Player Analysis Info Saved!',
+            feedbackMessageType: 'success',
+            PlayerGameAnalysisId: result,
+          });
+          setTimeout(() => {
+            this.setState({
+              feedbackMessage: '',
+              feedbackMessageType: '',
+            });
+          }, 3000);
+        }
+      });
+    // }
   }
 
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
     const gameSequenceNo = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameSequenceNo : 'Loading...';
     const gameDate = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameDate : 'Loading...';
-    const gameHostTeam = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameHostTeam : 'Loading...';
-    const gameVisitorTeam = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVisitorTeam : 'Loading...';
+    const gameHostAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameHostAlias : 'Loading...';
+    const gameVisitorAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVisitorAlias : 'Loading...';
     const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
     const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
     const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
     const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const hostConvsArr = noValuesArr.filter((val, i) => {
-      return (i <= this.state.gameHostTeamTries);
+      return (i <= this.state.playerHostTeamTries);
     });
     const visitorConvsArr = noValuesArr.filter((val, i) => {
-      return (i <= this.state.gameVisitorTeamTries);
+      return (i <= this.state.playerVisitorTeamTries);
     });
-    const gameHostScore = 99;
-    const gameVisitorScore = 85;
+    let saveBtnDisabled = true;
+    let saveBtnText = '';
+    if (this.state.PlayerGameAnalysisId.length === 0) {
+      saveBtnText = 'SUBMIT ANALYSIS';
+      saveBtnDisabled = false;
+    } else {
+      saveBtnText = 'ANALYSIS SUBMITTED!';
+      saveBtnDisabled = true;
+    }
+
     return (
       <div id="player-analysis-editor-comp">
         <div className="modal show">
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="close-button-area">
-                <Button color="danger" className="pull-right close-button" onClick={this.close}>X</Button>
-              </div>
               <div className="modal-header">
                 <div className="text-center">Game Analysis Editor</div>
-                <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
               </div>
-              {(feedbackMessage) ?
-                <Alert bsStyle={feedbackMessageType}>
-                  {feedbackMessage}
-                </Alert>
-              : null }
+              <div className="col-md-12 center-block alert-area">
+                {(feedbackMessage) ?
+                  <Alert bsStyle={feedbackMessageType}>
+                    {feedbackMessage}
+                  </Alert>
+                : null }
+              </div>
               <form
                 id="player-analysis-editor-form"
                 className="form col-md-12 center-block"
@@ -346,23 +364,26 @@ export default class PlayerAnalysisEditorComp extends Component {
               >
               <div className="modal-body container">
                 <div className="text-center">
-                  <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
-                  <div className="game-row2">{gameVenue}</div>
-                  <div className="game-row2">{gameCity}</div>
-                  <div className="game-row3">({gameKickoff})</div>
-                  <div className="game-row4">{gameHostTeam} <span className="game-vs">vs</span> {gameVisitorTeam}</div>
+                  <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
+                  <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')} @ {gameKickoff}</div>
+                  <div className="game-row2">{gameVenue}, {gameCity}</div>
                 </div>
-                <div className="section-row form-group row justify-content-md-center">
-                  <div className="game-row4 col-md-2">{gameHostScore}</div>
-                  <div className="col-md-4 game-row1 text-center">Score</div>
-                  <div className="game-row4 col-md-2">{gameVisitorScore}</div>
+                <div className="section-row form-group-2 row justify-content-md-center">
+                  <div className="game-row5 col-md-5 text-center">{gameHostAlias}</div>
+                  <span className="game-vs  col-md-2 text-center">vs</span>
+                  <div className="game-row5 col-md-5 text-center">{gameVisitorAlias}</div>
+                </div>
+                <div className="section-row form-group-2 row justify-content-md-center">
+                  <div className="game-row4 col-md-3 text-center">{this.state.playerHostScore}</div>
+                  <div className="col-md-3 game-row6 text-center">Score</div>
+                  <div className="game-row4 col-md-3 text-center">{this.state.playerVisitorScore}</div>
                 </div>
                 <div className="section-row form-group row justify-content-md-center">
                   <select
                     name="form-field-name"
                     id="game-host-team-tries"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameHostTeamTries}
+                    value={this.state.playerHostTeamTries}
                     onChange={this.handleHostTeamTriesChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -372,7 +393,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-visitor-team-tries"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameVisitorTeamTries}
+                    value={this.state.playerVisitorTeamTries}
                     onChange={this.handleVisitorTeamTriesChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -383,7 +404,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-host-team-convs"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameHostTeamConvs}
+                    value={this.state.playerHostTeamConvs}
                     onChange={this.handleHostTeamConvsChange}
                   >
                     {hostConvsArr.map(val => <option value={val}>{val}</option>)}
@@ -393,7 +414,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-visitor-team-convs"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameVisitorTeamConvs}
+                    value={this.state.playerVisitorTeamConvs}
                     onChange={this.handleVisitorTeamConvsChange}
                   >
                     {visitorConvsArr.map(val => <option value={val}>{val}</option>)}
@@ -404,7 +425,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-host-team-penalties"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameHostTeamPenalties}
+                    value={this.state.playerHostTeamPenalties}
                     onChange={this.handleHostTeamPenaltiesChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -414,7 +435,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-visitor-team-penalties"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameVisitorTeamPenalties}
+                    value={this.state.playerVisitorTeamPenalties}
                     onChange={this.handleVisitorTeamPenaltiesChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -425,7 +446,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-host-team-dropgoals"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameHostTeamDropgoals}
+                    value={this.state.playerHostTeamDropgoals}
                     onChange={this.handleHostTeamDropgoalsChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -435,7 +456,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-visitor-team-dropgoals"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameVisitorTeamDropgoals}
+                    value={this.state.playerVisitorTeamDropgoals}
                     onChange={this.handleVisitorTeamDropgoalsChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -446,7 +467,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-host-team-yellowcards"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameHostTeamYellowCards}
+                    value={this.state.playerHostTeamYellowCards}
                     onChange={this.handleHostTeamYellowCardsChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -456,7 +477,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-visitor-team-yellowcards"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameVisitorTeamYellowCards}
+                    value={this.state.playerVisitorTeamYellowCards}
                     onChange={this.handleVisitorTeamYellowCardsChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -467,7 +488,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-host-team-redcards"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameHostTeamRedCards}
+                    value={this.state.playerHostTeamRedCards}
                     onChange={this.handleHostTeamRedCardsChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
@@ -477,20 +498,33 @@ export default class PlayerAnalysisEditorComp extends Component {
                     name="form-field-name"
                     id="game-visitor-team-redcards"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.gameVisitorTeamRedCards}
+                    value={this.state.playerVisitorTeamRedCards}
                     onChange={this.handleVisitorTeamRedCardsChange}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
                   </select>
                 </div>
                 <hr />
-                <div className="form-group save-btn-area text-center col-md-12">
-                  <input
-                    type="submit"
-                    id="game-setup-editor-form-save"
-                    className="btn btn-primary btn-lg btn-block"
-                    value="SAVE"
-                  />
+                <div className="form-group btn-area text-center col-md-12">
+                  <Button
+                    className="save-btn"
+                    bsStyle="primary"
+                    bsSize="large"
+                    block
+                    disabled={saveBtnDisabled}
+                    onClick={this.handleSubmit}
+                  >
+                    {saveBtnText}
+                  </Button>
+                  <Button
+                    className="exit-btn"
+                    bsStyle="warning"
+                    bsSize="large"
+                    block
+                    onClick={this.close}
+                  >
+                    EXIT
+                  </Button>
                 </div>
               </div>
               </form>
