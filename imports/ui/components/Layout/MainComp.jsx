@@ -56,7 +56,7 @@ export default class MainPage extends Component {
               <AuthenticatedRouteComp exact path="/main/welcome" component={WelcomeContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/settings" component={UserSettingsComp} {...this.props} />
               <AuthenticatedRouteComp exact path="/myteam" component={MyTeamComp} {...this.props} />
-              <AuthenticatedRouteComp exact path="/game/analysis/:gameId" component={PlayerAnalysisEditorContainer} {...this.props} />
+              <AuthenticatedRouteComp exact path="/game/analysis/:gameSetupId" component={PlayerAnalysisEditorContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/running/editor/:gameSetupId" component={GameRunningEditorContainer} {...this.props} />
               <Redirect to="/" />
             </Switch>

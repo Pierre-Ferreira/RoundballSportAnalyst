@@ -47,12 +47,12 @@ export default class ActiveGamePanelComp extends Component {
     });
   }
 
-  showPlayerAnalysisEditor(gameId) {
-    console.log('gameId:', gameId);
+  showPlayerAnalysisEditor(gameSetupId) {
+    console.log('gameSetupId:', gameSetupId);
     if (Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
-      this.props.history.push(`/game/running/editor/${gameId}`)
+      this.props.history.push(`/game/running/editor/${gameSetupId}`)
     } else {
-      this.props.history.push(`/game/analysis/${gameId}`)
+      this.props.history.push(`/game/analysis/${gameSetupId}`)
     }
   }
 
@@ -68,7 +68,7 @@ export default class ActiveGamePanelComp extends Component {
       gameDate,
       gameSequenceNo,
     } = this.props.gameSetup;
-    const gameId = this.props.gameSetup._id;
+    const gameSetupId = this.props.gameSetup._id;
     const popoverTitle = `Rewards Game#${gameSequenceNo}`
     const popoverHoverFocus = (
       <Popover
@@ -96,7 +96,7 @@ export default class ActiveGamePanelComp extends Component {
               </OverlayTrigger>
             </Panel.Title>
           </Panel.Heading>
-          <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameId)} {...this.props}>
+          <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameSetupId)} {...this.props}>
             <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
             <div className="game-row1">{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
             <div className="game-row2">{gameVenue}</div>

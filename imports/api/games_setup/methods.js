@@ -3,13 +3,13 @@ import GamesSetup from './collection';
 import './hooks';
 
 Meteor.methods({
-  'game_setup.fetch': (gameId) => {
-    check(gameId, String)
-    if (gameId.length === 0) throw new Meteor.Error(403, 'Game ID is required');
+  'game_setup.fetch': (gameSetupId) => {
+    check(gameSetupId, String)
+    if (gameSetupId.length === 0) throw new Meteor.Error(403, 'Game ID is required');
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GamesSetup not fetched. User not logged in.');
     } else {
-      return GamesSetup.findOne({ _id: gameId });
+      return GamesSetup.findOne({ _id: gameSetupId });
     }
   },
   'game_setup.create': (gameInfo) => {

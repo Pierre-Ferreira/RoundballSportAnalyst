@@ -106,13 +106,15 @@ export default class GameRunningEditorComp extends Component {
       prevState.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals
     ) {
       this.calculateScores();
-      // this.updateRunningStats();
     }
     if (
       prevState.gameHostScore !== this.state.gameHostScore ||
-      prevState.gameVisitorScore !== this.state.gameVisitorScore
+      prevState.gameVisitorScore !== this.state.gameVisitorScore ||
+      prevState.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
+      prevState.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
+      prevState.gameHostTeamRedCards !== this.state.gameHostTeamRedCards ||
+      prevState.gameVisitorTeamRedCards !== this.state.gameVisitorTeamRedCards
     ) {
-      // this.calculateScores();
       this.updateRunningStats();
     }
   }
