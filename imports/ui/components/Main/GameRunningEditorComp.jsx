@@ -68,6 +68,7 @@ export default class GameRunningEditorComp extends Component {
             if (result) {
               this.setState({
                 gameRunningStatsId: result._id,
+                gameSetupId: result.gameSetupId,
                 gameHostScore: result.gameHostScore,
                 gameVisitorScore: result.gameVisitorScore,
                 gameHostTeamTries: result.gameHostTeamTries,
@@ -82,6 +83,7 @@ export default class GameRunningEditorComp extends Component {
                 gameVisitorTeamYellowCards: result.gameVisitorTeamYellowCards,
                 gameHostTeamRedCards: result.gameHostTeamRedCards,
                 gameVisitorTeamRedCards: result.gameVisitorTeamRedCards,
+                gameIsRunning: result.gameIsRunning,
               });
             }
           }
@@ -92,6 +94,8 @@ export default class GameRunningEditorComp extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (
+      prevState.gameHostScore !== this.state.gameHostScore ||
+      prevState.gameVisitorScore !== this.state.gameVisitorScore ||
       prevState.gameHostTeamTries !== this.state.gameHostTeamTries ||
       prevState.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
       prevState.gameHostTeamConvs !== this.state.gameHostTeamConvs ||
@@ -102,6 +106,13 @@ export default class GameRunningEditorComp extends Component {
       prevState.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals
     ) {
       this.calculateScores();
+      // this.updateRunningStats();
+    }
+    if (
+      prevState.gameHostScore !== this.state.gameHostScore ||
+      prevState.gameVisitorScore !== this.state.gameVisitorScore
+    ) {
+      // this.calculateScores();
       this.updateRunningStats();
     }
   }
@@ -232,6 +243,7 @@ export default class GameRunningEditorComp extends Component {
       gameHostScore: 0,
       gameVisitorScore: 0,
       gameWinner: 'VISITORTEAM',
+      gameIsRunning: true,
     };
     console.log('gameRunningStatsInitInfo:', gameRunningStatsInitInfo)
     Meteor.call('game_running_statistics.create', gameRunningStatsInitInfo, (err, result) => {
@@ -246,6 +258,7 @@ export default class GameRunningEditorComp extends Component {
           feedbackMessage: 'Game Stats Document initialized!',
           feedbackMessageType: 'success',
           gameRunningStatsId: result,
+          gameIsRunning: true,
         });
         setTimeout(() => {
           this.setState({
@@ -265,6 +278,7 @@ export default class GameRunningEditorComp extends Component {
     console.log('STATE:', this.state);
     const { gameRunningStatsId } = this.state;
     const gameRunningStatsInfo = {
+      gameSetupId: this.state.gameSetupId,
       gameHostScore: this.state.gameHostScore,
       gameVisitorScore: this.state.gameVisitorScore,
       gameHostTeamTries: this.state.gameHostTeamTries,
@@ -280,6 +294,7 @@ export default class GameRunningEditorComp extends Component {
       gameHostTeamRedCards: this.state.gameHostTeamRedCards,
       gameVisitorTeamRedCards: this.state.gameVisitorTeamRedCards,
       gameWinner: (this.state.gameHostScore > this.state.gameVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
+      gameIsRunning: this.state.gameIsRunning,
     };
     console.log('gameRunningStatsId:', gameRunningStatsId);
     console.log('gameRunningStatsInfo:', gameRunningStatsInfo);
@@ -325,14 +340,14 @@ export default class GameRunningEditorComp extends Component {
     const visitorConvsArr = noValuesArr.filter((val, i) => {
       return (i <= this.state.gameVisitorTeamTries);
     });
-    let saveBtnDisabled = true;
-    let saveBtnText = '';
-    if (this.state.gameRunningStatsId.length === 0) {
-      saveBtnText = 'SUBMIT ANALYSIS';
-      saveBtnDisabled = false;
+    let gameIsRunning = true;
+    let startBtnText = '';
+    if (!this.state.gameIsRunning) {
+      startBtnText = 'START GAME';
+      gameIsRunning = false;
     } else {
-      saveBtnText = 'ANALYSIS SUBMITTED!';
-      saveBtnDisabled = true;
+      startBtnText = 'GAME IS RUNNING';
+      gameIsRunning = true;
     }
 
     return (
@@ -504,8 +519,9 @@ export default class GameRunningEditorComp extends Component {
                     bsSize="large"
                     block
                     onClick={this.startGame}
+                    disabled={gameIsRunning}
                   >
-                    START START
+                    {startBtnText}
                   </Button>
                   <Button
                     className="stop-btn"

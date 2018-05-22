@@ -9,7 +9,7 @@ Meteor.methods({
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GameRunningStatistics not fetched. User not logged in.');
     } else {
-      return GameRunningStatistics.findOne({ gameSetupId: gameSetupId });
+      return GameRunningStatistics.findOne({ gameSetupId });
     }
   },
   'game_running_statistics.create': (gameRunningStatsInfo) => {
@@ -30,6 +30,7 @@ Meteor.methods({
       gameHostTeamRedCards: String,
       gameVisitorTeamRedCards: String,
       gameWinner: String,
+      gameIsRunning: Boolean,
     });
     if (gameRunningStatsInfo.gameSetupId.length === 0) throw new Meteor.Error(403, 'Game Setup Id is required');
     if (gameRunningStatsInfo.gameHostScore.length === 0) throw new Meteor.Error(403, 'Host Score is required');
@@ -51,13 +52,14 @@ Meteor.methods({
       throw new Meteor.Error(403, 'GameRunningStatistics entry not created. User not logged in.');
     } else {
       const GameRunningStatisticsId = GameRunningStatistics.insert(gameRunningStatsInfo);
-      console.log('inserted: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
+      console.log('Inserted game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
       return GameRunningStatisticsId;
     }
   },
   'game_running_statistics.update': (gameRunningStatsId, gameRunningStatsInfo) => {
     check(gameRunningStatsId, String);
     check(gameRunningStatsInfo, {
+      gameSetupId: String,
       gameHostScore: Number,
       gameVisitorScore: Number,
       gameHostTeamTries: String,
@@ -73,6 +75,7 @@ Meteor.methods({
       gameHostTeamRedCards: String,
       gameVisitorTeamRedCards: String,
       gameWinner: String,
+      gameIsRunning: Boolean,
     });
     // if (gameRunningStatsInfo.gameSetupId.length === 0) throw new Meteor.Error(403, 'Game Setup Id is required');
     if (gameRunningStatsInfo.gameHostScore.length === 0) throw new Meteor.Error(403, 'Host Score is required');
@@ -93,8 +96,8 @@ Meteor.methods({
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GameRunningStatistics entry not updated. User not logged in.');
     } else {
-      GameRunningStatistics.update({ _id: gameRunningStatsId, gameRunningStatsInfo });
-      console.log('inserted: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
+      GameRunningStatistics.update({ _id: gameRunningStatsId }, gameRunningStatsInfo );
+      console.log('Updated game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
     }
   },
 });
