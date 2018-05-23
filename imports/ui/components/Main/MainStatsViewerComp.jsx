@@ -2,14 +2,17 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Button } from 'react-bootstrap';
-import moment from 'moment/moment'
-import './GameRunningStatsViewerComp.less';
+import moment from 'moment/moment';
+import GameRunningViewerContainer from '../../containers/Main/GameRunningViewerContainer';
+import PlayerAnalysisViewerComp from './PlayerAnalysisViewerComp';
+import './MainStatsViewerComp.less';
 
-export default class GameRunningStatsViewerComp extends Component {
+export default class MainStatsViewerComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
       feedbackMessage: '',
+      feedbackMessageType: 'danger',
       playerGameAnalysisId: '',
       gameRunningStatsId: '',
       gameSetupId: '',
@@ -76,48 +79,53 @@ export default class GameRunningStatsViewerComp extends Component {
     // });
   }
 
+  close() {
+    this.props.history.goBack();
+  }
+
   render() {
+    const { feedbackMessage, feedbackMessageType } = this.state;
     return (
-      <div id="game-running-stats-viewer-comp">
+      <div id="main-stats-viewer-comp">
         <div className="modal show">
           <div className="modal-dialog">
             <div className="modal-content">
+              <Button
+                className="exit-btn"
+                bsStyle="warning"
+                bsSize="large"
+                block
+                onClick={this.close}
+              >
+                X
+              </Button>
               <div className="modal-header">
-                <div className="text-center">Game Running Stats Viewer</div>
+                <div className="text-center">Game Stats Viewer</div>
               </div>
-              <div className="col-md-12 center-block alert-area">
+              {/* <div className="col-md-12 center-block alert-area">
                 {(feedbackMessage) ?
                   <Alert bsStyle={feedbackMessageType}>
                     {feedbackMessage}
                   </Alert>
                 : null }
-              </div>
+              </div> */}
               <div className="modal-body container col-md-12 row">
                 <div className="text-center left-panels col-md-4">
-                  <div className="text-center left-panel-top col-md-12 row">
-                    left-panel-top
+                  <div className="text-center left-panel-top">
+                    <PlayerAnalysisViewerComp {...this.props} />
                   </div>
-                  <div className="text-center left-panel-bottom col-md-12 row">
+                  <div className="text-center left-panel-bottom">
                     left-panel-bottom
                   </div>
                 </div>
                 <div className="text-center center-panels col-md-5">
-                  center-panels
+                  <GameRunningViewerContainer {...this.props} />
                 </div>
                 <div className="text-center right-panels col-md-3">
                   right-panels
                 </div>
               </div>
               <div className="btn-area text-center col-md-12">
-                <Button
-                  className="exit-btn"
-                  bsStyle="warning"
-                  bsSize="large"
-                  block
-                  onClick={this.close}
-                >
-                  EXIT
-                </Button>
               </div>
             </div>
           </div>

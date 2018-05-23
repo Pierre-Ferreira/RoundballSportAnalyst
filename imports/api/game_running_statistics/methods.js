@@ -51,9 +51,13 @@ Meteor.methods({
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GameRunningStatistics entry not created. User not logged in.');
     } else {
-      const GameRunningStatisticsId = GameRunningStatistics.insert(gameRunningStatsInfo);
-      console.log('Inserted game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
-      return GameRunningStatisticsId;
+      if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+        throw new Meteor.Error(403, 'GameRunningStatistics entry not created. User is authorized.')
+      } else {
+        const GameRunningStatisticsId = GameRunningStatistics.insert(gameRunningStatsInfo);
+        console.log('Inserted game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
+        return GameRunningStatisticsId;
+      }
     }
   },
   'game_running_statistics.update': (gameRunningStatsId, gameRunningStatsInfo) => {
@@ -95,8 +99,10 @@ Meteor.methods({
     if (gameRunningStatsInfo.gameWinner.length === 0) throw new Meteor.Error(403, 'Game Winner is required');
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GameRunningStatistics entry not updated. User not logged in.');
+    } else if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+      throw new Meteor.Error(403, 'GameRunningStatistics entry not updated. User is authorized.');
     } else {
-      GameRunningStatistics.update({ _id: gameRunningStatsId }, gameRunningStatsInfo );
+      GameRunningStatistics.update({ _id: gameRunningStatsId }, gameRunningStatsInfo);
       console.log('Updated game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
     }
   },

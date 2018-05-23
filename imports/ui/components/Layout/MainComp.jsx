@@ -20,6 +20,7 @@ import GameRunningEditorContainer from '../../containers/Main/GameRunningEditorC
 // Auth Members components.
 import WelcomeContainer from '../../containers/Main/WelcomeContainer';
 import PlayerAnalysisEditorContainer from '../../containers/Main/PlayerAnalysisEditorContainer';
+import MainStatsViewerContainer from '../../containers/Main/MainStatsViewerContainer';
 // Helper components.
 import AuthenticatedRouteComp from '../Routes/AuthenticatedRouteComp';
 import PublicRouteComp from '../Routes/PublicRouteComp';
@@ -58,6 +59,7 @@ export default class MainPage extends Component {
               <AuthenticatedRouteComp exact path="/myteam" component={MyTeamComp} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/analysis/:gameSetupId" component={PlayerAnalysisEditorContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/running/editor/:gameSetupId" component={GameRunningEditorContainer} {...this.props} />
+              <AuthenticatedRouteComp exact path="/game/running/stats_viewer/:gameSetupId" component={MainStatsViewerContainer} {...this.props} />
               <Redirect to="/" />
             </Switch>
           </div>
