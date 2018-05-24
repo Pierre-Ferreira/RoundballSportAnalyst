@@ -66,6 +66,24 @@ export default class PlayerAnalysisViewerComp extends Component {
                 playerHostTeamRedCards: result.playerHostTeamRedCards,
                 playerVisitorTeamRedCards: result.playerVisitorTeamRedCards,
               });
+            } else {
+              this.setState({
+                PlayerGameAnalysisId: 'N/A',
+                playerHostScore: 'N/A',
+                playerVisitorScore: 'N/A',
+                playerHostTeamTries: 'N/A',
+                playerVisitorTeamTries: 'N/A',
+                playerHostTeamConvs: 'N/A',
+                playerVisitorTeamConvs: 'N/A',
+                playerHostTeamPenalties: 'N/A',
+                playerVisitorTeamPenalties: 'N/A',
+                playerHostTeamDropgoals: 'N/A',
+                playerVisitorTeamDropgoals: 'N/A',
+                playerHostTeamYellowCards: 'N/A',
+                playerVisitorTeamYellowCards: 'N/A',
+                playerHostTeamRedCards: 'N/A',
+                playerVisitorTeamRedCards: 'N/A',
+              });
             }
           }
         });
@@ -73,68 +91,17 @@ export default class PlayerAnalysisViewerComp extends Component {
     });
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (
-  //     nextProps.gameHostScore !== this.state.gameHostScore ||
-  //     nextProps.gameVisitorScore !== this.state.gameVisitorScore ||
-  //     nextProps.gameHostScore !== this.state.gameHostScore ||
-  //     nextProps.gameVisitorScore !== this.state.gameVisitorScore ||
-  //     nextProps.gameHostTeamTries !== this.state.gameHostTeamTries ||
-  //     nextProps.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
-  //     nextProps.gameHostTeamConvs !== this.state.gameHostTeamConvs ||
-  //     nextProps.gameHostTeamPenalties !== this.state.gameHostTeamPenalties ||
-  //     nextProps.gameVisitorTeamTries !== this.state.gameVisitorTeamTries ||
-  //     nextProps.gameVisitorTeamConvs !== this.state.gameVisitorTeamConvs ||
-  //     nextProps.gameVisitorTeamPenalties !== this.state.gameVisitorTeamPenalties ||
-  //     nextProps.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals ||
-  //     nextProps.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
-  //     nextProps.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
-  //     nextProps.gameHostTeamRedCards !== this.state.gameHostTeamRedCards ||
-  //     nextProps.gameVisitorTeamRedCards !== this.state.gameVisitorTeamRedCards
-  //   ) {
-  //     this.setState({
-  //       gameRunningStatsId: nextProps.CurrentGameRunningStatistics[0]._id,
-  //       gameSetupId: nextProps.CurrentGameRunningStatistics[0].gameSetupId,
-  //       gameHostScore: nextProps.CurrentGameRunningStatistics[0].gameHostScore,
-  //       gameVisitorScore: nextProps.CurrentGameRunningStatistics[0].gameVisitorScore,
-  //       gameHostTeamTries: nextProps.CurrentGameRunningStatistics[0].gameHostTeamTries,
-  //       gameVisitorTeamTries: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamTries,
-  //       gameHostTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameHostTeamConvs,
-  //       gameVisitorTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamConvs,
-  //       gameHostTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameHostTeamPenalties,
-  //       gameVisitorTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamPenalties,
-  //       gameHostTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamDropgoals,
-  //       gameVisitorTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamDropgoals,
-  //       gameHostTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamYellowCards,
-  //       gameVisitorTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamYellowCards,
-  //       gameHostTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamRedCards,
-  //       gameVisitorTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamRedCards,
-  //       gameIsRunning: nextProps.CurrentGameRunningStatistics[0].gameIsRunning,
-  //     });
-  //   }
-  // }
-
   close() {
     this.props.history.goBack();
   }
 
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
-    // const gameSequenceNo = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameSequenceNo : 'Loading...';
-    // const gameDate = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameDate : 'Loading...';
     const gameHostAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameHostAlias : 'Loading...';
     const gameVisitorAlias = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVisitorAlias : 'Loading...';
-    // const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
-    // const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
-    // const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
     return (
       <div id="player-analysis-viewer-comp">
         <div className="container player-analysis-viewer-area">
-          {/* <div className="text-center">
-            <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
-            <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')} @ {gameKickoff}</div>
-            <div className="game-row2">{gameVenue}, {gameCity}</div>
-          </div> */}
           <div className="section-row form-group-2 row justify-content-md-center">
             <div className="game-row8 col-md-12 text-center">Your Analysis</div>
           </div>

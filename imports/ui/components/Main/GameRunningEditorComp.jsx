@@ -312,6 +312,11 @@ export default class GameRunningEditorComp extends Component {
           feedbackMessage: 'Game Stats Updated!',
           feedbackMessageType: 'success',
         });
+        Meteor.call('updatePlayersScores', gameRunningStatsInfo, (err) => {
+          if (err) {
+            console.log('game_running_statistics.update ERR:', err)
+          }
+        })
         setTimeout(() => {
           this.setState({
             feedbackMessage: '',

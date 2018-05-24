@@ -5,6 +5,7 @@ import { Alert, Button } from 'react-bootstrap';
 import moment from 'moment/moment';
 import GameRunningViewerContainer from '../../containers/Main/GameRunningViewerContainer';
 import PlayerAnalysisViewerComp from './PlayerAnalysisViewerComp';
+import PlayerScoreViewerComp from './PlayerScoreViewerComp';
 import './MainStatsViewerComp.less';
 
 export default class MainStatsViewerComp extends Component {
@@ -115,7 +116,7 @@ export default class MainStatsViewerComp extends Component {
                     <PlayerAnalysisViewerComp {...this.props} />
                   </div>
                   <div className="text-center left-panel-bottom">
-                    left-panel-bottom
+                    <PlayerScoreViewerComp {...this.props} />
                   </div>
                 </div>
                 <div className="text-center center-panels col-md-5">
