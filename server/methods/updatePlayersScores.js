@@ -105,12 +105,21 @@ console.log(`playerCategoryDiff:) ${Object.values(playerCategoryDiff)} `)
         loserRedCards: playerCategoryDiff.loserRedCards * scoreFactors.loserRedCards,
       };
       console.log(`playerCategoryLoss ${Object.values(playerCategoryLoss)} `);
-      const sumValues = Object.values(playerCategoryLoss).reduce((a, b) => {
+      const playerScoreTotalLoss = Object.values(playerCategoryLoss).reduce((a, b) => {
         console.log(`a and b: ${a} and ${b}`);
         return a + b;
       }, 0);
-      console.log(`sumValues: ${sumValues} `);
-      console.log(`FINAL SCORE: ${10000+sumValues} `);
+      console.log(`playerScoreTotalLoss: ${playerScoreTotalLoss} `);
+      console.log(`FINAL SCORE: ${10000 + playerScoreTotalLoss} `);
+      const playerGameAnalysisNew = {
+        ...playerGameAnalysis,
+        playerCategoryDiff,
+        playerCategoryLoss,
+        playerScoreTotalLoss,
+        playerScore: 10000 + playerScoreTotalLoss,
+      };
+      const updateVal = PlayerGameAnalysis.update({ _id: playerGameAnalysis._id }, playerGameAnalysisNew );
+      console.log(`updateVal: ${updateVal} `)
     });
   },
 });

@@ -11,20 +11,24 @@ export default class PlayerScoreViewerComp extends Component {
     this.state = {
       feedbackMessage: '',
       gameRunningStatsId: '',
-      gameHostTeamTries: '0',
-      gameVisitorTeamTries: '0',
-      gameHostTeamConvs: '0',
-      gameVisitorTeamConvs: '0',
-      gameHostTeamPenalties: '0',
-      gameVisitorTeamPenalties: '0',
-      gameHostTeamDropgoals: '0',
-      gameVisitorTeamDropgoals: '0',
-      gameHostTeamYellowCards: '0',
-      gameVisitorTeamYellowCards: '0',
-      gameHostTeamRedCards: '0',
-      gameVisitorTeamRedCards: '0',
-      gameHostScore: 0,
-      gameVisitorScore: 0,
+      playerCategoryDiff: {},
+      playerCategoryLoss: {},
+      playerScoreTotalLoss: 0,
+      playerScore: 0,
+      // gameHostTeamTries: '0',
+      // gameVisitorTeamTries: '0',
+      // gameHostTeamConvs: '0',
+      // gameVisitorTeamConvs: '0',
+      // gameHostTeamPenalties: '0',
+      // gameVisitorTeamPenalties: '0',
+      // gameHostTeamDropgoals: '0',
+      // gameVisitorTeamDropgoals: '0',
+      // gameHostTeamYellowCards: '0',
+      // gameVisitorTeamYellowCards: '0',
+      // gameHostTeamRedCards: '0',
+      // gameVisitorTeamRedCards: '0',
+      // gameHostScore: 0,
+      // gameVisitorScore: 0,
     };
     this.close = this.close.bind(this);
   }
@@ -41,20 +45,24 @@ export default class PlayerScoreViewerComp extends Component {
         if (result) {
           this.setState({
             PlayerGameAnalysisId: result._id,
-            playerHostScore: result.playerHostScore,
-            playerVisitorScore: result.playerVisitorScore,
-            playerHostTeamTries: result.playerHostTeamTries,
-            playerVisitorTeamTries: result.playerVisitorTeamTries,
-            playerHostTeamConvs: result.playerHostTeamConvs,
-            playerVisitorTeamConvs: result.playerVisitorTeamConvs,
-            playerHostTeamPenalties: result.playerHostTeamPenalties,
-            playerVisitorTeamPenalties: result.playerVisitorTeamPenalties,
-            playerHostTeamDropgoals: result.playerHostTeamDropgoals,
-            playerVisitorTeamDropgoals: result.playerVisitorTeamDropgoals,
-            playerHostTeamYellowCards: result.playerHostTeamYellowCards,
-            playerVisitorTeamYellowCards: result.playerVisitorTeamYellowCards,
-            playerHostTeamRedCards: result.playerHostTeamRedCards,
-            playerVisitorTeamRedCards: result.playerVisitorTeamRedCards,
+            // playerHostScore: result.playerHostScore,
+            // playerVisitorScore: result.playerVisitorScore,
+            // playerHostTeamTries: result.playerHostTeamTries,
+            // playerVisitorTeamTries: result.playerVisitorTeamTries,
+            // playerHostTeamConvs: result.playerHostTeamConvs,
+            // playerVisitorTeamConvs: result.playerVisitorTeamConvs,
+            // playerHostTeamPenalties: result.playerHostTeamPenalties,
+            // playerVisitorTeamPenalties: result.playerVisitorTeamPenalties,
+            // playerHostTeamDropgoals: result.playerHostTeamDropgoals,
+            // playerVisitorTeamDropgoals: result.playerVisitorTeamDropgoals,
+            // playerHostTeamYellowCards: result.playerHostTeamYellowCards,
+            // playerVisitorTeamYellowCards: result.playerVisitorTeamYellowCards,
+            // playerHostTeamRedCards: result.playerHostTeamRedCards,
+            // playerVisitorTeamRedCards: result.playerVisitorTeamRedCards,
+            playerCategoryDiff: result.playerCategoryDiff,
+            playerCategoryLoss: result.playerCategoryLoss,
+            playerScoreTotalLoss: result.playerScoreTotalLoss,
+            playerScore: result.playerScore,
           });
         }
       }
@@ -122,23 +130,6 @@ export default class PlayerScoreViewerComp extends Component {
       winnerRedCards: -200,
       loserRedCards: -200,
     };
-    // const scoreInitialPoints = {
-    //   winnerTeam: 1000,
-    //   winnerScore: 1000,
-    //   loserScore: 500,
-    //   winnerTries: 300,
-    //   loserTries: 200,
-    //   winnerConvs: 150,
-    //   loserConvs: 100,
-    //   winnerPenalties: 250,
-    //   loserPenalties: 150,
-    //   winnerDropgoals: 300,
-    //   loserDropgoals: 300,
-    //   winnerYellowCards: 100,
-    //   loserYellowCards: 100,
-    //   winnerRedCards: 200,
-    //   loserRedCards: 200,
-    // };
     return (
       <div id="player-score-viewer-comp">
         <div className="container player-score-viewer-area">
@@ -153,94 +144,125 @@ export default class PlayerScoreViewerComp extends Component {
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerTeam}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerTeam}</div>
-            <div className="col-md-3 game-row6 text-center">10</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerTeam}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner Score:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerScore}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerScore}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerScore}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser Score:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserScore}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserScore}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserScore}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner Tries:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerTries}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerTries}</div>
-            <div className="col-md-3 game-row6 text-center">150</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerTries}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser Tries:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserTries}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserTries}</div>
-            <div className="col-md-3 game-row6 text-center">100</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserTries}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner Convs:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerConvs}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerConvs}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerConvs}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser Convs:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserConvs}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserConvs}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserConvs}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner Pens:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerPenalties}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerPenalties}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerPenalties}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser Pens:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserPenalties}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserPenalties}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserPenalties}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner D/goals:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerDropgoals}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerDropgoals}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerDropgoals}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser D/goals:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserDropgoals}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserDropgoals}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserDropgoals}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner Yellows:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerYellowCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerYellowCards}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerYellowCards}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser Yellows:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserYellowCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserYellowCards}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserYellowCards}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Winner Reds:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerRedCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerRedCards}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerRedCards}</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center">Loser Reds:</div>
-            <div className="col-md-2 game-row6 text-center">2</div>
+            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserRedCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserRedCards}</div>
-            <div className="col-md-3 game-row6 text-center">40</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserRedCards}</div>
           </div>
+          <div className="section-row row justify-content-md-center">
+            <div className="col-md-4 game-row6 text-center"></div>
+            <div className="col-md-2 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center">______</div>
+          </div>
+          <div className="section-row row justify-content-md-center">
+            <div className="col-md-4 game-row6 text-center"></div>
+            <div className="col-md-2 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerScoreTotalLoss}</div>
+          </div>
+          <div className="section-row row justify-content-md-center">
+            <div className="col-md-4 game-row6 text-center"></div>
+            <div className="col-md-2 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center">Plus:</div>
+            <div className="col-md-3 game-row6 text-center">10000</div>
+          </div>
+          <div className="section-row row justify-content-md-center">
+            <div className="col-md-4 game-row6 text-center"></div>
+            <div className="col-md-2 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center">______</div>
+          </div>
+          <div className="section-row row justify-content-md-center">
+            <div className="col-md-4 game-row6 text-center"></div>
+            <div className="col-md-2 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center">Your Score:</div>
+            <div className="col-md-3 game-row6 text-center">{this.state.playerScore}</div>
+          </div>
+
         </div>
       </div>
     );

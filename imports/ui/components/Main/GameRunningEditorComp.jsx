@@ -9,6 +9,7 @@ export default class GameRunningEditorComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      gameSetupId: props.match.params.gameSetupId,
       feedbackMessage: '',
       gameRunningStatsId: '',
       gameHostTeamTries: '0',
@@ -46,7 +47,7 @@ export default class GameRunningEditorComp extends Component {
   }
 
   componentWillMount() {
-    const { gameSetupId } = this.props.match.params;
+    const { gameSetupId } = this.state;
     Meteor.call('game_setup.fetch', gameSetupId, (err, result) => {
       if (err) {
         this.setState({
@@ -227,9 +228,8 @@ export default class GameRunningEditorComp extends Component {
   }
 
   createRunningStatsDocument() {
-    const { gameSetupId } = this.props.match.params;
     const gameRunningStatsInitInfo = {
-      gameSetupId,
+      gameSetupId: this.state.gameSetupId,
       gameHostTeamTries: '0',
       gameVisitorTeamTries: '0',
       gameHostTeamConvs: '0',
