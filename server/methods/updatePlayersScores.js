@@ -26,7 +26,6 @@ Meteor.methods({
       gameWinner: String,
       gameIsRunning: Boolean,
     })
-    console.log('updatePlayersScores FIRED.');
     const { gameSetupId } = gameRunningStatsInfo;
     const scoreFactors = {
       winnerTeam: -1000,
@@ -47,7 +46,6 @@ Meteor.methods({
     };
     const playerGameAnalysisCursor = PlayerGameAnalysis.find({ gameSetupId }).fetch();
     playerGameAnalysisCursor.map((playerGameAnalysis, i) => {
-      console.log(`playerGameAnalysis: ${i}) ${Object.values(playerGameAnalysis)} `)
       let playerCategoryDiff = {};
       if (gameRunningStatsInfo.gameWinner === 'HOSTTEAM') {
         playerCategoryDiff = {
@@ -86,7 +84,6 @@ Meteor.methods({
           loserRedCards: Math.abs(gameRunningStatsInfo.gameHostTeamRedCards - playerGameAnalysis.playerHostTeamRedCards),
         }
       }
-console.log(`playerCategoryDiff:) ${Object.values(playerCategoryDiff)} `)
       const playerCategoryLoss = {
         winnerTeam: playerCategoryDiff.winnerTeam * scoreFactors.winnerTeam,
         winnerScore: playerCategoryDiff.winnerScore * scoreFactors.winnerScore,
@@ -104,13 +101,9 @@ console.log(`playerCategoryDiff:) ${Object.values(playerCategoryDiff)} `)
         loserYellowCards: playerCategoryDiff.loserYellowCards * scoreFactors.loserYellowCards,
         loserRedCards: playerCategoryDiff.loserRedCards * scoreFactors.loserRedCards,
       };
-      console.log(`playerCategoryLoss ${Object.values(playerCategoryLoss)} `);
       const playerScoreTotalLoss = Object.values(playerCategoryLoss).reduce((a, b) => {
-        console.log(`a and b: ${a} and ${b}`);
         return a + b;
       }, 0);
-      console.log(`playerScoreTotalLoss: ${playerScoreTotalLoss} `);
-      console.log(`FINAL SCORE: ${10000 + playerScoreTotalLoss} `);
       const playerGameAnalysisNew = {
         ...playerGameAnalysis,
         playerCategoryDiff,
@@ -118,8 +111,7 @@ console.log(`playerCategoryDiff:) ${Object.values(playerCategoryDiff)} `)
         playerScoreTotalLoss,
         playerScore: 10000 + playerScoreTotalLoss,
       };
-      const updateVal = PlayerGameAnalysis.update({ _id: playerGameAnalysis._id }, playerGameAnalysisNew );
-      console.log(`updateVal: ${updateVal} `)
+      PlayerGameAnalysis.update({ _id: playerGameAnalysis._id }, playerGameAnalysisNew );
     });
   },
 });

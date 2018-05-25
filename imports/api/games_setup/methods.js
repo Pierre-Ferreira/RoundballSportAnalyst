@@ -38,6 +38,8 @@ Meteor.methods({
     if (gameInfo.gameActive.length === 0) throw new Meteor.Error(403, 'Active is required');
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GamesSetup entry not created. User not logged in.');
+    } else if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+      throw new Meteor.Error(403, 'GamesSetup entry not created. User is authorized.');
     } else {
       GamesSetup.insert(gameInfo);
       console.log('inserted: ', GamesSetup.find(gameInfo).fetch()[0]);
@@ -69,6 +71,8 @@ Meteor.methods({
     if (gameInfo.gameActive.length === 0) throw new Meteor.Error(403, 'Active is required');
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GamesSetup entry not updated. User not logged in.');
+    } else if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+      throw new Meteor.Error(403, 'GamesSetup entry not created. User is authorized.');
     } else {
       GamesSetup.update({ _id: gameSetupId }, gameInfo);
       console.log('updated: ', GamesSetup.find(gameInfo).fetch()[0]);

@@ -7,3 +7,8 @@ Meteor.publish('player_game_scores', (gameSetupId) => {
   const playerGameScores = PlayerGameAnalysis.find({ gameSetupId, userId });
   return playerGameScores;
 });
+Meteor.publish('all_game_scores', (gameSetupId) => {
+  check(gameSetupId, String);
+  const allGameScores = PlayerGameAnalysis.find({ gameSetupId });
+  return allGameScores;
+});

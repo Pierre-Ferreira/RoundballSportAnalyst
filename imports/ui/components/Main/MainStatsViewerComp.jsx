@@ -6,6 +6,7 @@ import moment from 'moment/moment';
 import GameRunningViewerContainer from '../../containers/Main/GameRunningViewerContainer';
 import PlayerAnalysisViewerComp from './PlayerAnalysisViewerComp';
 import PlayerScoreViewerContainer from '../../containers/Main/PlayerScoreViewerContainer';
+import LeaderBoardViewerContainer from '../../containers/Main/LeaderBoardViewerContainer';
 import './MainStatsViewerComp.less';
 
 export default class MainStatsViewerComp extends Component {
@@ -61,7 +62,7 @@ export default class MainStatsViewerComp extends Component {
                   <GameRunningViewerContainer {...this.props} />
                 </div>
                 <div className="text-center right-panels col-md-3">
-                  right-panels
+                  <LeaderBoardViewerContainer {...this.props} /> 
                 </div>
               </div>
               <div className="btn-area text-center col-md-12">

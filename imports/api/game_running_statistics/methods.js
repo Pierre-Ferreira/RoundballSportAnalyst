@@ -50,14 +50,12 @@ Meteor.methods({
     if (gameRunningStatsInfo.gameWinner.length === 0) throw new Meteor.Error(403, 'Game Winner is required');
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'GameRunningStatistics entry not created. User not logged in.');
+    } else if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+      throw new Meteor.Error(403, 'GameRunningStatistics entry not created. User is authorized.');
     } else {
-      if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
-        throw new Meteor.Error(403, 'GameRunningStatistics entry not created. User is authorized.')
-      } else {
-        const GameRunningStatisticsId = GameRunningStatistics.insert(gameRunningStatsInfo);
-        console.log('Inserted game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
-        return GameRunningStatisticsId;
-      }
+      const GameRunningStatisticsId = GameRunningStatistics.insert(gameRunningStatsInfo);
+      console.log('Inserted game_running_statistics: ', GameRunningStatistics.find(gameRunningStatsInfo).fetch()[0]);
+      return GameRunningStatisticsId;
     }
   },
   'game_running_statistics.update': (gameRunningStatsId, gameRunningStatsInfo) => {
