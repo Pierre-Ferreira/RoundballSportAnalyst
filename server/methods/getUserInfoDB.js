@@ -4,7 +4,7 @@ Meteor.methods({
   getUserInfoDB() {
     const userID = this.userId;
     const userInfo = Meteor.users.find(
-      {'_id': userID},
+      { _id: userID },
       {
         fields: {
           firstName: 1,

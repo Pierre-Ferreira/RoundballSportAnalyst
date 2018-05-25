@@ -1,17 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux-meteor';
 import LeaderBoardViewerComp from '../../components/Main/LeaderBoardViewerComp';
-import PlayerGameAnalysis from '../../../api/player_game_analysis/collection';
+import GamesLeaderboard from '../../../api/games_leaderboard/collection';
 
 const mapTrackerToProps = (state, props) => {
   const { gameSetupId } = props.match.params;
-  const handle = Meteor.subscribe('all_game_scores', gameSetupId);
+  const handle = Meteor.subscribe('leaderboard_info', gameSetupId);
   return {
     loading: !handle.ready(),
     handle,
-    allGameScores: PlayerGameAnalysis.find({gameSetupId}, {
-      sort: { playerScore: -1 },
-    }).fetch(),
+    gameLeaderboardInfo: GamesLeaderboard.find({ gameSetupId }).fetch(),
   };
 };
 
