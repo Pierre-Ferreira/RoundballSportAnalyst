@@ -8,3 +8,4 @@ import '../../api/prize_monies/methods';
 import '../../api/player_game_analysis/methods';
 import '../../api/game_running_statistics/methods';
 import '../../api/game_running_statistics/publications';
+import '../../api/player_game_analysis/publications';

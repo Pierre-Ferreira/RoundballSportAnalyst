@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.3",
     "bootstrap": "4.0.0",
     "csv-parse": "^2.2.0",
+    "deep-equal": "^1.0.1",
     "fuse.js": "^3.2.0",
     "history": "^4.7.2",
     "jquery": "^2.2.4",

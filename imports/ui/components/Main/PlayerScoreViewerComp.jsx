@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import equal from 'deep-equal';
 import { Alert, Button } from 'react-bootstrap';
 import moment from 'moment/moment'
 import './PlayerScoreViewerComp.less';
@@ -9,107 +10,59 @@ export default class PlayerScoreViewerComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feedbackMessage: '',
-      gameRunningStatsId: '',
-      playerCategoryDiff: {},
-      playerCategoryLoss: {},
+      playerCategoryDiff: {
+        winnerTeam: 'N/A',
+        winnerScore: 'N/A',
+        winnerTries: 'N/A',
+        winnerConvs: 'N/A',
+        winnerPenalties: 'N/A',
+        winnerDropgoals: 'N/A',
+        winnerYellowCards: 'N/A',
+        winnerRedCards: 'N/A',
+        loserScore: 'N/A',
+        loserTries: 'N/A',
+        loserConvs: 'N/A',
+        loserPenalties: 'N/A',
+        loserDropgoals: 'N/A',
+        loserYellowCards: 'N/A',
+        loserRedCards: 'N/A',
+      },
+      playerCategoryLoss: {
+        winnerTeam: 'N/A',
+        winnerScore: 'N/A',
+        winnerTries: 'N/A',
+        winnerConvs: 'N/A',
+        winnerPenalties: 'N/A',
+        winnerDropgoals: 'N/A',
+        winnerYellowCards: 'N/A',
+        winnerRedCards: 'N/A',
+        loserScore: 'N/A',
+        loserTries: 'N/A',
+        loserConvs: 'N/A',
+        loserPenalties: 'N/A',
+        loserDropgoals: 'N/A',
+        loserYellowCards: 'N/A',
+        loserRedCards: 'N/A',
+      },
       playerScoreTotalLoss: 0,
       playerScore: 0,
-      // gameHostTeamTries: '0',
-      // gameVisitorTeamTries: '0',
-      // gameHostTeamConvs: '0',
-      // gameVisitorTeamConvs: '0',
-      // gameHostTeamPenalties: '0',
-      // gameVisitorTeamPenalties: '0',
-      // gameHostTeamDropgoals: '0',
-      // gameVisitorTeamDropgoals: '0',
-      // gameHostTeamYellowCards: '0',
-      // gameVisitorTeamYellowCards: '0',
-      // gameHostTeamRedCards: '0',
-      // gameVisitorTeamRedCards: '0',
-      // gameHostScore: 0,
-      // gameVisitorScore: 0,
     };
-    this.close = this.close.bind(this);
-  }
-
-  componentWillMount() {
-    const { gameSetupId } = this.props.match.params;
-    Meteor.call('player_game_analysis.fetch', gameSetupId, (err, result) => {
-      if (err) {
-        this.setState({
-          feedbackMessage: err.reason,
-          feedbackMessageType: 'danger',
-        });
-      } else {
-        if (result) {
-          this.setState({
-            PlayerGameAnalysisId: result._id,
-            // playerHostScore: result.playerHostScore,
-            // playerVisitorScore: result.playerVisitorScore,
-            // playerHostTeamTries: result.playerHostTeamTries,
-            // playerVisitorTeamTries: result.playerVisitorTeamTries,
-            // playerHostTeamConvs: result.playerHostTeamConvs,
-            // playerVisitorTeamConvs: result.playerVisitorTeamConvs,
-            // playerHostTeamPenalties: result.playerHostTeamPenalties,
-            // playerVisitorTeamPenalties: result.playerVisitorTeamPenalties,
-            // playerHostTeamDropgoals: result.playerHostTeamDropgoals,
-            // playerVisitorTeamDropgoals: result.playerVisitorTeamDropgoals,
-            // playerHostTeamYellowCards: result.playerHostTeamYellowCards,
-            // playerVisitorTeamYellowCards: result.playerVisitorTeamYellowCards,
-            // playerHostTeamRedCards: result.playerHostTeamRedCards,
-            // playerVisitorTeamRedCards: result.playerVisitorTeamRedCards,
-            playerCategoryDiff: result.playerCategoryDiff,
-            playerCategoryLoss: result.playerCategoryLoss,
-            playerScoreTotalLoss: result.playerScoreTotalLoss,
-            playerScore: result.playerScore,
-          });
-        }
-      }
-    });
   }
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.gameHostScore !== this.state.gameHostScore ||
-      nextProps.gameVisitorScore !== this.state.gameVisitorScore ||
-      nextProps.gameHostTeamTries !== this.state.gameHostTeamTries ||
-      nextProps.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
-      nextProps.gameHostTeamConvs !== this.state.gameHostTeamConvs ||
-      nextProps.gameHostTeamPenalties !== this.state.gameHostTeamPenalties ||
-      nextProps.gameVisitorTeamTries !== this.state.gameVisitorTeamTries ||
-      nextProps.gameVisitorTeamConvs !== this.state.gameVisitorTeamConvs ||
-      nextProps.gameVisitorTeamPenalties !== this.state.gameVisitorTeamPenalties ||
-      nextProps.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals ||
-      nextProps.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
-      nextProps.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
-      nextProps.gameHostTeamRedCards !== this.state.gameHostTeamRedCards ||
-      nextProps.gameVisitorTeamRedCards !== this.state.gameVisitorTeamRedCards
+      !equal(nextProps.playerGameScores[0].playerCategoryDiff, this.state.playerCategoryDiff) ||
+      !equal(nextProps.playerGameScores[0].playerCategoryLoss, this.state.playerCategoryLoss) ||
+      nextProps.playerGameScores[0].playerScoreTotalLoss !== this.state.playerScoreTotalLoss ||
+      nextProps.playerGameScores[0].playerScore !== this.state.playerScore
     ) {
       this.setState({
-        gameRunningStatsId: nextProps.CurrentGameRunningStatistics[0]._id,
-        gameSetupId: nextProps.CurrentGameRunningStatistics[0].gameSetupId,
-        gameHostScore: nextProps.CurrentGameRunningStatistics[0].gameHostScore,
-        gameVisitorScore: nextProps.CurrentGameRunningStatistics[0].gameVisitorScore,
-        gameHostTeamTries: nextProps.CurrentGameRunningStatistics[0].gameHostTeamTries,
-        gameVisitorTeamTries: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamTries,
-        gameHostTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameHostTeamConvs,
-        gameVisitorTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamConvs,
-        gameHostTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameHostTeamPenalties,
-        gameVisitorTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamPenalties,
-        gameHostTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamDropgoals,
-        gameVisitorTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamDropgoals,
-        gameHostTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamYellowCards,
-        gameVisitorTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamYellowCards,
-        gameHostTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamRedCards,
-        gameVisitorTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamRedCards,
-        gameIsRunning: nextProps.CurrentGameRunningStatistics[0].gameIsRunning,
+        playerCategoryDiff: nextProps.playerGameScores[0].playerCategoryDiff,
+        playerCategoryLoss: nextProps.playerGameScores[0].playerCategoryLoss,
+        playerScoreTotalLoss: nextProps.playerGameScores[0].playerScoreTotalLoss,
+        playerScore: nextProps.playerGameScores[0].playerScore,
       });
     }
-  }
-
-  close() {
-    this.props.history.goBack();
   }
 
   render() {
@@ -134,7 +87,8 @@ export default class PlayerScoreViewerComp extends Component {
       <div id="player-score-viewer-comp">
         <div className="container player-score-viewer-area">
           <div className="heading-row row justify-content-md-center">
-            <div className="col-md-12 game-row8 text-center">Your Score</div>
+            <div className="col-md-8 game-row8 text-center">Your Score: {this.state.playerScore}</div>
+            <div className="col-md-4 game-row10 text-center"> (=10000{this.state.playerScoreTotalLoss})</div>
           </div>
           <div className="heading-section-row row justify-content-md-center">
             <div className="col-md-4 game-row9 text-center">Cat</div>
@@ -236,33 +190,14 @@ export default class PlayerScoreViewerComp extends Component {
             <div className="col-md-4 game-row6 text-center"></div>
             <div className="col-md-2 game-row6 text-center"></div>
             <div className="col-md-3 game-row6 text-center"></div>
-            <div className="col-md-3 game-row6 text-center">______</div>
+            <div className="col-md-3 game-row11 text-center">______</div>
           </div>
           <div className="section-row row justify-content-md-center">
             <div className="col-md-4 game-row6 text-center"></div>
             <div className="col-md-2 game-row6 text-center"></div>
-            <div className="col-md-3 game-row6 text-center"></div>
+            <div className="col-md-3 game-row6 text-center">TOTAL LOSS:</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerScoreTotalLoss}</div>
           </div>
-          <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center"></div>
-            <div className="col-md-2 game-row6 text-center"></div>
-            <div className="col-md-3 game-row6 text-center">Plus:</div>
-            <div className="col-md-3 game-row6 text-center">10000</div>
-          </div>
-          <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center"></div>
-            <div className="col-md-2 game-row6 text-center"></div>
-            <div className="col-md-3 game-row6 text-center"></div>
-            <div className="col-md-3 game-row6 text-center">______</div>
-          </div>
-          <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center"></div>
-            <div className="col-md-2 game-row6 text-center"></div>
-            <div className="col-md-3 game-row6 text-center">Your Score:</div>
-            <div className="col-md-3 game-row6 text-center">{this.state.playerScore}</div>
-          </div>
-
         </div>
       </div>
     );
