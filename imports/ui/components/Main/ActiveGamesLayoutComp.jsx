@@ -34,6 +34,7 @@ export default class ActiveGamesLayoutComp extends Component {
                   panelsRowDisplay.push(
                     <div className="col-xs-4">
                       <ActiveGamePanelContainer
+                        {...this.props}
                         history={this.props.history}
                         gameSetup={gameSetup}
                       />

@@ -51,12 +51,10 @@ export default class ActiveGamePanelComp extends Component {
     console.log('gameSetupId:', gameSetupId);
     if (Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
       this.props.history.push(`/game/running/editor/${gameSetupId}`)
+    } else if (!(this.props.CurrentGameRunningStatistics[0] && this.props.CurrentGameRunningStatistics[0].gameIsRunning)) {
+      this.props.history.push(`/game/analysis/${gameSetupId}`);
     } else {
-      if (false) { // Game Active
-        this.props.history.push(`/game/analysis/${gameSetupId}`);
-      } else {
-        this.props.history.push(`/game/running/stats_viewer/${gameSetupId}`);
-      }
+      this.props.history.push(`/game/running/stats_viewer/${gameSetupId}`);
     }
   }
 
