@@ -16,6 +16,7 @@ export default class ActiveGamesLayoutComp extends Component {
   render() {
     const { ActiveGamesSetupList } = this.props;
     let panelsRowDisplay = [];
+    let returnVal = []
     return (
       <div id="active-games-layout-comp">
         <div className="container">
@@ -28,21 +29,21 @@ export default class ActiveGamesLayoutComp extends Component {
               <div className="active-games-layout-panel-area">
                 {
                   ActiveGamesSetupList.map((gameSetup, i, arr) => {
-                  if (i % 3 === 0) {
-                    panelsRowDisplay = [];
-                  }
                   panelsRowDisplay.push(
                     <div className="col-xs-4">
                       <ActiveGamePanelContainer
                         {...this.props}
                         history={this.props.history}
                         gameSetup={gameSetup}
+                        key={gameSetup._id}
                       />
                     </div>);
-                  if ((i % 2 === 0 && i !== 0)) {
+                  if (panelsRowDisplay % 3 === 0 || (arr.length - 1) === i) {
+                    returnVal = panelsRowDisplay.slice();
+                    panelsRowDisplay = [];
                     return (
                       <div className="row">
-                        {panelsRowDisplay}
+                        {returnVal}
                       </div>
                     );
                   }

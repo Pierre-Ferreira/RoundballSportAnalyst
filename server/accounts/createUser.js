@@ -1,10 +1,12 @@
 import SimpleSchema from 'simpl-schema';
 
 Accounts.validateNewUser((user) => {
-  if (user.username && user.username.length >= 5) {
+  if (user.username && user.username.length >= 5 && user.username.length <= 10) {
     return true;
-  } else {
+  } else if (user.username && user.username.length < 5) {
     throw new Meteor.Error(403, 'Username must have at least 5 characters');
+  } else if (user.username && user.username.length > 10) {
+    throw new Meteor.Error(403, 'Username must be less than 10 characters');
   }
 });
 // Accounts.validateNewUser((user) => {

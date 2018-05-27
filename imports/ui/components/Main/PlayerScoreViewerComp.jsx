@@ -51,10 +51,12 @@ export default class PlayerScoreViewerComp extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      !equal(nextProps.playerGameScores[0].playerCategoryDiff, this.state.playerCategoryDiff) ||
-      !equal(nextProps.playerGameScores[0].playerCategoryLoss, this.state.playerCategoryLoss) ||
-      nextProps.playerGameScores[0].playerScoreTotalLoss !== this.state.playerScoreTotalLoss ||
-      nextProps.playerGameScores[0].playerScore !== this.state.playerScore
+      nextProps.playerGameScores[0] && (
+        !equal(nextProps.playerGameScores[0].playerCategoryDiff, this.state.playerCategoryDiff) ||
+        !equal(nextProps.playerGameScores[0].playerCategoryLoss, this.state.playerCategoryLoss) ||
+        nextProps.playerGameScores[0].playerScoreTotalLoss !== this.state.playerScoreTotalLoss ||
+        nextProps.playerGameScores[0].playerScore !== this.state.playerScore
+      )
     ) {
       this.setState({
         playerCategoryDiff: nextProps.playerGameScores[0].playerCategoryDiff,

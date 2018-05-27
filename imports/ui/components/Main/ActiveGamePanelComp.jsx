@@ -86,7 +86,7 @@ export default class ActiveGamePanelComp extends Component {
     );
     return (
       <div id="active-game-panel-comp">
-        <Panel className="active-game-panel" {...this.props}>
+        <Panel className="active-game-panel">
           <Panel.Heading>
             <Panel.Title componentClass="h3">
               <OverlayTrigger

@@ -38,7 +38,7 @@ export default class LeaderBoardViewerComp extends Component {
           </div>
           {this.state.gameLeaderboard.map((playerGameAnalysis, i) => {
             return (
-              <div className="section-row row justify-content-md-center">
+              <div className="section-row row justify-content-md-center" key={playerGameAnalysis._id}>
                 <div className="col-md-2 game-row6 text-center">{i + 1})</div>
                 <div className="col-md-4 game-row6 text-center">{playerGameAnalysis.playerScore}</div>
                 <div className="col-md-6 game-row6 text-center">{playerGameAnalysis.username}</div>
