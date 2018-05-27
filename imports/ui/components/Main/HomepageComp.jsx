@@ -4,12 +4,17 @@ import './HomepageComp.less';
 const HomepageComp = () => {
   return (
     <div id="homepage-comp">
-      {/* <div className="heading">
-        Please login to enjoy our app!!
+      <div className="heading text-center">
+        IT IS EASY.
       </div>
-      <div className="heading">
-        Come and test your rugby knowledge and intution on our very easy to use platform.
-      </div> */}
+      <div className="body text-center">
+        You predict the different categories of the game and
+        if your analysis is the closest to the final metrics
+      </div>
+      <div className="you-win text-center">you win!</div>
+      <div className="footer text-center">
+        Please login to enjoy our app.
+      </div>
     </div>
   );
 };
