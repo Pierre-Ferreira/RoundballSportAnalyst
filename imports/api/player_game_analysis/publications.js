@@ -12,3 +12,8 @@ Meteor.publish('all_game_scores', (gameSetupId) => {
   const allGameScores = PlayerGameAnalysis.find({ gameSetupId });
   return allGameScores;
 });
+Meteor.publish('game_number_of_players', function(gameSetupId) {
+  check(gameSetupId, String);
+  const gameNumberOfPlayers = PlayerGameAnalysis.find({ gameSetupId });
+  return gameNumberOfPlayers;
+});

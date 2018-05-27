@@ -28,3 +28,4 @@ alanning:roles
 check
 audit-argument-checks
 browser-policy
+ros:publish-counts

@@ -11,7 +11,13 @@
     margin-top: 5px;
     .panel-heading {
       border-bottom: 1px solid;
+      .panel-title:hover {
+        .no-of-players {
+          font-weight: 800;
+        }
+      }
     }
+
     .game-vs {
       font-size: 10px;
       vertical-align: middle;
@@ -31,6 +37,9 @@
     .active-game-panel-body {
       background-color: #dda0dd3d;
       cursor: pointer;
+    }
+    .active-game-panel-body:hover {
+      font-weight: 600;
     }
     .panel-footer {
       font-size: 12px;

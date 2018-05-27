@@ -3,8 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import { Panel, Alert, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import moment from 'moment/moment';
 import './ActiveGamePanelComp.less';
-// import GameCurrentPrizesComp from './GameCurrentPrizesComp';
-// import AuthenticatedRouteComp from '../Routes/AuthenticatedRouteComp';
 
 export default class ActiveGamePanelComp extends Component {
   constructor(props) {
@@ -17,17 +15,16 @@ export default class ActiveGamePanelComp extends Component {
     }
     this.state = {
       prizesMoniesInfo,
+      noOfPlayers: 0,
     };
     this.showPlayerAnalysisEditor = this.showPlayerAnalysisEditor.bind(this);
   }
 
   componentWillMount() {
-    // const { noOfPlayers } = this.props
-    const noOfPlayers = Math.floor(Math.random() * ((200 - 0) + 1)) + 0;
+    const { noOfPlayers } = this.props
     // Get prizes information from DB.
     Meteor.call('prize_monies.lookup', noOfPlayers, (err, result) => {
       if (err) {
-        console.log('ERR:', err)
         const prizesMoniesInfo = {
           firstPrize: 'Loading...',
           secondPrize: 'Loading...',
@@ -38,7 +35,6 @@ export default class ActiveGamePanelComp extends Component {
           prizesMoniesInfo,
         });
       } else {
-        console.log('RESULT:', result)
         this.setState({
           prizesMoniesInfo: result,
           noOfPlayers,
@@ -47,8 +43,31 @@ export default class ActiveGamePanelComp extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.noOfPlayers !== this.state.noOfPlayers) {
+      Meteor.call('prize_monies.lookup', nextProps.noOfPlayers, (err, result) => {
+        if (err) {
+          const prizesMoniesInfo = {
+            firstPrize: 'Loading...',
+            secondPrize: 'Loading...',
+            thirdPrize: 'Loading...',
+            nextTenPrizes: 'Loading...',
+          }
+          this.setState({
+            prizesMoniesInfo,
+            noOfPlayers: nextProps.noOfPlayers,
+          });
+        } else {
+          this.setState({
+            prizesMoniesInfo: result,
+            noOfPlayers: nextProps.noOfPlayers,
+          });
+        }
+      });
+    }
+  }
+
   showPlayerAnalysisEditor(gameSetupId) {
-    console.log('gameSetupId:', gameSetupId);
     if (Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
       this.props.history.push(`/game/running/editor/${gameSetupId}`)
     } else if (!(this.props.CurrentGameRunningStatistics[0] && this.props.CurrentGameRunningStatistics[0].gameIsRunning)) {
@@ -60,9 +79,7 @@ export default class ActiveGamePanelComp extends Component {
 
   render() {
     const {
-      gameHostTeam,
       gameHostAlias,
-      gameVisitorTeam,
       gameVisitorAlias,
       gameKickoff,
       gameVenue,
@@ -86,16 +103,17 @@ export default class ActiveGamePanelComp extends Component {
     );
     return (
       <div id="active-game-panel-comp">
+        <OverlayTrigger
+          trigger={['hover']}
+          placement="top"
+          overlay={popoverHoverFocus}
+        >
         <Panel className="active-game-panel">
           <Panel.Heading>
             <Panel.Title componentClass="h3">
-              <OverlayTrigger
-                trigger={['hover']}
-                placement="top"
-                overlay={popoverHoverFocus}
-              >
-                <span>Game #{gameSequenceNo} ({this.state.noOfPlayers}/200)</span>
-              </OverlayTrigger>
+
+                <span>Game #{gameSequenceNo} <span className="no-of-players">({this.state.noOfPlayers}/200)</span></span>
+
             </Panel.Title>
           </Panel.Heading>
           <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameSetupId)} {...this.props}>
@@ -107,6 +125,7 @@ export default class ActiveGamePanelComp extends Component {
           </Panel.Body>
           <Panel.Footer>ACTIVE</Panel.Footer>
         </Panel>
+        </OverlayTrigger>
       </div>
     );
   }
