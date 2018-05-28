@@ -1,14 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import moment from 'moment/moment'
 import './GameRunningViewerComp.less';
 
 export default class GameRunningViewerComp extends Component {
   constructor(props) {
     super(props);
+    const prizesMoniesInfo = {
+      firstPrize: 'Loading...',
+      secondPrize: 'Loading...',
+      thirdPrize: 'Loading...',
+      nextTenPrizes: 'Loading...',
+    };
     this.state = {
+      prizesMoniesInfo,
       feedbackMessage: '',
       gameRunningStatsId: '',
       gameHostTeamTries: '0',
@@ -25,6 +32,7 @@ export default class GameRunningViewerComp extends Component {
       gameVisitorTeamRedCards: '0',
       gameHostScore: 0,
       gameVisitorScore: 0,
+      noOfPlayers: 0,
     };
     this.close = this.close.bind(this);
   }
@@ -62,26 +70,42 @@ export default class GameRunningViewerComp extends Component {
       nextProps.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
       nextProps.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
       nextProps.gameHostTeamRedCards !== this.state.gameHostTeamRedCards ||
-      nextProps.gameVisitorTeamRedCards !== this.state.gameVisitorTeamRedCards
+      nextProps.gameVisitorTeamRedCards !== this.state.gameVisitorTeamRedCards ||
+      nextProps.noOfPlayers !== this.state.noOfPlayers
     ) {
-      this.setState({
-        gameRunningStatsId: nextProps.CurrentGameRunningStatistics[0]._id,
-        gameSetupId: nextProps.CurrentGameRunningStatistics[0].gameSetupId,
-        gameHostScore: nextProps.CurrentGameRunningStatistics[0].gameHostScore,
-        gameVisitorScore: nextProps.CurrentGameRunningStatistics[0].gameVisitorScore,
-        gameHostTeamTries: nextProps.CurrentGameRunningStatistics[0].gameHostTeamTries,
-        gameVisitorTeamTries: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamTries,
-        gameHostTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameHostTeamConvs,
-        gameVisitorTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamConvs,
-        gameHostTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameHostTeamPenalties,
-        gameVisitorTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamPenalties,
-        gameHostTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamDropgoals,
-        gameVisitorTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamDropgoals,
-        gameHostTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamYellowCards,
-        gameVisitorTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamYellowCards,
-        gameHostTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamRedCards,
-        gameVisitorTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamRedCards,
-        gameIsRunning: nextProps.CurrentGameRunningStatistics[0].gameIsRunning,
+      Meteor.call('prize_monies.lookup', nextProps.noOfPlayers, (err, result) => {
+        let prizesMoniesInfo = {};
+        if (err) {
+          prizesMoniesInfo = {
+            firstPrize: 'Loading...',
+            secondPrize: 'Loading...',
+            thirdPrize: 'Loading...',
+            nextTenPrizes: 'Loading...',
+          };
+        } else {
+          prizesMoniesInfo = result;
+        }
+        this.setState({
+          prizesMoniesInfo,
+          gameRunningStatsId: nextProps.CurrentGameRunningStatistics[0]._id,
+          gameSetupId: nextProps.CurrentGameRunningStatistics[0].gameSetupId,
+          gameHostScore: nextProps.CurrentGameRunningStatistics[0].gameHostScore,
+          gameVisitorScore: nextProps.CurrentGameRunningStatistics[0].gameVisitorScore,
+          gameHostTeamTries: nextProps.CurrentGameRunningStatistics[0].gameHostTeamTries,
+          gameVisitorTeamTries: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamTries,
+          gameHostTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameHostTeamConvs,
+          gameVisitorTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamConvs,
+          gameHostTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameHostTeamPenalties,
+          gameVisitorTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamPenalties,
+          gameHostTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamDropgoals,
+          gameVisitorTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamDropgoals,
+          gameHostTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamYellowCards,
+          gameVisitorTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamYellowCards,
+          gameHostTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamRedCards,
+          gameVisitorTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamRedCards,
+          gameIsRunning: nextProps.CurrentGameRunningStatistics[0].gameIsRunning,
+          noOfPlayers: nextProps.noOfPlayers,
+        });
       });
     }
   }
@@ -99,11 +123,31 @@ export default class GameRunningViewerComp extends Component {
     const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
     const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
     const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
+    const popoverHoverFocus = (
+      <Popover
+        id="popover-trigger-hover"
+        title={`Rewards Game#${gameSequenceNo}`}
+      >
+        <strong>{this.state.noOfPlayers} PLAYERS</strong>
+        <div>1st: {this.state.prizesMoniesInfo.firstPrize} OSAPoints</div>
+        <div>2nd: {this.state.prizesMoniesInfo.secondPrize} OSAPoints</div>
+        <div>3rd: {this.state.prizesMoniesInfo.thirdPrize} OSAPoints</div>
+        <div>4th to 14th: {this.state.prizesMoniesInfo.nextTenPrizes} OSAPoints</div>
+      </Popover>
+    );
     return (
       <div id="game-running-viewer-comp">
         <div className="container game-running-viewer-area">
           <div className="text-center">
-            <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
+            <OverlayTrigger
+              trigger={['hover']}
+              placement="bottom"
+              overlay={popoverHoverFocus}
+            >
+              <div className="text-center game-row11">Game #{gameSequenceNo}
+                <span className="no-of-players">({this.state.noOfPlayers}/200)</span>
+              </div>
+            </OverlayTrigger>
             <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')} @ {gameKickoff}</div>
             <div className="game-row2">{gameVenue}, {gameCity}</div>
           </div>

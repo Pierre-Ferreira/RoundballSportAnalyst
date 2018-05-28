@@ -1,14 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import moment from 'moment/moment'
 import './PlayerAnalysisEditorComp.less';
 
 export default class PlayerAnalysisEditorComp extends Component {
   constructor(props) {
     super(props);
+    const prizesMoniesInfo = {
+      firstPrize: 'Loading...',
+      secondPrize: 'Loading...',
+      thirdPrize: 'Loading...',
+      nextTenPrizes: 'Loading...',
+    };
     this.state = {
+      prizesMoniesInfo,
       feedbackMessage: '',
       PlayerGameAnalysisId: '',
       playerHostTeamTries: '0',
@@ -25,6 +32,7 @@ export default class PlayerAnalysisEditorComp extends Component {
       playerVisitorTeamRedCards: '0',
       playerHostScore: 0,
       playerVisitorScore: 0,
+      noOfPlayers: 0,
     };
     this.close = this.close.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -85,6 +93,28 @@ export default class PlayerAnalysisEditorComp extends Component {
         });
       }
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.noOfPlayers !== this.state.noOfPlayers) {
+      Meteor.call('prize_monies.lookup', nextProps.noOfPlayers, (err, result) => {
+        let prizesMoniesInfo = {};
+        if (err) {
+          prizesMoniesInfo = {
+            firstPrize: 'Loading...',
+            secondPrize: 'Loading...',
+            thirdPrize: 'Loading...',
+            nextTenPrizes: 'Loading...',
+          };
+        } else {
+          prizesMoniesInfo = result;
+        }
+        this.setState({
+          prizesMoniesInfo,
+          noOfPlayers: nextProps.noOfPlayers,
+        });
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -281,6 +311,18 @@ export default class PlayerAnalysisEditorComp extends Component {
       saveBtnText = 'ANALYSIS SUBMITTED!';
       savedAndDisabled = true;
     }
+    const popoverHoverFocus = (
+      <Popover
+        id="popover-trigger-hover"
+        title={`Rewards Game#${gameSequenceNo}`}
+      >
+        <strong>{this.state.noOfPlayers} PLAYERS</strong>
+        <div>1st: {this.state.prizesMoniesInfo.firstPrize} OSAPoints</div>
+        <div>2nd: {this.state.prizesMoniesInfo.secondPrize} OSAPoints</div>
+        <div>3rd: {this.state.prizesMoniesInfo.thirdPrize} OSAPoints</div>
+        <div>4th to 14th: {this.state.prizesMoniesInfo.nextTenPrizes} OSAPoints</div>
+      </Popover>
+    );
 
     return (
       <div id="player-analysis-editor-comp">
@@ -304,7 +346,15 @@ export default class PlayerAnalysisEditorComp extends Component {
               >
               <div className="modal-body container">
                 <div className="text-center">
-                  <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
+                  <OverlayTrigger
+                    trigger={['hover']}
+                    placement="bottom"
+                    overlay={popoverHoverFocus}
+                  >
+                    <div className="text-center game-row11">Game #{gameSequenceNo}
+                      <span className="no-of-players">({this.state.noOfPlayers}/200)</span>
+                    </div>
+                  </OverlayTrigger>
                   <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')} @ {gameKickoff}</div>
                   <div className="game-row2">{gameVenue}, {gameCity}</div>
                 </div>

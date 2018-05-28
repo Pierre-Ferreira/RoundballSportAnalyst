@@ -7,12 +7,12 @@ import './ActiveGamePanelComp.less';
 export default class ActiveGamePanelComp extends Component {
   constructor(props) {
     super(props);
-    let prizesMoniesInfo = {
+    const prizesMoniesInfo = {
       firstPrize: 'Loading...',
       secondPrize: 'Loading...',
       thirdPrize: 'Loading...',
       nextTenPrizes: 'Loading...',
-    }
+    };
     this.state = {
       prizesMoniesInfo,
       noOfPlayers: 0,
@@ -52,7 +52,7 @@ export default class ActiveGamePanelComp extends Component {
             secondPrize: 'Loading...',
             thirdPrize: 'Loading...',
             nextTenPrizes: 'Loading...',
-          }
+          };
           this.setState({
             prizesMoniesInfo,
             noOfPlayers: nextProps.noOfPlayers,
@@ -108,23 +108,21 @@ export default class ActiveGamePanelComp extends Component {
           placement="top"
           overlay={popoverHoverFocus}
         >
-        <Panel className="active-game-panel">
-          <Panel.Heading>
-            <Panel.Title componentClass="h3">
-
+          <Panel className="active-game-panel">
+            <Panel.Heading>
+              <Panel.Title componentClass="h3">
                 <span>Game #{gameSequenceNo} <span className="no-of-players">({this.state.noOfPlayers}/200)</span></span>
-
-            </Panel.Title>
-          </Panel.Heading>
-          <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameSetupId)} {...this.props}>
-            <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
-            <div className="game-row1">{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
-            <div className="game-row2">{gameVenue}</div>
-            <div className="game-row2">{gameCity}</div>
-            <div className="game-row3">({gameKickoff})</div>
-          </Panel.Body>
-          <Panel.Footer>ACTIVE</Panel.Footer>
-        </Panel>
+              </Panel.Title>
+            </Panel.Heading>
+            <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameSetupId)} {...this.props}>
+              <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
+              <div className="game-row1">{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
+              <div className="game-row2">{gameVenue}</div>
+              <div className="game-row2">{gameCity}</div>
+              <div className="game-row3">({gameKickoff})</div>
+            </Panel.Body>
+            <Panel.Footer>ACTIVE</Panel.Footer>
+          </Panel>
         </OverlayTrigger>
       </div>
     );

@@ -27,6 +27,7 @@ export default class GameRunningEditorComp extends Component {
       gameVisitorTeamRedCards: '0',
       gameHostScore: 0,
       gameVisitorScore: 0,
+      noOfPlayers: 0,
     };
     this.close = this.close.bind(this);
     this.createRunningStatsDocument = this.createRunningStatsDocument.bind(this);
@@ -92,6 +93,14 @@ export default class GameRunningEditorComp extends Component {
         });
       }
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.noOfPlayers !== this.state.noOfPlayers) {
+      this.setState({
+        noOfPlayers: nextProps.noOfPlayers,
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -423,7 +432,9 @@ export default class GameRunningEditorComp extends Component {
                     : null }
                   </div>
                   <div className="text-center">
-                    <div className="text-center game-row1">Game #{gameSequenceNo} (193/200)</div>
+                    <div className="text-center game-row1">Game #{gameSequenceNo}
+                      <span className="no-of-players">({this.state.noOfPlayers}/200)</span>
+                    </div>
                     <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')} @ {gameKickoff}</div>
                     <div className="game-row2">{gameVenue}, {gameCity}</div>
                   </div>

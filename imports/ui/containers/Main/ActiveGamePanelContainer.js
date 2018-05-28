@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux-meteor';
 import ActiveGamePanelComp from '../../components/Main/ActiveGamePanelComp';
-// import GamesSetup from '../../../api/games_setup/collection';
 import GameRunningStatistics from '../../../api/game_running_statistics/collection';
 import PlayerGameAnalysis from '../../../api/player_game_analysis/collection';
 
