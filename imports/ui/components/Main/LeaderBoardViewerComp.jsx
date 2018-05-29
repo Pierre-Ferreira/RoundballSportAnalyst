@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import equal from 'deep-equal';
+import classNames from 'classnames';
 import { Alert, Button } from 'react-bootstrap';
 import moment from 'moment/moment'
+
 import './LeaderBoardViewerComp.less';
 
 export default class LeaderBoardViewerComp extends Component {
@@ -36,15 +37,24 @@ export default class LeaderBoardViewerComp extends Component {
             <div className="col-md-4 game-row9 text-center">Scores</div>
             <div className="col-md-6 game-row9 text-center">Username</div>
           </div>
-          {this.state.gameLeaderboard.map((playerGameAnalysis, i) => {
-            return (
-              <div className="section-row row justify-content-md-center" key={playerGameAnalysis._id}>
-                <div className="col-md-2 game-row6 text-center">{i + 1})</div>
-                <div className="col-md-4 game-row6 text-center">{playerGameAnalysis.playerScore}</div>
-                <div className="col-md-6 game-row6 text-center">{playerGameAnalysis.username}</div>
-              </div>
-            );
-          })}
+          <div className="scroll-area">
+            {this.state.gameLeaderboard.map((playerGameAnalysis, i) => {
+              const rowClass = classNames(
+                'section-row',
+                'row',
+                'justify-content-md-center',
+                { 'current-user': playerGameAnalysis.userId === Meteor.userId() },
+              );
+              return (
+                <div className={rowClass} key={playerGameAnalysis._id}>
+                  <div className="col-md-1 game-row6 text-center" />
+                  <div className="col-md-2 game-row6 text-center">{i + 1})</div>
+                  <div className="col-md-3 game-row6 text-center">{playerGameAnalysis.playerScore}</div>
+                  <div className="col-md-6 game-row6 text-center">{playerGameAnalysis.username}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );

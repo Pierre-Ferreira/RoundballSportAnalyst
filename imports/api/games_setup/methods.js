@@ -24,6 +24,7 @@ Meteor.methods({
       gameVisitorTeam: String,
       gameVisitorAlias: String,
       gameActive: Boolean,
+      gameStatus: String,
       createdAt: Date,
     });
     if (gameInfo.gameSequenceNo.length === 0) throw new Meteor.Error(403, 'Game No is required');
@@ -58,6 +59,7 @@ Meteor.methods({
       gameVisitorTeam: String,
       gameVisitorAlias: String,
       gameActive: Boolean,
+      gameStatus: String,
       createdAt: Date,
     });
     if (gameInfo.gameDate.length === 0) throw new Meteor.Error(403, 'Game Date is required');
@@ -75,6 +77,21 @@ Meteor.methods({
       throw new Meteor.Error(403, 'GamesSetup entry not created. User is authorized.');
     } else {
       GamesSetup.update({ _id: gameSetupId }, gameInfo);
+      console.log('updated: ', GamesSetup.find(gameInfo).fetch()[0]);
+    }
+  },
+  'game_setup.update_status': (gameSetupId, gameStatus) => {
+    check(gameSetupId, String);
+    check(gameStatus, String);
+    if (gameSetupId.length === 0) throw new Meteor.Error(403, 'Game Setup Id is required');
+    if (gameStatus.length === 0) throw new Meteor.Error(403, 'Game Status is required');
+
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(403, 'GamesSetup entry not updated. User not logged in.');
+    } else if (!Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
+      throw new Meteor.Error(403, 'GamesSetup entry not created. User is authorized.');
+    } else {
+      GamesSetup.update({ _id: gameSetupId }, {$set: { gameStatus }});
       console.log('updated: ', GamesSetup.find(gameInfo).fetch()[0]);
     }
   },

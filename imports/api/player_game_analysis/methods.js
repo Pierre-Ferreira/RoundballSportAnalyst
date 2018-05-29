@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import PlayerGameAnalysis from './collection';
+import GamesSetup from '../games_setup/collection';
 import './hooks';
 
 Meteor.methods({
@@ -47,9 +48,35 @@ Meteor.methods({
     if (playerGameAnalysisInfo.playerHostTeamRedCards.length === 0) throw new Meteor.Error(403, 'Host Red Cards is required');
     if (playerGameAnalysisInfo.playerVisitorTeamRedCards.length === 0) throw new Meteor.Error(403, 'Visitor Red Cards is required');
     if (playerGameAnalysisInfo.playerWinner.length === 0) throw new Meteor.Error(403, 'Game Winner is required');
+
+    console.log('playerGameAnalysisInfo.gameSetupId:', playerGameAnalysisInfo.gameSetupId)
+    // Get the status of the game to see if it is still open.
+    const gameSetupStatus = GamesSetup.findOne({
+      _id: playerGameAnalysisInfo.gameSetupId,
+    }).gameStatus;
+    console.log('gameSetupStatus:', gameSetupStatus)
+    // Check if there isn't already a GameAnalysis for this player.
+    const playerGameAnalyisCount = PlayerGameAnalysis.find({
+      gameSetupId: playerGameAnalysisInfo.gameSetupId,
+      userId: Meteor.userId(),
+    }).count();
+    console.log('playerGameAnalyisCount:', playerGameAnalyisCount)
+    // Count all the players analysis for this game. Cannot be more than 200.
+    const allGameAnalyisCount = PlayerGameAnalysis.find({
+      gameSetupId: playerGameAnalysisInfo.gameSetupId,
+    }).count();
+    console.log('allGameAnalyisCount:', allGameAnalyisCount)
+    // Check if the user is logged in.
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. User not logged in.');
+    } else if (gameSetupStatus !== 'open') {
+      throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. Game not open anymore.');
+    } else if (playerGameAnalyisCount !== 0) {
+      throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. Player analysis already exists.');
+    } else if (allGameAnalyisCount >= 200) {
+      throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. 200 players already entered game.');
     } else {
+      // Add the userId to the player analysis document.
       playerGameAnalysisInfo.userId = Meteor.userId();
       const PlayerGameAnalysisId = PlayerGameAnalysis.insert(playerGameAnalysisInfo);
       console.log('inserted: ', PlayerGameAnalysis.find(playerGameAnalysisInfo).fetch()[0]);

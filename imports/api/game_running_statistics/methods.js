@@ -30,7 +30,6 @@ Meteor.methods({
       gameHostTeamRedCards: String,
       gameVisitorTeamRedCards: String,
       gameWinner: String,
-      gameIsRunning: Boolean,
     });
     if (gameRunningStatsInfo.gameSetupId.length === 0) throw new Meteor.Error(403, 'Game Setup Id is required');
     if (gameRunningStatsInfo.gameHostScore.length === 0) throw new Meteor.Error(403, 'Host Score is required');
@@ -77,7 +76,6 @@ Meteor.methods({
       gameHostTeamRedCards: String,
       gameVisitorTeamRedCards: String,
       gameWinner: String,
-      gameIsRunning: Boolean,
     });
     // if (gameRunningStatsInfo.gameSetupId.length === 0) throw new Meteor.Error(403, 'Game Setup Id is required');
     if (gameRunningStatsInfo.gameHostScore.length === 0) throw new Meteor.Error(403, 'Host Score is required');

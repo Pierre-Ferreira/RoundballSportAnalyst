@@ -23,6 +23,7 @@ export default class GameSetupEditorComp extends Component {
       gameVisitorTeam: '',
       gameVisitorAlias: '',
       gameActive: true,
+      gameStatus: 'open',
     };
     this.close = this.close.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
@@ -82,6 +83,7 @@ export default class GameSetupEditorComp extends Component {
       gameVisitorTeam: '',
       gameVisitorAlias: '',
       gameActive: true,
+      gameStatus: 'open',
     });
   }
 
@@ -147,6 +149,7 @@ export default class GameSetupEditorComp extends Component {
       gameVisitorTeam: this.state.gameVisitorTeam,
       gameVisitorAlias: this.state.gameVisitorAlias,
       gameActive: this.state.gameActive,
+      gameStatus: 'open',
       gameSequenceNo: this.state.gameSequenceNo || this.props.GamesSetupList.length + 1,
       createdAt: this.props.createdAt || new Date(),
     };
@@ -220,6 +223,8 @@ export default class GameSetupEditorComp extends Component {
       gameVisitorTeam: selectedGameSetupInfo.gameVisitorTeam,
       gameVisitorAlias: selectedGameSetupInfo.gameVisitorAlias,
       gameActive: selectedGameSetupInfo.gameActive,
+      gameStatus: selectedGameSetupInfo.gameStatus,
+
     });
   }
 
@@ -248,7 +253,7 @@ export default class GameSetupEditorComp extends Component {
                   <option value="">Select..</option>
                   {this.props.GamesSetupList.map((listItem, i) => {
                     const gameDateTime = `${moment(listItem.gameDate).format('DD-MM-YYYY')} ${listItem.gameKickoff}`;
-                    const activeStr = (listItem.gameActive) ? 'A' : 'N'
+                    const activeStr = (listItem.gameActive) ? 'Active' : 'Inactive'
                     const displayStr = `${listItem.gameHostTeam} vs ${listItem.gameVisitorTeam}
                                         (${gameDateTime})
                                         Game #${listItem.gameSequenceNo}
@@ -270,7 +275,7 @@ export default class GameSetupEditorComp extends Component {
                   className="form col-md-12 center-block"
                   onSubmit={this.handleSubmit}
                 >
-                  <div className='modal-scroll-area'>
+                  <div className="modal-scroll-area">
                     <div className="form-group row">
                       <div className="col-md-5 field-headers">Game No:</div>
                       <div className="col-md-6 field-headers">{gameSequenceNo}</div>

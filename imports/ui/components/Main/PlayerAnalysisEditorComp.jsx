@@ -264,10 +264,13 @@ export default class PlayerAnalysisEditorComp extends Component {
       playerWinner: (this.state.playerHostScore > this.state.playerVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
     };
     Meteor.call('player_game_analysis.create', playerGameAnalysisInfo, (err, result) => {
+      console.log('ERROR:', err);
+      console.log('RESULT:', result);
       if (err) {
         this.setState({
           feedbackMessage: `ERROR: ${err.reason}`,
           feedbackMessageType: 'danger',
+          PlayerGameAnalysisId: '',
         });
       } else {
         this.setState({
@@ -304,7 +307,7 @@ export default class PlayerAnalysisEditorComp extends Component {
     });
     let savedAndDisabled = true;
     let saveBtnText = '';
-    if (this.state.PlayerGameAnalysisId.length === 0) {
+    if (!this.state.PlayerGameAnalysisId) {
       saveBtnText = 'SUBMIT ANALYSIS';
       savedAndDisabled = false;
     } else {

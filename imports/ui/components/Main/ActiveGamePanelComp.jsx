@@ -70,10 +70,12 @@ export default class ActiveGamePanelComp extends Component {
   showPlayerAnalysisEditor(gameSetupId) {
     if (Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
       this.props.history.push(`/game/running/editor/${gameSetupId}`)
-    } else if (!(this.props.CurrentGameRunningStatistics[0] && this.props.CurrentGameRunningStatistics[0].gameIsRunning)) {
-      this.props.history.push(`/game/analysis/${gameSetupId}`);
-    } else {
+    } else if (!(this.props.gameSetup && this.props.gameSetup.gameStatus === 'open')) {
+      console.log('HMMMM:', this.props)
       this.props.history.push(`/game/running/stats_viewer/${gameSetupId}`);
+    } else {
+      console.log('this.props.gameSetup.gameStatus:', this.props.gameSetup.gameStatus)
+      this.props.history.push(`/game/analysis/${gameSetupId}`);
     }
   }
 
@@ -101,6 +103,7 @@ export default class ActiveGamePanelComp extends Component {
         <div>4th to 14th: {this.state.prizesMoniesInfo.nextTenPrizes} OSAPoints</div>
       </Popover>
     );
+    const gameStatus = (this.props.gameSetup.gameStatus && this.props.gameSetup.gameStatus.toUpperCase()) || 'UNKNOWN';
     return (
       <div id="active-game-panel-comp">
         <OverlayTrigger
@@ -121,7 +124,7 @@ export default class ActiveGamePanelComp extends Component {
               <div className="game-row2">{gameCity}</div>
               <div className="game-row3">({gameKickoff})</div>
             </Panel.Body>
-            <Panel.Footer>ACTIVE</Panel.Footer>
+            <Panel.Footer>{gameStatus}</Panel.Footer>
           </Panel>
         </OverlayTrigger>
       </div>
