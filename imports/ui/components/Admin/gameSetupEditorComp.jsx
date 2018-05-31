@@ -367,6 +367,16 @@ export default class GameSetupEditorComp extends Component {
                         <option value="Stormers">Stormers</option>
                         <option value="Sunwolves">Sunwolves</option>
                         <option value="Waratahs">Waratahs</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="England">England</option>
+                        <option value="Wales">Wales</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Scotland">Scotland</option>
+                        <option value="France">France</option>
+                        <option value="Italy">Italy</option>
                       </select>
                     </div>
                     <div className="form-group row">
@@ -405,6 +415,16 @@ export default class GameSetupEditorComp extends Component {
                         <option value="Stormers">Stormers</option>
                         <option value="Sunwolves">Sunwolves</option>
                         <option value="Waratahs">Waratahs</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="England">England</option>
+                        <option value="Wales">Wales</option>
+                        <option value="Ireland">Ireland</option>
+                        <option value="Scotland">Scotland</option>
+                        <option value="France">France</option>
+                        <option value="Italy">Italy</option>
                       </select>
                     </div>
                     <div className="form-group row">

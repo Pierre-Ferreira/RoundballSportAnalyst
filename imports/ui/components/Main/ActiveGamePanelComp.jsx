@@ -24,6 +24,8 @@ export default class ActiveGamePanelComp extends Component {
     const { noOfPlayers } = this.props
     // Get prizes information from DB.
     Meteor.call('prize_monies.lookup', noOfPlayers, (err, result) => {
+      console.log('prize_monies.lookup1 ERR:', err)
+      console.log('prize_monies.lookup1 RESULT:', result)
       if (err) {
         const prizesMoniesInfo = {
           firstPrize: 'Loading...',
@@ -46,6 +48,8 @@ export default class ActiveGamePanelComp extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.noOfPlayers !== this.state.noOfPlayers) {
       Meteor.call('prize_monies.lookup', nextProps.noOfPlayers, (err, result) => {
+        console.log('prize_monies.lookup2 ERR:', err)
+        console.log('prize_monies.lookup2 RESULT:', result)
         if (err) {
           const prizesMoniesInfo = {
             firstPrize: 'Loading...',
