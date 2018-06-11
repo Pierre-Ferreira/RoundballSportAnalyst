@@ -59,10 +59,10 @@ export default class AuthenticatedNavigationLinksComp extends Component {
           </NavDropdown>
           <NavDropdown eventKey={2} title="Tokens" id="basic-nav-dropdown">
             <MenuItem eventKey="1">
-              <NavLink to="">Purchase</NavLink>
+              <NavLink to="/get_tokens">Get tokens</NavLink>
             </MenuItem>
             <MenuItem eventKey="2">
-              <NavLink to="">History</NavLink>
+              <NavLink to="">Tokens History</NavLink>
             </MenuItem>
           </NavDropdown>
           <NavDropdown eventKey={3} title={this.props.username} id="basic-nav-dropdown">

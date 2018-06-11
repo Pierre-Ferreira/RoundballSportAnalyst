@@ -26,6 +26,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     saveSignupInfoState: signupInfo => dispatch({ type: 'SAVE_SIGNUP_INFO', signupInfo }),
+    saveIntroducerInfoState: introducerInfo => dispatch({ type: 'SAVE_INTRODUCER_INFO', introducerInfo }),
   };
 }
 

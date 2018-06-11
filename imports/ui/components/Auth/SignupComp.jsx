@@ -18,6 +18,23 @@ export default class SignupComp extends Component {
     this.onChangeInput = this.onChangeInput.bind(this);
   }
 
+  componentWillMount() {
+    let { introducersUserId } = this.props.match.params;
+    // clcNoIntroducer = (clcNoIntroducer !== 'no_intro') ? clcNoIntroducer : '';
+    console.log('introducersUserId:', introducersUserId)
+    Meteor.call('getIntroducerInfoDB', introducersUserId, (err, result) => {
+      if (err) {
+        this.setState({
+          feedbackMessage: err.reason,
+          feedbackMessageType: 'danger',
+        });
+      } else {
+        console.log('getIntroducerInfoDB RESULT:', result)
+        this.props.saveIntroducerInfoState(result[0])
+      }
+    })
+  }
+
   onChangeInput() {
     const email = document.getElementById('signup-email').value;
     const username = document.getElementById('signup-username').value;
@@ -103,116 +120,125 @@ export default class SignupComp extends Component {
                   <div className="modal-header col-xs-12">
                     <h1 className="text-center">Sign up</h1>
                     <div>All fields are required*</div>
-                  </div>
-                  <div className="modal-body col-xs-12">
                     <AuthFeedbackMessageComp
                       feedbackMessageType={feedbackMessageType}
                       feedbackMessage={feedbackMessage}
                     />
+                  </div>
+                  <div className="modal-body col-xs-12">
                     <form
                       id="login-form"
                       className="form center-block"
                       onSubmit={this.handleSubmit}
                     >
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="signup-firstname"
-                          className="form-control input-lg"
-                          placeholder="member name"
-                          onChange={this.onChangeInput}
-                          value={this.props.firstName}
-                        />
+                      <div className="signup-comp-scoll-area">
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="signup-firstname"
+                            className="form-control input-lg"
+                            placeholder="member name"
+                            onChange={this.onChangeInput}
+                            value={this.props.firstName}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="signup-surname"
+                            className="form-control input-lg"
+                            placeholder="member surname"
+                            onChange={this.onChangeInput}
+                            value={this.props.lastName}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <div><b>Username cannot be changed later. 5-10 characters long.</b></div>
+                          <input
+                            type="text"
+                            id="signup-username"
+                            className="form-control input-lg"
+                            placeholder="username"
+                            onChange={this.onChangeInput}
+                            value={this.props.username}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <input
+                            type="email"
+                            id="signup-email"
+                            className="form-control input-lg"
+                            placeholder="email"
+                            onChange={this.onChangeInput}
+                            value={this.props.email}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="signup-cellno"
+                            className="form-control input-lg"
+                            placeholder="cell no"
+                            onChange={this.onChangeInput}
+                            value={this.props.cellNo}
+                          />
+                        </div>
+                        <div><b>Introducer cannot be changed later.</b></div>
+                        <div className="form-group introducer-group">
+                          <input
+                            type="text"
+                            id="signup-introducers-userid"
+                            className="form-control input-lg"
+                            placeholder="introducer"
+                            value={this.props.introducerInfoStr}
+                            readOnly
+                          />
+                          <input
+                            type="input"
+                            id="search-button"
+                            onClick={this.showIntroducerSearchModal}
+                            className="btn btn-lg btn-info btn-block"
+                            value="SEARCH"
+                          />
+                        </div>
+                        <div><b>Your rewards will be paid into the wallet address specified below!</b></div>
+                        <div><b>If you need a Bitcoin wallet account you can open one
+                          <a href="https://www.altcointrader.co.za/" target="_blank"> here</a> or
+                          <a href="https://www.xapo.com/" target="_blank"> here.</a></b>
+                        </div>
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="signup-wallet-address"
+                            className="form-control input-lg"
+                            placeholder="bitcoin wallet address"
+                            onChange={this.onChangeInput}
+                            value={this.props.walletAddress}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <input
+                            type="password"
+                            id="signup-password"
+                            className="form-control input-lg"
+                            placeholder="password"
+                          />
+                        </div>
                       </div>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="signup-surname"
-                          className="form-control input-lg"
-                          placeholder="member surname"
-                          onChange={this.onChangeInput}
-                          value={this.props.lastName}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <div><b>Username cannot be changed later.</b></div>
-                        <input
-                          type="text"
-                          id="signup-username"
-                          className="form-control input-lg"
-                          placeholder="username"
-                          onChange={this.onChangeInput}
-                          value={this.props.username}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          id="signup-email"
-                          className="form-control input-lg"
-                          placeholder="email"
-                          onChange={this.onChangeInput}
-                          value={this.props.email}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="signup-cellno"
-                          className="form-control input-lg"
-                          placeholder="cell no"
-                          onChange={this.onChangeInput}
-                          value={this.props.cellNo}
-                        />
-                      </div>
-                      <div><b>Introducer cannot be changed later.</b></div>
-                      <div className="form-group introducer-group">
-                        <input
-                          type="text"
-                          id="signup-introducers-userid"
-                          className="form-control input-lg"
-                          placeholder="introducer"
-                          value={this.props.introducerInfoStr}
-                          readOnly
-                        />
-                        <input
-                          type="input"
-                          id="search-button"
-                          onClick={this.showIntroducerSearchModal}
-                          className="btn btn-lg btn-info btn-block"
-                          value="SEARCH"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="signup-wallet-address"
-                          className="form-control input-lg"
-                          placeholder="bitcoin wallet address"
-                          onChange={this.onChangeInput}
-                          value={this.props.walletAddress}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="password"
-                          id="signup-password"
-                          className="form-control input-lg"
-                          placeholder="password"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="submit"
-                          id="login-button"
-                          className="btn btn-lg btn-primary btn-block"
-                          value="Sign Up"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <p className="text-center">
-                          Already have an account? Login <Link to="/auth/login">here</Link>
-                        </p>
+                      <div className="signup-comp-submit-area">
+                        <div className="form-group">
+                          <input
+                            type="submit"
+                            id="login-button"
+                            className="btn btn-lg btn-primary btn-block"
+                            value="Sign Up"
+                          />
+                        </div>
+                        <div className="form-group">
+                          <p className="text-center">
+                            Already have an account? Login <Link to="/auth/login">here</Link>
+                          </p>
+                        </div>
                       </div>
                     </form>
                   </div>

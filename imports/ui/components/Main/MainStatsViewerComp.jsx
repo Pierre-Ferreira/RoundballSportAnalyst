@@ -50,7 +50,7 @@ export default class MainStatsViewerComp extends Component {
                 <div className="text-center">Game Stats Viewer</div>
               </div>
               <div className="modal-body container col-md-12 row">
-                <div className="text-center left-panels col-md-4">
+                <div className="text-center left-panels col-md-4 col-xs-12">
                   <div className="text-center left-panel-top">
                     <PlayerAnalysisViewerComp {...this.props} />
                   </div>
@@ -62,7 +62,7 @@ export default class MainStatsViewerComp extends Component {
                   <GameRunningViewerContainer {...this.props} />
                 </div>
                 <div className="text-center right-panels col-md-3">
-                  <LeaderBoardViewerContainer {...this.props} /> 
+                  <LeaderBoardViewerContainer {...this.props} />
                 </div>
               </div>
               <div className="btn-area text-center col-md-12">

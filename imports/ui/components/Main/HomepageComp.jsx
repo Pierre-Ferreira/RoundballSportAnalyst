@@ -5,7 +5,7 @@ const HomepageComp = () => {
   return (
     <div id="homepage-comp">
       <div className="heading text-center">
-        IT IS EASY.
+        IT'S EASY!
       </div>
       <div className="body text-center">
         You predict the different categories of the game and

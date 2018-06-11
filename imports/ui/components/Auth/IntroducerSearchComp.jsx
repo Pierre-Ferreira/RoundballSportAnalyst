@@ -49,7 +49,7 @@ export default class IntroducerSearchComp extends Component {
       feedbackMessageType: 'success',
     });
     this.props.saveIntroducerInfoState(this.state.selectedIntroducer)
-    this.props.history.push('/auth/signup');
+    this.props.history.push(`/auth/signup/${this.state.selectedIntroducer._id}`);
   }
 
   render() {

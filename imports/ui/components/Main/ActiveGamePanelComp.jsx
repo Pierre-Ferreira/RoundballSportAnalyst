@@ -123,7 +123,7 @@ export default class ActiveGamePanelComp extends Component {
             </Panel.Heading>
             <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameSetupId)} {...this.props}>
               <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
-              <div className="game-row1">{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
+              <div className={(gameStatus === 'RUNNING') ? "game-row1-running" : "game-row1-open"}>{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
               <div className="game-row2">{gameVenue}</div>
               <div className="game-row2">{gameCity}</div>
               <div className="game-row3">({gameKickoff})</div>

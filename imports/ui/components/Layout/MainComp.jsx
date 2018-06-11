@@ -21,6 +21,7 @@ import GameRunningEditorContainer from '../../containers/Main/GameRunningEditorC
 import WelcomeContainer from '../../containers/Main/WelcomeContainer';
 import PlayerAnalysisEditorContainer from '../../containers/Main/PlayerAnalysisEditorContainer';
 import MainStatsViewerContainer from '../../containers/Main/MainStatsViewerContainer';
+import TokenPurchaseComp from '../Main/TokenPurchaseComp';
 // Helper components.
 import AuthenticatedRouteComp from '../Routes/AuthenticatedRouteComp';
 import PublicRouteComp from '../Routes/PublicRouteComp';
@@ -48,8 +49,8 @@ export default class MainPage extends Component {
               <PublicRouteComp exact path="/" component={HomepageComp} />
               <AuthenticatedRouteComp exact path="/admin/blockchain_api" component={blockchainAPIPaymentsContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/admin/game_setup_editor" component={GameSetupEditorContainer} {...this.props} />
-              <PublicRouteComp exact path="/auth/signup" component={SignupContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/signup/introducer_search" component={IntroducerSearchContainer} {...this.props} />
+              <PublicRouteComp exact path="/auth/signup/:introducersUserId" component={SignupContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/login" component={LoginContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/forgot_password" component={ForgotPasswordContainer} {...this.props} />
               <PublicRouteComp exact path="/auth/reset-password/:token" component={ResetPasswordContainer} {...this.props} />
@@ -60,6 +61,7 @@ export default class MainPage extends Component {
               <AuthenticatedRouteComp exact path="/game/analysis/:gameSetupId" component={PlayerAnalysisEditorContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/running/editor/:gameSetupId" component={GameRunningEditorContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/running/stats_viewer/:gameSetupId" component={MainStatsViewerContainer} {...this.props} />
+              <AuthenticatedRouteComp exact path="/get_tokens" component={TokenPurchaseComp} {...this.props} />
               <Redirect to="/" />
             </Switch>
           </div>

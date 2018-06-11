@@ -1,0 +1,82 @@
+#get-tokens-comp {
+  margin: 30px auto;
+  max-width: 750px;
+  .get-tokens-area {
+    // height: 600px;
+    background-color: #f5deb3a6;
+    padding: 20px;
+    border: 4px solid #9d9d9d;
+    border-radius: 5px;
+    .heading-area {
+      display: contents;
+      font-size: 35px;
+      font-weight: 800;
+      font-family: 'Graduate', cursive;
+    }
+    .game-row1 {
+      font-size: 17px;
+      font-weight: 900;
+      padding-top: 6px;
+    }
+    li {
+        font-size: 14px;
+        font-weight: 700;
+        list-style-position: inside;
+    }
+    .custom-counter {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+    .custom-counter li {
+      counter-increment: step-counter;
+      margin-bottom: 5px;
+    }
+    .custom-counter li::before {
+      content: counter(step-counter);
+      margin-right: 8px;
+      font-size: 80%;
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      padding: 5px 8px;
+      border-radius: 11px;
+    }
+    h1 {
+      text-decoration: underline;
+      text-align: center;
+      font-weight: 600;
+    }
+    h2 {
+      text-decoration: underline;
+      text-align: center;
+      font-weight: 600;
+    }
+    hr {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      border: 0;
+      border-top: 5px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+  .get-tokens-scroll-area {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    height: 280px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-bottom: 15px;
+  }
+  .get-tokens-scroll-area::-webkit-scrollbar {
+    width: 2em;
+  }
+
+  .get-tokens-scroll-area::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  .get-tokens-scroll-area::-webkit-scrollbar-thumb {
+    background-color: black;
+    outline: 2px solid cyan;
+  }
+}

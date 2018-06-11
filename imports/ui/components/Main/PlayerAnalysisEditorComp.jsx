@@ -308,7 +308,7 @@ export default class PlayerAnalysisEditorComp extends Component {
     let savedAndDisabled = true;
     let saveBtnText = '';
     if (!this.state.PlayerGameAnalysisId) {
-      saveBtnText = 'SUBMIT ANALYSIS';
+      saveBtnText = 'SUBMIT FINAL ANALYSIS';
       savedAndDisabled = false;
     } else {
       saveBtnText = 'ANALYSIS SUBMITTED!';
@@ -332,6 +332,16 @@ export default class PlayerAnalysisEditorComp extends Component {
         <div className="modal show">
           <div className="modal-dialog">
             <div className="modal-content">
+              <Button
+                className="exit-btn"
+                bsStyle="warning"
+                bsSize="large"
+                block
+                onClick={this.close}
+                data-toggle="confirmation"
+              >
+                x
+              </Button>
               <div className="modal-header">
                 <div className="text-center">Game Analysis Editor</div>
               </div>
@@ -520,15 +530,6 @@ export default class PlayerAnalysisEditorComp extends Component {
                     onClick={this.handleSubmit}
                   >
                     {saveBtnText}
-                  </Button>
-                  <Button
-                    className="exit-btn"
-                    bsStyle="warning"
-                    bsSize="large"
-                    block
-                    onClick={this.close}
-                  >
-                    EXIT
                   </Button>
                 </div>
               </div>

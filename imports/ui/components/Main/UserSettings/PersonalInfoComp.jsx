@@ -96,6 +96,7 @@ export default class PersonalInfoComp extends Component {
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
     const joinedDate = moment(this.props.userInfo.joinedDate).format('Do MMM YYYY');
+    const referralLink = `www.oddballsportanalyst.co.za/auth/signup/${this.props.userInfo._id}`
     return (
       <div id="personal-info-comp">
         <div className="container">
@@ -124,6 +125,12 @@ export default class PersonalInfoComp extends Component {
                 <div className="form-group">
                   <h3>
                     <span className="immutable-info-title">Introducer:</span> {this.state.introducerInfoStr}
+                  </h3>
+                </div>
+                <div className="form-group">
+                  <h3>
+                    <span className="immutable-info-title">Referral Link:</span>
+                    <div className="referral-link">{referralLink}</div>
                   </h3>
                 </div>
                 <hr />
