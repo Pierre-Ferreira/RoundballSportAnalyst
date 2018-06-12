@@ -34,7 +34,7 @@ export default class ForgotPasswordComp extends Component {
         });
       } else {
         this.setState({
-          feedbackMessage: 'Email sent! Please click the reset-password link.',
+          feedbackMessage: 'Email sent! Please click the reset-password link. (Check SPAM folder)',
           feedbackMessageType: 'success',
         });
       }

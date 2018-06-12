@@ -54,6 +54,9 @@ export default class AuthenticatedNavigationLinksComp extends Component {
         <div id="clients-menu-items">
           <NavDropdown eventKey={1} title="Games" id="basic-nav-dropdown">
             <MenuItem eventKey="1">
+              <NavLink to="/main/welcome">Weekend's Games</NavLink>
+            </MenuItem>
+            <MenuItem eventKey="2">
               <NavLink to="">History</NavLink>
             </MenuItem>
           </NavDropdown>

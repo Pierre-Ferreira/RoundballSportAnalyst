@@ -28,7 +28,6 @@ export default class WelcomeComp extends Component {
   render() {
     return (
       <div>
-        <a target="_blank" rel="nofollow" href="https://coingate.com/pay/oddball_sport_analyst"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/1.png" /></a>
         <h1 className="text-center">
           <ActiveGamesLayoutContainer {...this.props} />
         </h1>

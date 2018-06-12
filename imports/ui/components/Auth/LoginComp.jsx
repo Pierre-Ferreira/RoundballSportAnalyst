@@ -39,7 +39,7 @@ export default class LoginComp extends Component {
         });
       } else {
         this.setState({
-          feedbackMessage: 'Verification email has been resent! Please check your email.',
+          feedbackMessage: 'Verification email has been resent! Please check your email. (Check SPAM folder)',
           feedbackMessageType: 'success',
         });
       }

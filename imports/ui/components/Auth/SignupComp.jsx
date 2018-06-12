@@ -96,7 +96,7 @@ export default class SignupComp extends Component {
             });
           } else {
             this.setState({
-              feedbackMessage: 'Email sent! Please click the verification link!',
+              feedbackMessage: 'Email sent! Please click the verification link! (Check SPAM folder)',
               feedbackMessageType: 'success',
             });
           }

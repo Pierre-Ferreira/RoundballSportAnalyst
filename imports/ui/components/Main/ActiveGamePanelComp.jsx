@@ -75,7 +75,6 @@ export default class ActiveGamePanelComp extends Component {
     if (Roles.userIsInRole(Meteor.userId(), 'superadmin')) {
       this.props.history.push(`/game/running/editor/${gameSetupId}`)
     } else if (!(this.props.gameSetup && this.props.gameSetup.gameStatus === 'open')) {
-      console.log('HMMMM:', this.props)
       this.props.history.push(`/game/running/stats_viewer/${gameSetupId}`);
     } else {
       console.log('this.props.gameSetup.gameStatus:', this.props.gameSetup.gameStatus)
@@ -123,7 +122,8 @@ export default class ActiveGamePanelComp extends Component {
             </Panel.Heading>
             <Panel.Body className="active-game-panel-body" onClick={() => this.showPlayerAnalysisEditor(gameSetupId)} {...this.props}>
               <div className="game-row2">{moment(gameDate).format('dddd, MMMM Do YYYY')}</div>
-              <div className={(gameStatus === 'RUNNING') ? "game-row1-running" : "game-row1-open"}>{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
+              <div className={
+                (gameStatus === 'RUNNING') ? "game-row1-running" : (gameStatus === 'OPEN') ? "game-row1-open" : "game-row1-other"}>{gameHostAlias} <span className="game-vs">vs</span> {gameVisitorAlias}</div>
               <div className="game-row2">{gameVenue}</div>
               <div className="game-row2">{gameCity}</div>
               <div className="game-row3">({gameKickoff})</div>
