@@ -17,6 +17,7 @@ Meteor.methods({
           active: 1,
           clcNo: 1,
           joinedDate: 1,
+          totalNoOfTokens: 1,
         },
       },
     ).fetch();

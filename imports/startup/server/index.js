@@ -12,3 +12,4 @@ import '../../api/game_running_statistics/publications';
 import '../../api/games_leaderboard/methods';
 import '../../api/games_leaderboard/publications';
 import '../../api/tokens_transactions/methods';
+import '../../api/tokens_transactions/publications';

@@ -55,6 +55,9 @@ Meteor.methods({
       _id: playerGameAnalysisInfo.gameSetupId,
     }).gameStatus;
     console.log('gameSetupStatus:', gameSetupStatus)
+    // Check if the player has tokens left.
+    const totalNoOfTokens = Meteor.users.findOne({ _id: Meteor.userId() }).totalNoOfTokens || 0;
+    console.log('totalNoOfTokens:', totalNoOfTokens)
     // Check if there isn't already a GameAnalysis for this player.
     const playerGameAnalyisCount = PlayerGameAnalysis.find({
       gameSetupId: playerGameAnalysisInfo.gameSetupId,
@@ -69,6 +72,8 @@ Meteor.methods({
     // Check if the user is logged in.
     if (!Meteor.userId()) {
       throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. User not logged in.');
+    } else if (totalNoOfTokens <= 0) {
+      throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. You don\'t have any tokens left. PLEASE PURCHASE TOKENS!');
     } else if (gameSetupStatus !== 'open') {
       throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. Game not open anymore.');
     } else if (playerGameAnalyisCount !== 0) {
@@ -76,6 +81,8 @@ Meteor.methods({
     } else if (allGameAnalyisCount >= 200) {
       throw new Meteor.Error(403, 'PlayerGameAnalysis entry not created. 200 players already entered game.');
     } else {
+      // Update/decrease the user's number of tokens.
+      Meteor.users.update({ _id: Meteor.userId() }, { $set: { totalNoOfTokens: totalNoOfTokens - 1 } });
       // Add the userId to the player analysis document.
       playerGameAnalysisInfo.userId = Meteor.userId();
       const PlayerGameAnalysisId = PlayerGameAnalysis.insert(playerGameAnalysisInfo);

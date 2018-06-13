@@ -1,9 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import GamesLeaderboard from './collection';
 
 // Return the specified month end payments.
-Meteor.publish('leaderboard_info', (gameSetupId) => {
-  check(gameSetupId, String)
-  const leaderboardInfo = GamesLeaderboard.find({ gameSetupId });
-  return leaderboardInfo;
+Meteor.publish('user_tokens_info', () => {
+  const userInfo = Meteor.users.find({ _id: Meteor.userId() }, { fields: { totalNoOfTokens: 1 } });
+  return userInfo;
 });

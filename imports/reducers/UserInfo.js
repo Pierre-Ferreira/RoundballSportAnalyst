@@ -12,6 +12,7 @@ const initialState = {
   walletAddress: '',
   joinedDate: '',
   active: '',
+  totalNoOfTokens: '',
 };
 
 const UserInfo = (state = initialState, action) => {
@@ -30,6 +31,7 @@ const UserInfo = (state = initialState, action) => {
         walletAddress: action.userInfo.walletAddress,
         joinedDate: action.userInfo.joinedDate,
         active: action.userInfo.active,
+        totalNoOfTokens: action.userInfo.totalNoOfTokens,
       };
     case types.SAVE_USER_PERSONAL_INFO:
       return {
