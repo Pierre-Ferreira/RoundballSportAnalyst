@@ -75,6 +75,9 @@ export default class AuthenticatedNavigationLinksComp extends Component {
             <MenuItem eventKey="2">
               <NavLink to="/settings">Settings</NavLink>
             </MenuItem>
+            <MenuItem eventKey="2">
+              <NavLink to="/contact_us">Contact Us</NavLink>
+            </MenuItem>
             <MenuItem divider />
             <MenuItem eventKey="3">
               <NavLink to="/auth/login" onClick={this.logoutFN}>Logout</NavLink>

@@ -13,3 +13,4 @@ import '../../api/games_leaderboard/methods';
 import '../../api/games_leaderboard/publications';
 import '../../api/tokens_transactions/methods';
 import '../../api/tokens_transactions/publications';
+import '../../api/contact_us_messages/methods';

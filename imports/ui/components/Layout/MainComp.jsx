@@ -22,6 +22,7 @@ import WelcomeContainer from '../../containers/Main/WelcomeContainer';
 import PlayerAnalysisEditorContainer from '../../containers/Main/PlayerAnalysisEditorContainer';
 import MainStatsViewerContainer from '../../containers/Main/MainStatsViewerContainer';
 import TokenPurchaseComp from '../Main/TokenPurchaseComp';
+import ContactUsComp from '../Main/ContactUsComp';
 // Helper components.
 import AuthenticatedRouteComp from '../Routes/AuthenticatedRouteComp';
 import PublicRouteComp from '../Routes/PublicRouteComp';
@@ -62,6 +63,7 @@ export default class MainPage extends Component {
               <AuthenticatedRouteComp exact path="/game/running/editor/:gameSetupId" component={GameRunningEditorContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/game/running/stats_viewer/:gameSetupId" component={MainStatsViewerContainer} {...this.props} />
               <AuthenticatedRouteComp exact path="/get_tokens" component={TokenPurchaseComp} {...this.props} />
+              <AuthenticatedRouteComp exact path="/contact_us" component={ContactUsComp} {...this.props} />
               <Redirect to="/" />
             </Switch>
           </div>

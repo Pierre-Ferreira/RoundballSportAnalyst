@@ -146,7 +146,7 @@ export default class TokenPurchaseComp extends Component {
                   </div>
                   <div className="form-group">
                     <input
-                      type="test"
+                      type="text"
                       id="trnx-no"
                       className="form-control input-lg row3"
                       placeholder="Paste TXID here."
