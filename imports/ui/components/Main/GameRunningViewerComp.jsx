@@ -18,12 +18,12 @@ export default class GameRunningViewerComp extends Component {
       prizesMoniesInfo,
       feedbackMessage: '',
       gameRunningStatsId: '',
-      gameHostTeamTries: '0',
-      gameVisitorTeamTries: '0',
-      gameHostTeamConvs: '0',
-      gameVisitorTeamConvs: '0',
-      gameHostTeamPenalties: '0',
-      gameVisitorTeamPenalties: '0',
+      gameHostTeamGoals: '0',
+      gameVisitorTeamGoals: '0',
+      gameHostTeamShots: '0',
+      gameVisitorTeamShots: '0',
+      gameHostTeamShotsOnTarget: '0',
+      gameVisitorTeamShotsOnTarget: '0',
       gameHostTeamDropgoals: '0',
       gameVisitorTeamDropgoals: '0',
       gameHostTeamYellowCards: '0',
@@ -59,13 +59,13 @@ export default class GameRunningViewerComp extends Component {
       nextProps.gameVisitorScore !== this.state.gameVisitorScore ||
       nextProps.gameHostScore !== this.state.gameHostScore ||
       nextProps.gameVisitorScore !== this.state.gameVisitorScore ||
-      nextProps.gameHostTeamTries !== this.state.gameHostTeamTries ||
+      nextProps.gameHostTeamGoals !== this.state.gameHostTeamGoals ||
       nextProps.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
-      nextProps.gameHostTeamConvs !== this.state.gameHostTeamConvs ||
-      nextProps.gameHostTeamPenalties !== this.state.gameHostTeamPenalties ||
-      nextProps.gameVisitorTeamTries !== this.state.gameVisitorTeamTries ||
-      nextProps.gameVisitorTeamConvs !== this.state.gameVisitorTeamConvs ||
-      nextProps.gameVisitorTeamPenalties !== this.state.gameVisitorTeamPenalties ||
+      nextProps.gameHostTeamShots !== this.state.gameHostTeamShots ||
+      nextProps.gameHostTeamShotsOnTarget !== this.state.gameHostTeamShotsOnTarget ||
+      nextProps.gameVisitorTeamGoals !== this.state.gameVisitorTeamGoals ||
+      nextProps.gameVisitorTeamShots !== this.state.gameVisitorTeamShots ||
+      nextProps.gameVisitorTeamShotsOnTarget !== this.state.gameVisitorTeamShotsOnTarget ||
       nextProps.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals ||
       nextProps.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
       nextProps.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
@@ -91,12 +91,12 @@ export default class GameRunningViewerComp extends Component {
           gameSetupId: nextProps.CurrentGameRunningStatistics[0].gameSetupId,
           gameHostScore: nextProps.CurrentGameRunningStatistics[0].gameHostScore,
           gameVisitorScore: nextProps.CurrentGameRunningStatistics[0].gameVisitorScore,
-          gameHostTeamTries: nextProps.CurrentGameRunningStatistics[0].gameHostTeamTries,
-          gameVisitorTeamTries: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamTries,
-          gameHostTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameHostTeamConvs,
-          gameVisitorTeamConvs: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamConvs,
-          gameHostTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameHostTeamPenalties,
-          gameVisitorTeamPenalties: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamPenalties,
+          gameHostTeamGoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamGoals,
+          gameVisitorTeamGoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamGoals,
+          gameHostTeamShots: nextProps.CurrentGameRunningStatistics[0].gameHostTeamShots,
+          gameVisitorTeamShots: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamShots,
+          gameHostTeamShotsOnTarget: nextProps.CurrentGameRunningStatistics[0].gameHostTeamShotsOnTarget,
+          gameVisitorTeamShotsOnTarget: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamShotsOnTarget,
           gameHostTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamDropgoals,
           gameVisitorTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamDropgoals,
           gameHostTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamYellowCards,
@@ -163,21 +163,21 @@ export default class GameRunningViewerComp extends Component {
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">
-            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamTries}</div>
-            <div className="col-md-6 game-row1 text-center">Tries</div>
-            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamTries}</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamGoals}</div>
+            <div className="col-md-6 game-row1 text-center">Goals</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamGoals}</div>
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">
-            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamConvs}</div>
-            <div className="col-md-6 game-row1 text-center">Conversions</div>
-            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamConvs}</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamShots}</div>
+            <div className="col-md-6 game-row1 text-center">Shots</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamShots}</div>
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">
-            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamPenalties}</div>
-            <div className="col-md-6 game-row1 text-center">Penalty kicks</div>
-            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamPenalties}</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamShotsOnTarget}</div>
+            <div className="col-md-6 game-row1 text-center">Shots On Target</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamShotsOnTarget}</div>
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">

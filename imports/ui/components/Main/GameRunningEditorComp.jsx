@@ -13,12 +13,12 @@ export default class GameRunningEditorComp extends Component {
       gameSetupId: props.match.params.gameSetupId,
       feedbackMessage: '',
       gameRunningStatsId: '',
-      gameHostTeamTries: '0',
-      gameVisitorTeamTries: '0',
-      gameHostTeamConvs: '0',
-      gameVisitorTeamConvs: '0',
-      gameHostTeamPenalties: '0',
-      gameVisitorTeamPenalties: '0',
+      gameHostTeamGoals: '0',
+      gameVisitorTeamGoals: '0',
+      gameHostTeamShots: '0',
+      gameVisitorTeamShots: '0',
+      gameHostTeamShotsOnTarget: '0',
+      gameVisitorTeamShotsOnTarget: '0',
       gameHostTeamDropgoals: '0',
       gameVisitorTeamDropgoals: '0',
       gameHostTeamYellowCards: '0',
@@ -33,12 +33,12 @@ export default class GameRunningEditorComp extends Component {
     this.createRunningStatsDocument = this.createRunningStatsDocument.bind(this);
     this.updateRunningStats = this.updateRunningStats.bind(this);
     this.calculateScores = this.calculateScores.bind(this);
-    this.handleHostTeamTriesChange = this.handleHostTeamTriesChange.bind(this);
-    this.handleVisitorTeamTriesChange = this.handleVisitorTeamTriesChange.bind(this);
-    this.handleHostTeamConvsChange = this.handleHostTeamConvsChange.bind(this);
-    this.handleVisitorTeamConvsChange = this.handleVisitorTeamConvsChange.bind(this);
-    this.handleHostTeamPenaltiesChange = this.handleHostTeamPenaltiesChange.bind(this);
-    this.handleVisitorTeamPenaltiesChange = this.handleVisitorTeamPenaltiesChange.bind(this);
+    this.handleHostTeamGoalsChange = this.handleHostTeamGoalsChange.bind(this);
+    this.handleVisitorTeamGoalsChange = this.handleVisitorTeamGoalsChange.bind(this);
+    this.handleHostTeamShotsChange = this.handleHostTeamShotsChange.bind(this);
+    this.handleVisitorTeamShotsChange = this.handleVisitorTeamShotsChange.bind(this);
+    this.handleHostTeamShotsOnTargetChange = this.handleHostTeamShotsOnTargetChange.bind(this);
+    this.handleVisitorTeamShotsOnTargetChange = this.handleVisitorTeamShotsOnTargetChange.bind(this);
     this.handleHostTeamDropgoalsChange = this.handleHostTeamDropgoalsChange.bind(this);
     this.handleVisitorTeamDropgoalsChange = this.handleVisitorTeamDropgoalsChange.bind(this);
     this.handleHostTeamYellowCardsChange = this.handleHostTeamYellowCardsChange.bind(this);
@@ -74,12 +74,12 @@ export default class GameRunningEditorComp extends Component {
                 gameSetupId: result.gameSetupId,
                 gameHostScore: result.gameHostScore,
                 gameVisitorScore: result.gameVisitorScore,
-                gameHostTeamTries: result.gameHostTeamTries,
-                gameVisitorTeamTries: result.gameVisitorTeamTries,
-                gameHostTeamConvs: result.gameHostTeamConvs,
-                gameVisitorTeamConvs: result.gameVisitorTeamConvs,
-                gameHostTeamPenalties: result.gameHostTeamPenalties,
-                gameVisitorTeamPenalties: result.gameVisitorTeamPenalties,
+                gameHostTeamGoals: result.gameHostTeamGoals,
+                gameVisitorTeamGoals: result.gameVisitorTeamGoals,
+                gameHostTeamShots: result.gameHostTeamShots,
+                gameVisitorTeamShots: result.gameVisitorTeamShots,
+                gameHostTeamShotsOnTarget: result.gameHostTeamShotsOnTarget,
+                gameVisitorTeamShotsOnTarget: result.gameVisitorTeamShotsOnTarget,
                 gameHostTeamDropgoals: result.gameHostTeamDropgoals,
                 gameVisitorTeamDropgoals: result.gameVisitorTeamDropgoals,
                 gameHostTeamYellowCards: result.gameHostTeamYellowCards,
@@ -107,13 +107,13 @@ export default class GameRunningEditorComp extends Component {
     if (
       prevState.gameHostScore !== this.state.gameHostScore ||
       prevState.gameVisitorScore !== this.state.gameVisitorScore ||
-      prevState.gameHostTeamTries !== this.state.gameHostTeamTries ||
+      prevState.gameHostTeamGoals !== this.state.gameHostTeamGoals ||
       prevState.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
-      prevState.gameHostTeamConvs !== this.state.gameHostTeamConvs ||
-      prevState.gameHostTeamPenalties !== this.state.gameHostTeamPenalties ||
-      prevState.gameVisitorTeamTries !== this.state.gameVisitorTeamTries ||
-      prevState.gameVisitorTeamConvs !== this.state.gameVisitorTeamConvs ||
-      prevState.gameVisitorTeamPenalties !== this.state.gameVisitorTeamPenalties ||
+      prevState.gameHostTeamShots !== this.state.gameHostTeamShots ||
+      prevState.gameHostTeamShotsOnTarget !== this.state.gameHostTeamShotsOnTarget ||
+      prevState.gameVisitorTeamGoals !== this.state.gameVisitorTeamGoals ||
+      prevState.gameVisitorTeamShots !== this.state.gameVisitorTeamShots ||
+      prevState.gameVisitorTeamShotsOnTarget !== this.state.gameVisitorTeamShotsOnTarget ||
       prevState.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals
     ) {
       this.calculateScores();
@@ -133,13 +133,13 @@ export default class GameRunningEditorComp extends Component {
   calculateScores() {
     let gameHostScore = 0;
     let gameVisitorScore = 0;
-    gameHostScore += this.state.gameHostTeamTries * 5;
+    gameHostScore += this.state.gameHostTeamGoals * 5;
     gameHostScore += this.state.gameHostTeamDropgoals * 3;
-    gameHostScore += this.state.gameHostTeamConvs * 2;
-    gameHostScore += this.state.gameHostTeamPenalties * 3;
-    gameVisitorScore += this.state.gameVisitorTeamTries * 5;
-    gameVisitorScore += this.state.gameVisitorTeamConvs * 2;
-    gameVisitorScore += this.state.gameVisitorTeamPenalties * 3;
+    gameHostScore += this.state.gameHostTeamShots * 2;
+    gameHostScore += this.state.gameHostTeamShotsOnTarget * 3;
+    gameVisitorScore += this.state.gameVisitorTeamGoals * 5;
+    gameVisitorScore += this.state.gameVisitorTeamShots * 2;
+    gameVisitorScore += this.state.gameVisitorTeamShotsOnTarget * 3;
     gameVisitorScore += this.state.gameVisitorTeamDropgoals * 3;
     this.setState({
       gameHostScore,
@@ -151,53 +151,53 @@ export default class GameRunningEditorComp extends Component {
     this.props.history.goBack();
   }
 
-  handleHostTeamTriesChange(e) {
-    if (Number(e.target.value) < Number(this.state.gameHostTeamConvs)) {
+  handleHostTeamGoalsChange(e) {
+    if (Number(e.target.value) < Number(this.state.gameHostTeamShots)) {
       this.setState({
-        gameHostTeamTries: e.target.value,
-        gameHostTeamConvs: e.target.value,
+        gameHostTeamGoals: e.target.value,
+        gameHostTeamShots: e.target.value,
       });
     } else {
       this.setState({
-        gameHostTeamTries: e.target.value,
+        gameHostTeamGoals: e.target.value,
       });
     }
   }
 
-  handleVisitorTeamTriesChange(e) {
-    if (Number(e.target.value) < Number(this.state.gameVisitorTeamConvs)) {
+  handleVisitorTeamGoalsChange(e) {
+    if (Number(e.target.value) < Number(this.state.gameVisitorTeamShots)) {
       this.setState({
-        gameVisitorTeamTries: e.target.value,
-        gameVisitorTeamConvs: e.target.value,
+        gameVisitorTeamGoals: e.target.value,
+        gameVisitorTeamShots: e.target.value,
       });
     } else {
       this.setState({
-        gameVisitorTeamTries: e.target.value,
+        gameVisitorTeamGoals: e.target.value,
       });
     }
   }
 
-  handleHostTeamConvsChange(e) {
+  handleHostTeamShotsChange(e) {
     this.setState({
-      gameHostTeamConvs: e.target.value,
+      gameHostTeamShots: e.target.value,
     });
   }
 
-  handleVisitorTeamConvsChange(e) {
+  handleVisitorTeamShotsChange(e) {
     this.setState({
-      gameVisitorTeamConvs: e.target.value,
+      gameVisitorTeamShots: e.target.value,
     });
   }
 
-  handleHostTeamPenaltiesChange(e) {
+  handleHostTeamShotsOnTargetChange(e) {
     this.setState({
-      gameHostTeamPenalties: e.target.value,
+      gameHostTeamShotsOnTarget: e.target.value,
     });
   }
 
-  handleVisitorTeamPenaltiesChange(e) {
+  handleVisitorTeamShotsOnTargetChange(e) {
     this.setState({
-      gameVisitorTeamPenalties: e.target.value,
+      gameVisitorTeamShotsOnTarget: e.target.value,
     });
   }
 
@@ -240,12 +240,12 @@ export default class GameRunningEditorComp extends Component {
   createRunningStatsDocument() {
     const gameRunningStatsInitInfo = {
       gameSetupId: this.state.gameSetupId,
-      gameHostTeamTries: '0',
-      gameVisitorTeamTries: '0',
-      gameHostTeamConvs: '0',
-      gameVisitorTeamConvs: '0',
-      gameHostTeamPenalties: '0',
-      gameVisitorTeamPenalties: '0',
+      gameHostTeamGoals: '0',
+      gameVisitorTeamGoals: '0',
+      gameHostTeamShots: '0',
+      gameVisitorTeamShots: '0',
+      gameHostTeamShotsOnTarget: '0',
+      gameVisitorTeamShotsOnTarget: '0',
       gameHostTeamDropgoals: '0',
       gameVisitorTeamDropgoals: '0',
       gameHostTeamYellowCards: '0',
@@ -302,12 +302,12 @@ export default class GameRunningEditorComp extends Component {
       gameSetupId: this.state.gameSetupId,
       gameHostScore: this.state.gameHostScore,
       gameVisitorScore: this.state.gameVisitorScore,
-      gameHostTeamTries: this.state.gameHostTeamTries,
-      gameVisitorTeamTries: this.state.gameVisitorTeamTries,
-      gameHostTeamConvs: this.state.gameHostTeamConvs,
-      gameVisitorTeamConvs: this.state.gameVisitorTeamConvs,
-      gameHostTeamPenalties: this.state.gameHostTeamPenalties,
-      gameVisitorTeamPenalties: this.state.gameVisitorTeamPenalties,
+      gameHostTeamGoals: this.state.gameHostTeamGoals,
+      gameVisitorTeamGoals: this.state.gameVisitorTeamGoals,
+      gameHostTeamShots: this.state.gameHostTeamShots,
+      gameVisitorTeamShots: this.state.gameVisitorTeamShots,
+      gameHostTeamShotsOnTarget: this.state.gameHostTeamShotsOnTarget,
+      gameVisitorTeamShotsOnTarget: this.state.gameVisitorTeamShotsOnTarget,
       gameHostTeamDropgoals: this.state.gameHostTeamDropgoals,
       gameVisitorTeamDropgoals: this.state.gameVisitorTeamDropgoals,
       gameHostTeamYellowCards: this.state.gameHostTeamYellowCards,
@@ -402,8 +402,8 @@ export default class GameRunningEditorComp extends Component {
     const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
     const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
     const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-    const hostConvsArr = noValuesArr.filter((val, i) => (i <= this.state.gameHostTeamTries));
-    const visitorConvsArr = noValuesArr.filter((val, i) => (i <= this.state.gameVisitorTeamTries));
+    const hostShotsArr = noValuesArr.filter((val, i) => (i <= this.state.gameHostTeamGoals));
+    const visitorShotsArr = noValuesArr.filter((val, i) => (i <= this.state.gameVisitorTeamGoals));
     let gameIsRunning = true;
     let startBtnText = '';
     if (!this.state.gameIsRunning) {
@@ -455,20 +455,20 @@ export default class GameRunningEditorComp extends Component {
                     <div className="section-row form-group row justify-content-md-center">
                       <select
                         name="form-field-name"
-                        id="game-host-team-tries"
+                        id="game-host-team-goals"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameHostTeamTries}
-                        onChange={this.handleHostTeamTriesChange}
+                        value={this.state.gameHostTeamGoals}
+                        onChange={this.handleHostTeamGoalsChange}
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
-                      <div className="col-md-4 game-row1 text-center">Tries</div>
+                      <div className="col-md-4 game-row1 text-center">Goals</div>
                       <select
                         name="form-field-name"
-                        id="game-visitor-team-tries"
+                        id="game-visitor-team-goals"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameVisitorTeamTries}
-                        onChange={this.handleVisitorTeamTriesChange}
+                        value={this.state.gameVisitorTeamGoals}
+                        onChange={this.handleVisitorTeamGoalsChange}
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
@@ -476,41 +476,41 @@ export default class GameRunningEditorComp extends Component {
                     <div className="section-row form-group row justify-content-md-center">
                       <select
                         name="form-field-name"
-                        id="game-host-team-convs"
+                        id="game-host-team-shots"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameHostTeamConvs}
-                        onChange={this.handleHostTeamConvsChange}
+                        value={this.state.gameHostTeamShots}
+                        onChange={this.handleHostTeamShotsChange}
                       >
-                        {hostConvsArr.map(val => <option value={val}>{val}</option>)}
+                        {hostShotsArr.map(val => <option value={val}>{val}</option>)}
                       </select>
-                      <div className="col-md-4 game-row1 text-center">Conversions</div>
+                      <div className="col-md-4 game-row1 text-center">Shots</div>
                       <select
                         name="form-field-name"
-                        id="game-visitor-team-convs"
+                        id="game-visitor-team-shots"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameVisitorTeamConvs}
-                        onChange={this.handleVisitorTeamConvsChange}
+                        value={this.state.gameVisitorTeamShots}
+                        onChange={this.handleVisitorTeamShotsChange}
                       >
-                        {visitorConvsArr.map(val => <option value={val}>{val}</option>)}
+                        {visitorShotsArr.map(val => <option value={val}>{val}</option>)}
                       </select>
                     </div>
                     <div className="section-row form-group row justify-content-md-center">
                       <select
                         name="form-field-name"
-                        id="game-host-team-penalties"
+                        id="game-host-team-shots-on-target"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameHostTeamPenalties}
-                        onChange={this.handleHostTeamPenaltiesChange}
+                        value={this.state.gameHostTeamShotsOnTarget}
+                        onChange={this.handleHostTeamShotsOnTargetChange}
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
-                      <div className="col-md-4 game-row1 text-center">Penalty kicks</div>
+                      <div className="col-md-4 game-row1 text-center">Shots On Target</div>
                       <select
                         name="form-field-name"
-                        id="game-visitor-team-penalties"
+                        id="game-visitor-team-shots-on-target"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameVisitorTeamPenalties}
-                        onChange={this.handleVisitorTeamPenaltiesChange}
+                        value={this.state.gameVisitorTeamShotsOnTarget}
+                        onChange={this.handleVisitorTeamShotsOnTargetChange}
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
