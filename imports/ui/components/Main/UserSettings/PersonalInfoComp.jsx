@@ -96,7 +96,7 @@ export default class PersonalInfoComp extends Component {
   render() {
     const { feedbackMessage, feedbackMessageType } = this.state;
     const joinedDate = moment(this.props.userInfo.joinedDate).format('Do MMM YYYY');
-    const referralLink = `www.oddballsportanalyst.co.za/auth/signup/${this.props.userInfo._id}`
+    const referralLink = `www.roundballsportanalyst.co.za/auth/signup/${this.props.userInfo._id}`
     return (
       <div id="personal-info-comp">
         <div className="container">

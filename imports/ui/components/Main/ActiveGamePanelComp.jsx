@@ -100,10 +100,10 @@ export default class ActiveGamePanelComp extends Component {
         title={popoverTitle}
       >
         <strong>{this.state.noOfPlayers} PLAYERS</strong>
-        <div>1st: {this.state.prizesMoniesInfo.firstPrize} OSAPoints</div>
-        <div>2nd: {this.state.prizesMoniesInfo.secondPrize} OSAPoints</div>
-        <div>3rd: {this.state.prizesMoniesInfo.thirdPrize} OSAPoints</div>
-        <div>4th to 14th: {this.state.prizesMoniesInfo.nextTenPrizes} OSAPoints</div>
+        <div>1st: {this.state.prizesMoniesInfo.firstPrize} RBSAPoints</div>
+        <div>2nd: {this.state.prizesMoniesInfo.secondPrize} RBSAPoints</div>
+        <div>3rd: {this.state.prizesMoniesInfo.thirdPrize} RBSAPoints</div>
+        <div>4th to 14th: {this.state.prizesMoniesInfo.nextTenPrizes} RBSAPoints</div>
       </Popover>
     );
     const gameStatus = (this.props.gameSetup.gameStatus && this.props.gameSetup.gameStatus.toUpperCase()) || 'UNKNOWN';

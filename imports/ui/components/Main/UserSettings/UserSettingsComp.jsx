@@ -11,28 +11,28 @@ const UserSettingsComp = (props) => {
     <div id="user-settings-comp">
       <div className="container">
         <div className="row justify-content-md-center">
-          <div className="col-md-8 user-settings-area">
-            <div className="col-md-6 offset-md-3">
+          <div className="col-xs-12 user-settings-area">
+            <div className="col-xs-12">
               <h1>Settings</h1>
             </div>
 
-            <div className="col-md-8 offset-md-2">
+            <div className="col-xs-12">
               <hr />
               <PersonalInfoContainer />
               <hr />
             </div>
 
-            <div className="col-md-8 offset-md-2">
+            <div className="col-xs-12">
               <EmailInfoContainer />
               <hr />
             </div>
 
-            <div className="col-md-8 offset-md-2">
+            <div className="col-xs-12">
               <WalletInfoContainer />
               <hr />
             </div>
 
-            <div className="col-md-8 offset-md-2">
+            <div className="col-xs-12">
               <PasswordResetComp />
               <hr />
             </div>

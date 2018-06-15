@@ -95,7 +95,7 @@ export default class TokenPurchaseComp extends Component {
                     <ol className="custom-counter">
                       <li>Click
                         <a
-                          href="https://coingate.com/pay/oddball_sport_analyst"
+                          href="https://coingate.com/pay/roundball_sport_analyst"
                           target="_blank"
                           rel="noopener noreferrer"
                         > <span> here </span>
@@ -127,7 +127,7 @@ export default class TokenPurchaseComp extends Component {
                       <li>Please take screenshot of this 'Paid and Confirmed'
                         screen for future reference.
                       </li>
-                      <li>OSA admin will release your Tokens within 24 hours
+                      <li>RBSA admin will release your Tokens within 24 hours
                         from confirmed transaction.
                       </li>
                     </ol>

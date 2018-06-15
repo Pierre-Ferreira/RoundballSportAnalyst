@@ -39,12 +39,12 @@ Accounts.onCreateUser((options, user) => {
   // Generate CLCNo.
   const usersCount = Meteor.users.find().count()
   let beginCLCNo = 1401;
-  let clcNo = `OSA${beginCLCNo + usersCount}`;
+  let clcNo = `RBSA${beginCLCNo + usersCount}`;
   // Check for duplicate CLCNo's.
   let duplicateCLCNo = Meteor.users.findOne({ clcNo });
   while (duplicateCLCNo) {
     beginCLCNo += 1;
-    clcNo = `OSA${beginCLCNo + usersCount}`;
+    clcNo = `RBSA${beginCLCNo + usersCount}`;
     duplicateCLCNo = Meteor.users.findOne(clcNo);
   }
   const customizedUser = {
