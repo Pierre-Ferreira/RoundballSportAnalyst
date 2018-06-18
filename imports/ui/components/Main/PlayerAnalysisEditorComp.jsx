@@ -24,8 +24,8 @@ export default class PlayerAnalysisEditorComp extends Component {
       playerVisitorTeamShots: '0',
       playerHostTeamShotsOnTarget: '0',
       playerVisitorTeamShotsOnTarget: '0',
-      playerHostTeamDropgoals: '0',
-      playerVisitorTeamDropgoals: '0',
+      playerHostTeamCorners: '0',
+      playerVisitorTeamCorners: '0',
       playerHostTeamYellowCards: '0',
       playerVisitorTeamYellowCards: '0',
       playerHostTeamRedCards: '0',
@@ -43,8 +43,8 @@ export default class PlayerAnalysisEditorComp extends Component {
     this.handleVisitorTeamShotsChange = this.handleVisitorTeamShotsChange.bind(this);
     this.handleHostTeamShotsOnTargetChange = this.handleHostTeamShotsOnTargetChange.bind(this);
     this.handleVisitorTeamShotsOnTargetChange = this.handleVisitorTeamShotsOnTargetChange.bind(this);
-    this.handleHostTeamDropgoalsChange = this.handleHostTeamDropgoalsChange.bind(this);
-    this.handleVisitorTeamDropgoalsChange = this.handleVisitorTeamDropgoalsChange.bind(this);
+    this.handleHostTeamCornersChange = this.handleHostTeamCornersChange.bind(this);
+    this.handleVisitorTeamCornersChange = this.handleVisitorTeamCornersChange.bind(this);
     this.handleHostTeamYellowCardsChange = this.handleHostTeamYellowCardsChange.bind(this);
     this.handleVisitorTeamYellowCardsChange = this.handleVisitorTeamYellowCardsChange.bind(this);
     this.handleHostTeamRedCardsChange = this.handleHostTeamRedCardsChange.bind(this);
@@ -81,8 +81,8 @@ export default class PlayerAnalysisEditorComp extends Component {
                 playerVisitorTeamShots: result.playerVisitorTeamShots,
                 playerHostTeamShotsOnTarget: result.playerHostTeamShotsOnTarget,
                 playerVisitorTeamShotsOnTarget: result.playerVisitorTeamShotsOnTarget,
-                playerHostTeamDropgoals: result.playerHostTeamDropgoals,
-                playerVisitorTeamDropgoals: result.playerVisitorTeamDropgoals,
+                playerHostTeamCorners: result.playerHostTeamCorners,
+                playerVisitorTeamCorners: result.playerVisitorTeamCorners,
                 playerHostTeamYellowCards: result.playerHostTeamYellowCards,
                 playerVisitorTeamYellowCards: result.playerVisitorTeamYellowCards,
                 playerHostTeamRedCards: result.playerHostTeamRedCards,
@@ -120,13 +120,13 @@ export default class PlayerAnalysisEditorComp extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (
       prevState.playerHostTeamGoals !== this.state.playerHostTeamGoals ||
-      prevState.playerHostTeamDropgoals !== this.state.playerHostTeamDropgoals ||
+      prevState.playerHostTeamCorners !== this.state.playerHostTeamCorners ||
       prevState.playerHostTeamShots !== this.state.playerHostTeamShots ||
       prevState.playerHostTeamShotsOnTarget !== this.state.playerHostTeamShotsOnTarget ||
       prevState.playerVisitorTeamGoals !== this.state.playerVisitorTeamGoals ||
       prevState.playerVisitorTeamShots !== this.state.playerVisitorTeamShots ||
       prevState.playerVisitorTeamShotsOnTarget !== this.state.playerVisitorTeamShotsOnTarget ||
-      prevState.playerVisitorTeamDropgoals !== this.state.playerVisitorTeamDropgoals
+      prevState.playerVisitorTeamCorners !== this.state.playerVisitorTeamCorners
     ) { this.calculateScores(); }
   }
 
@@ -146,29 +146,15 @@ export default class PlayerAnalysisEditorComp extends Component {
   }
 
   handleHostTeamGoalsChange(e) {
-    if (Number(e.target.value) < Number(this.state.playerHostTeamShots)) {
-      this.setState({
-        playerHostTeamGoals: e.target.value,
-        playerHostTeamShots: e.target.value,
-      });
-    } else {
-      this.setState({
-        playerHostTeamGoals: e.target.value,
-      });
-    }
+    this.setState({
+      playerHostTeamGoals: e.target.value,
+    });
   }
 
   handleVisitorTeamGoalsChange(e) {
-    if (Number(e.target.value) < Number(this.state.playerVisitorTeamShots)) {
-      this.setState({
-        playerVisitorTeamGoals: e.target.value,
-        playerVisitorTeamShots: e.target.value,
-      });
-    } else {
-      this.setState({
-        playerVisitorTeamGoals: e.target.value,
-      });
-    }
+    this.setState({
+      playerVisitorTeamGoals: e.target.value,
+    });
   }
 
   handleHostTeamShotsChange(e) {
@@ -195,15 +181,15 @@ export default class PlayerAnalysisEditorComp extends Component {
     });
   }
 
-  handleHostTeamDropgoalsChange(e) {
+  handleHostTeamCornersChange(e) {
     this.setState({
-      playerHostTeamDropgoals: e.target.value,
+      playerHostTeamCorners: e.target.value,
     });
   }
 
-  handleVisitorTeamDropgoalsChange(e) {
+  handleVisitorTeamCornersChange(e) {
     this.setState({
-      playerVisitorTeamDropgoals: e.target.value,
+      playerVisitorTeamCorners: e.target.value,
     });
   }
 
@@ -237,7 +223,6 @@ export default class PlayerAnalysisEditorComp extends Component {
       feedbackMessage: 'Busy...',
       feedbackMessageType: 'success',
     });
-    console.log('STATE:', this.state);
     const { gameSetupId } = this.props.match.params;
     const playerGameAnalysisInfo = {
       gameSetupId: gameSetupId,
@@ -249,8 +234,8 @@ export default class PlayerAnalysisEditorComp extends Component {
       playerVisitorTeamShots: this.state.playerVisitorTeamShots,
       playerHostTeamShotsOnTarget: this.state.playerHostTeamShotsOnTarget,
       playerVisitorTeamShotsOnTarget: this.state.playerVisitorTeamShotsOnTarget,
-      playerHostTeamDropgoals: this.state.playerHostTeamDropgoals,
-      playerVisitorTeamDropgoals: this.state.playerVisitorTeamDropgoals,
+      playerHostTeamCorners: this.state.playerHostTeamCorners,
+      playerVisitorTeamCorners: this.state.playerVisitorTeamCorners,
       playerHostTeamYellowCards: this.state.playerHostTeamYellowCards,
       playerVisitorTeamYellowCards: this.state.playerVisitorTeamYellowCards,
       playerHostTeamRedCards: this.state.playerHostTeamRedCards,
@@ -258,8 +243,6 @@ export default class PlayerAnalysisEditorComp extends Component {
       playerWinner: (this.state.playerHostScore > this.state.playerVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
     };
     Meteor.call('player_game_analysis.create', playerGameAnalysisInfo, (err, result) => {
-      console.log('ERROR:', err);
-      console.log('RESULT:', result);
       if (err) {
         this.setState({
           feedbackMessage: `ERROR: ${err.reason}`,
@@ -283,7 +266,6 @@ export default class PlayerAnalysisEditorComp extends Component {
   }
 
   render() {
-    console.log('this.state:', this.state)
     const { feedbackMessage, feedbackMessageType } = this.state;
     const gameSequenceNo = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameSequenceNo : 'Loading...';
     const gameDate = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameDate : 'Loading...';
@@ -292,13 +274,7 @@ export default class PlayerAnalysisEditorComp extends Component {
     const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
     const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
     const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
-    const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-    const hostShotsArr = noValuesArr.filter((val, i) => {
-      return (i <= this.state.playerHostTeamGoals);
-    });
-    const visitorShotsArr = noValuesArr.filter((val, i) => {
-      return (i <= this.state.playerVisitorTeamGoals);
-    });
+    const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50];
     let savedAndDisabled = true;
     let saveBtnText = '';
     if (!this.state.PlayerGameAnalysisId) {
@@ -407,7 +383,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     onChange={this.handleHostTeamShotsChange}
                     disabled={savedAndDisabled}
                   >
-                    {hostShotsArr.map(val => <option value={val}>{val}</option>)}
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
                   </select>
                   <div className="col-md-4 game-row1 text-center">Shots</div>
                   <select
@@ -418,7 +394,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                     onChange={this.handleVisitorTeamShotsChange}
                     disabled={savedAndDisabled}
                   >
-                    {visitorShotsArr.map(val => <option value={val}>{val}</option>)}
+                    {noValuesArr.map(val => <option value={val}>{val}</option>)}
                   </select>
                 </div>
                 <div className="section-row form-group row justify-content-md-center">
@@ -432,7 +408,7 @@ export default class PlayerAnalysisEditorComp extends Component {
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
                   </select>
-                  <div className="col-md-4 game-row1 text-center">Shots On Target</div>
+                  <div className="col-md-4 game-row1 text-center shots-on-target-label">Shots On Target</div>
                   <select
                     name="form-field-name"
                     id="game-visitor-team-shots-on-target"
@@ -447,21 +423,21 @@ export default class PlayerAnalysisEditorComp extends Component {
                 <div className="section-row form-group row justify-content-md-center">
                   <select
                     name="form-field-name"
-                    id="game-host-team-dropgoals"
+                    id="game-host-team-corners"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.playerHostTeamDropgoals}
-                    onChange={this.handleHostTeamDropgoalsChange}
+                    value={this.state.playerHostTeamCorners}
+                    onChange={this.handleHostTeamCornersChange}
                     disabled={savedAndDisabled}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}
                   </select>
-                  <div className="col-md-4 game-row1 text-center">Dropgoals</div>
+                  <div className="col-md-4 game-row1 text-center">Corners</div>
                   <select
                     name="form-field-name"
-                    id="game-visitor-team-dropgoals"
+                    id="game-visitor-team-corners"
                     className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                    value={this.state.playerVisitorTeamDropgoals}
-                    onChange={this.handleVisitorTeamDropgoalsChange}
+                    value={this.state.playerVisitorTeamCorners}
+                    onChange={this.handleVisitorTeamCornersChange}
                     disabled={savedAndDisabled}
                   >
                     {noValuesArr.map(val => <option value={val}>{val}</option>)}

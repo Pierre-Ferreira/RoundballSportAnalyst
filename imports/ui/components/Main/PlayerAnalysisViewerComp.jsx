@@ -17,8 +17,8 @@ export default class PlayerAnalysisViewerComp extends Component {
       playerVisitorTeamShots: '0',
       playerHostTeamShotsOnTarget: '0',
       playerVisitorTeamShotsOnTarget: '0',
-      playerHostTeamDropgoals: '0',
-      playerVisitorTeamDropgoals: '0',
+      playerHostTeamCorners: '0',
+      playerVisitorTeamCorners: '0',
       playerHostTeamYellowCards: '0',
       playerVisitorTeamYellowCards: '0',
       playerHostTeamRedCards: '0',
@@ -59,8 +59,8 @@ export default class PlayerAnalysisViewerComp extends Component {
                 playerVisitorTeamShots: result.playerVisitorTeamShots,
                 playerHostTeamShotsOnTarget: result.playerHostTeamShotsOnTarget,
                 playerVisitorTeamShotsOnTarget: result.playerVisitorTeamShotsOnTarget,
-                playerHostTeamDropgoals: result.playerHostTeamDropgoals,
-                playerVisitorTeamDropgoals: result.playerVisitorTeamDropgoals,
+                playerHostTeamCorners: result.playerHostTeamCorners,
+                playerVisitorTeamCorners: result.playerVisitorTeamCorners,
                 playerHostTeamYellowCards: result.playerHostTeamYellowCards,
                 playerVisitorTeamYellowCards: result.playerVisitorTeamYellowCards,
                 playerHostTeamRedCards: result.playerHostTeamRedCards,
@@ -77,8 +77,8 @@ export default class PlayerAnalysisViewerComp extends Component {
                 playerVisitorTeamShots: 'N/A',
                 playerHostTeamShotsOnTarget: 'N/A',
                 playerVisitorTeamShotsOnTarget: 'N/A',
-                playerHostTeamDropgoals: 'N/A',
-                playerVisitorTeamDropgoals: 'N/A',
+                playerHostTeamCorners: 'N/A',
+                playerVisitorTeamCorners: 'N/A',
                 playerHostTeamYellowCards: 'N/A',
                 playerVisitorTeamYellowCards: 'N/A',
                 playerHostTeamRedCards: 'N/A',
@@ -135,9 +135,9 @@ export default class PlayerAnalysisViewerComp extends Component {
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">
-            <div className="col-md-3 game-row7 text-center">{this.state.playerHostTeamDropgoals}</div>
-            <div className="col-md-6 game-row1 text-center">Dropgoals</div>
-            <div className="col-md-3 game-row7 text-center">{this.state.playerVisitorTeamDropgoals}</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.playerHostTeamCorners}</div>
+            <div className="col-md-6 game-row1 text-center">Corners</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.playerVisitorTeamCorners}</div>
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">

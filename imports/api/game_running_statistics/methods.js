@@ -23,8 +23,8 @@ Meteor.methods({
       gameVisitorTeamShots: String,
       gameHostTeamShotsOnTarget: String,
       gameVisitorTeamShotsOnTarget: String,
-      gameHostTeamDropgoals: String,
-      gameVisitorTeamDropgoals: String,
+      gameHostTeamCorners: String,
+      gameVisitorTeamCorners: String,
       gameHostTeamYellowCards: String,
       gameVisitorTeamYellowCards: String,
       gameHostTeamRedCards: String,
@@ -40,8 +40,8 @@ Meteor.methods({
     if (gameRunningStatsInfo.gameVisitorTeamShots.length === 0) throw new Meteor.Error(403, 'Visitor Shots is required');
     if (gameRunningStatsInfo.gameHostTeamShotsOnTarget.length === 0) throw new Meteor.Error(403, 'Host ShotsOnTarget is required');
     if (gameRunningStatsInfo.gameVisitorTeamShotsOnTarget.length === 0) throw new Meteor.Error(403, 'Visitor ShotsOnTarget is required');
-    if (gameRunningStatsInfo.gameHostTeamDropgoals.length === 0) throw new Meteor.Error(403, 'Host Dropgoals is required');
-    if (gameRunningStatsInfo.gameVisitorTeamDropgoals.length === 0) throw new Meteor.Error(403, 'Visitor Dropgoals is required');
+    if (gameRunningStatsInfo.gameHostTeamCorners.length === 0) throw new Meteor.Error(403, 'Host Corners is required');
+    if (gameRunningStatsInfo.gameVisitorTeamCorners.length === 0) throw new Meteor.Error(403, 'Visitor Corners is required');
     if (gameRunningStatsInfo.gameHostTeamYellowCards.length === 0) throw new Meteor.Error(403, 'Host Yellow Cards is required');
     if (gameRunningStatsInfo.gameVisitorTeamYellowCards.length === 0) throw new Meteor.Error(403, 'Visitor Yellow Cards No is required');
     if (gameRunningStatsInfo.gameHostTeamRedCards.length === 0) throw new Meteor.Error(403, 'Host Red Cards is required');
@@ -69,8 +69,8 @@ Meteor.methods({
       gameVisitorTeamShots: String,
       gameHostTeamShotsOnTarget: String,
       gameVisitorTeamShotsOnTarget: String,
-      gameHostTeamDropgoals: String,
-      gameVisitorTeamDropgoals: String,
+      gameHostTeamCorners: String,
+      gameVisitorTeamCorners: String,
       gameHostTeamYellowCards: String,
       gameVisitorTeamYellowCards: String,
       gameHostTeamRedCards: String,
@@ -86,8 +86,8 @@ Meteor.methods({
     if (gameRunningStatsInfo.gameVisitorTeamShots.length === 0) throw new Meteor.Error(403, 'Visitor Shots is required');
     if (gameRunningStatsInfo.gameHostTeamShotsOnTarget.length === 0) throw new Meteor.Error(403, 'Host ShotsOnTarget is required');
     if (gameRunningStatsInfo.gameVisitorTeamShotsOnTarget.length === 0) throw new Meteor.Error(403, 'Visitor ShotsOnTarget is required');
-    if (gameRunningStatsInfo.gameHostTeamDropgoals.length === 0) throw new Meteor.Error(403, 'Host Dropgoals is required');
-    if (gameRunningStatsInfo.gameVisitorTeamDropgoals.length === 0) throw new Meteor.Error(403, 'Visitor Dropgoals is required');
+    if (gameRunningStatsInfo.gameHostTeamCorners.length === 0) throw new Meteor.Error(403, 'Host Corners is required');
+    if (gameRunningStatsInfo.gameVisitorTeamCorners.length === 0) throw new Meteor.Error(403, 'Visitor Corners is required');
     if (gameRunningStatsInfo.gameHostTeamYellowCards.length === 0) throw new Meteor.Error(403, 'Host Yellow Cards is required');
     if (gameRunningStatsInfo.gameVisitorTeamYellowCards.length === 0) throw new Meteor.Error(403, 'Visitor Yellow Cards No is required');
     if (gameRunningStatsInfo.gameHostTeamRedCards.length === 0) throw new Meteor.Error(403, 'Host Red Cards is required');

@@ -24,8 +24,8 @@ export default class GameRunningViewerComp extends Component {
       gameVisitorTeamShots: '0',
       gameHostTeamShotsOnTarget: '0',
       gameVisitorTeamShotsOnTarget: '0',
-      gameHostTeamDropgoals: '0',
-      gameVisitorTeamDropgoals: '0',
+      gameHostTeamCorners: '0',
+      gameVisitorTeamCorners: '0',
       gameHostTeamYellowCards: '0',
       gameVisitorTeamYellowCards: '0',
       gameHostTeamRedCards: '0',
@@ -60,13 +60,13 @@ export default class GameRunningViewerComp extends Component {
       nextProps.gameHostScore !== this.state.gameHostScore ||
       nextProps.gameVisitorScore !== this.state.gameVisitorScore ||
       nextProps.gameHostTeamGoals !== this.state.gameHostTeamGoals ||
-      nextProps.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
+      nextProps.gameHostTeamCorners !== this.state.gameHostTeamCorners ||
       nextProps.gameHostTeamShots !== this.state.gameHostTeamShots ||
       nextProps.gameHostTeamShotsOnTarget !== this.state.gameHostTeamShotsOnTarget ||
       nextProps.gameVisitorTeamGoals !== this.state.gameVisitorTeamGoals ||
       nextProps.gameVisitorTeamShots !== this.state.gameVisitorTeamShots ||
       nextProps.gameVisitorTeamShotsOnTarget !== this.state.gameVisitorTeamShotsOnTarget ||
-      nextProps.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals ||
+      nextProps.gameVisitorTeamCorners !== this.state.gameVisitorTeamCorners ||
       nextProps.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
       nextProps.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
       nextProps.gameHostTeamRedCards !== this.state.gameHostTeamRedCards ||
@@ -97,8 +97,8 @@ export default class GameRunningViewerComp extends Component {
           gameVisitorTeamShots: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamShots,
           gameHostTeamShotsOnTarget: nextProps.CurrentGameRunningStatistics[0].gameHostTeamShotsOnTarget,
           gameVisitorTeamShotsOnTarget: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamShotsOnTarget,
-          gameHostTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameHostTeamDropgoals,
-          gameVisitorTeamDropgoals: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamDropgoals,
+          gameHostTeamCorners: nextProps.CurrentGameRunningStatistics[0].gameHostTeamCorners,
+          gameVisitorTeamCorners: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamCorners,
           gameHostTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamYellowCards,
           gameVisitorTeamYellowCards: nextProps.CurrentGameRunningStatistics[0].gameVisitorTeamYellowCards,
           gameHostTeamRedCards: nextProps.CurrentGameRunningStatistics[0].gameHostTeamRedCards,
@@ -181,9 +181,9 @@ export default class GameRunningViewerComp extends Component {
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">
-            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamDropgoals}</div>
-            <div className="col-md-6 game-row1 text-center">Dropgoals</div>
-            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamDropgoals}</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameHostTeamCorners}</div>
+            <div className="col-md-6 game-row1 text-center">Corners</div>
+            <div className="col-md-3 game-row7 text-center">{this.state.gameVisitorTeamCorners}</div>
           </div>
           <hr />
           <div className="section-row form-group row justify-content-md-center">

@@ -19,8 +19,8 @@ export default class GameRunningEditorComp extends Component {
       gameVisitorTeamShots: '0',
       gameHostTeamShotsOnTarget: '0',
       gameVisitorTeamShotsOnTarget: '0',
-      gameHostTeamDropgoals: '0',
-      gameVisitorTeamDropgoals: '0',
+      gameHostTeamCorners: '0',
+      gameVisitorTeamCorners: '0',
       gameHostTeamYellowCards: '0',
       gameVisitorTeamYellowCards: '0',
       gameHostTeamRedCards: '0',
@@ -39,8 +39,8 @@ export default class GameRunningEditorComp extends Component {
     this.handleVisitorTeamShotsChange = this.handleVisitorTeamShotsChange.bind(this);
     this.handleHostTeamShotsOnTargetChange = this.handleHostTeamShotsOnTargetChange.bind(this);
     this.handleVisitorTeamShotsOnTargetChange = this.handleVisitorTeamShotsOnTargetChange.bind(this);
-    this.handleHostTeamDropgoalsChange = this.handleHostTeamDropgoalsChange.bind(this);
-    this.handleVisitorTeamDropgoalsChange = this.handleVisitorTeamDropgoalsChange.bind(this);
+    this.handleHostTeamCornersChange = this.handleHostTeamCornersChange.bind(this);
+    this.handleVisitorTeamCornersChange = this.handleVisitorTeamCornersChange.bind(this);
     this.handleHostTeamYellowCardsChange = this.handleHostTeamYellowCardsChange.bind(this);
     this.handleVisitorTeamYellowCardsChange = this.handleVisitorTeamYellowCardsChange.bind(this);
     this.handleHostTeamRedCardsChange = this.handleHostTeamRedCardsChange.bind(this);
@@ -67,7 +67,6 @@ export default class GameRunningEditorComp extends Component {
               feedbackMessageType: 'danger',
             });
           } else {
-            console.log('game_running_statistics.fetch result:', result);
             if (result) {
               this.setState({
                 gameRunningStatsId: result._id,
@@ -80,8 +79,8 @@ export default class GameRunningEditorComp extends Component {
                 gameVisitorTeamShots: result.gameVisitorTeamShots,
                 gameHostTeamShotsOnTarget: result.gameHostTeamShotsOnTarget,
                 gameVisitorTeamShotsOnTarget: result.gameVisitorTeamShotsOnTarget,
-                gameHostTeamDropgoals: result.gameHostTeamDropgoals,
-                gameVisitorTeamDropgoals: result.gameVisitorTeamDropgoals,
+                gameHostTeamCorners: result.gameHostTeamCorners,
+                gameVisitorTeamCorners: result.gameVisitorTeamCorners,
                 gameHostTeamYellowCards: result.gameHostTeamYellowCards,
                 gameVisitorTeamYellowCards: result.gameVisitorTeamYellowCards,
                 gameHostTeamRedCards: result.gameHostTeamRedCards,
@@ -108,19 +107,27 @@ export default class GameRunningEditorComp extends Component {
       prevState.gameHostScore !== this.state.gameHostScore ||
       prevState.gameVisitorScore !== this.state.gameVisitorScore ||
       prevState.gameHostTeamGoals !== this.state.gameHostTeamGoals ||
-      prevState.gameHostTeamDropgoals !== this.state.gameHostTeamDropgoals ||
-      prevState.gameHostTeamShots !== this.state.gameHostTeamShots ||
-      prevState.gameHostTeamShotsOnTarget !== this.state.gameHostTeamShotsOnTarget ||
-      prevState.gameVisitorTeamGoals !== this.state.gameVisitorTeamGoals ||
-      prevState.gameVisitorTeamShots !== this.state.gameVisitorTeamShots ||
-      prevState.gameVisitorTeamShotsOnTarget !== this.state.gameVisitorTeamShotsOnTarget ||
-      prevState.gameVisitorTeamDropgoals !== this.state.gameVisitorTeamDropgoals
+      // prevState.gameHostTeamCorners !== this.state.gameHostTeamCorners ||
+      // prevState.gameHostTeamShots !== this.state.gameHostTeamShots ||
+      // prevState.gameHostTeamShotsOnTarget !== this.state.gameHostTeamShotsOnTarget ||
+      prevState.gameVisitorTeamGoals !== this.state.gameVisitorTeamGoals
+      // prevState.gameVisitorTeamShots !== this.state.gameVisitorTeamShots ||
+      // prevState.gameVisitorTeamShotsOnTarget !== this.state.gameVisitorTeamShotsOnTarget ||
+      // prevState.gameVisitorTeamCorners !== this.state.gameVisitorTeamCorners
     ) {
       this.calculateScores();
     }
     if (
       prevState.gameHostScore !== this.state.gameHostScore ||
       prevState.gameVisitorScore !== this.state.gameVisitorScore ||
+      prevState.gameHostTeamGoals !== this.state.gameHostTeamGoals ||
+      prevState.gameHostTeamCorners !== this.state.gameHostTeamCorners ||
+      prevState.gameHostTeamShots !== this.state.gameHostTeamShots ||
+      prevState.gameHostTeamShotsOnTarget !== this.state.gameHostTeamShotsOnTarget ||
+      prevState.gameVisitorTeamGoals !== this.state.gameVisitorTeamGoals ||
+      prevState.gameVisitorTeamShots !== this.state.gameVisitorTeamShots ||
+      prevState.gameVisitorTeamShotsOnTarget !== this.state.gameVisitorTeamShotsOnTarget ||
+      prevState.gameVisitorTeamCorners !== this.state.gameVisitorTeamCorners ||
       prevState.gameHostTeamYellowCards !== this.state.gameHostTeamYellowCards ||
       prevState.gameVisitorTeamYellowCards !== this.state.gameVisitorTeamYellowCards ||
       prevState.gameHostTeamRedCards !== this.state.gameHostTeamRedCards ||
@@ -133,14 +140,8 @@ export default class GameRunningEditorComp extends Component {
   calculateScores() {
     let gameHostScore = 0;
     let gameVisitorScore = 0;
-    gameHostScore += this.state.gameHostTeamGoals * 5;
-    gameHostScore += this.state.gameHostTeamDropgoals * 3;
-    gameHostScore += this.state.gameHostTeamShots * 2;
-    gameHostScore += this.state.gameHostTeamShotsOnTarget * 3;
-    gameVisitorScore += this.state.gameVisitorTeamGoals * 5;
-    gameVisitorScore += this.state.gameVisitorTeamShots * 2;
-    gameVisitorScore += this.state.gameVisitorTeamShotsOnTarget * 3;
-    gameVisitorScore += this.state.gameVisitorTeamDropgoals * 3;
+    gameHostScore += this.state.gameHostTeamGoals * 1;
+    gameVisitorScore += this.state.gameVisitorTeamGoals * 1;
     this.setState({
       gameHostScore,
       gameVisitorScore,
@@ -152,29 +153,15 @@ export default class GameRunningEditorComp extends Component {
   }
 
   handleHostTeamGoalsChange(e) {
-    if (Number(e.target.value) < Number(this.state.gameHostTeamShots)) {
-      this.setState({
-        gameHostTeamGoals: e.target.value,
-        gameHostTeamShots: e.target.value,
-      });
-    } else {
-      this.setState({
-        gameHostTeamGoals: e.target.value,
-      });
-    }
+    this.setState({
+      gameHostTeamGoals: e.target.value,
+    });
   }
 
   handleVisitorTeamGoalsChange(e) {
-    if (Number(e.target.value) < Number(this.state.gameVisitorTeamShots)) {
-      this.setState({
-        gameVisitorTeamGoals: e.target.value,
-        gameVisitorTeamShots: e.target.value,
-      });
-    } else {
-      this.setState({
-        gameVisitorTeamGoals: e.target.value,
-      });
-    }
+    this.setState({
+      gameVisitorTeamGoals: e.target.value,
+    });
   }
 
   handleHostTeamShotsChange(e) {
@@ -201,15 +188,15 @@ export default class GameRunningEditorComp extends Component {
     });
   }
 
-  handleHostTeamDropgoalsChange(e) {
+  handleHostTeamCornersChange(e) {
     this.setState({
-      gameHostTeamDropgoals: e.target.value,
+      gameHostTeamCorners: e.target.value,
     });
   }
 
-  handleVisitorTeamDropgoalsChange(e) {
+  handleVisitorTeamCornersChange(e) {
     this.setState({
-      gameVisitorTeamDropgoals: e.target.value,
+      gameVisitorTeamCorners: e.target.value,
     });
   }
 
@@ -246,8 +233,8 @@ export default class GameRunningEditorComp extends Component {
       gameVisitorTeamShots: '0',
       gameHostTeamShotsOnTarget: '0',
       gameVisitorTeamShotsOnTarget: '0',
-      gameHostTeamDropgoals: '0',
-      gameVisitorTeamDropgoals: '0',
+      gameHostTeamCorners: '0',
+      gameVisitorTeamCorners: '0',
       gameHostTeamYellowCards: '0',
       gameVisitorTeamYellowCards: '0',
       gameHostTeamRedCards: '0',
@@ -256,7 +243,6 @@ export default class GameRunningEditorComp extends Component {
       gameVisitorScore: 0,
       gameWinner: 'VISITORTEAM',
     };
-    console.log('gameRunningStatsInitInfo:', gameRunningStatsInitInfo);
     Meteor.call('game_running_statistics.create', gameRunningStatsInitInfo, (err, result) => {
       if (err) {
         this.setState({
@@ -264,7 +250,6 @@ export default class GameRunningEditorComp extends Component {
           feedbackMessageType: 'danger',
         });
       } else {
-        console.log('game_running_statistics.create RES1:', result);
         Meteor.call('game_setup.update_status', this.state.gameSetupId, 'running', (errStatus) => {
           if (err) {
             this.setState({
@@ -272,7 +257,6 @@ export default class GameRunningEditorComp extends Component {
               feedbackMessageType: 'danger',
             });
           } else {
-            console.log('game_running_statistics.create RES2:', result);
             this.setState({
               feedbackMessage: 'Game Stats Document initialized!',
               feedbackMessageType: 'success',
@@ -296,7 +280,6 @@ export default class GameRunningEditorComp extends Component {
       feedbackMessage: 'Busy...',
       feedbackMessageType: 'success',
     });
-    console.log('STATE:', this.state);
     const { gameRunningStatsId } = this.state;
     const gameRunningStatsInfo = {
       gameSetupId: this.state.gameSetupId,
@@ -308,16 +291,14 @@ export default class GameRunningEditorComp extends Component {
       gameVisitorTeamShots: this.state.gameVisitorTeamShots,
       gameHostTeamShotsOnTarget: this.state.gameHostTeamShotsOnTarget,
       gameVisitorTeamShotsOnTarget: this.state.gameVisitorTeamShotsOnTarget,
-      gameHostTeamDropgoals: this.state.gameHostTeamDropgoals,
-      gameVisitorTeamDropgoals: this.state.gameVisitorTeamDropgoals,
+      gameHostTeamCorners: this.state.gameHostTeamCorners,
+      gameVisitorTeamCorners: this.state.gameVisitorTeamCorners,
       gameHostTeamYellowCards: this.state.gameHostTeamYellowCards,
       gameVisitorTeamYellowCards: this.state.gameVisitorTeamYellowCards,
       gameHostTeamRedCards: this.state.gameHostTeamRedCards,
       gameVisitorTeamRedCards: this.state.gameVisitorTeamRedCards,
       gameWinner: (this.state.gameHostScore > this.state.gameVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
     };
-    console.log('gameRunningStatsId:', gameRunningStatsId);
-    console.log('gameRunningStatsInfo:', gameRunningStatsInfo);
 
     Meteor.call('game_running_statistics.update', gameRunningStatsId, gameRunningStatsInfo, (err) => {
       if (err) {
@@ -332,7 +313,6 @@ export default class GameRunningEditorComp extends Component {
         });
         Meteor.call('updatePlayersScores', gameRunningStatsInfo, (gameRunningStatsInfoErr) => {
           if (gameRunningStatsInfoErr) {
-            console.log('gameRunningStatsInfoErr:', gameRunningStatsInfoErr);
             this.setState({
               feedbackMessage: `ERROR: ${gameRunningStatsInfoErr.reason}`,
               feedbackMessageType: 'danger',
@@ -340,7 +320,6 @@ export default class GameRunningEditorComp extends Component {
           } else {
             Meteor.call('updateLeaderboard', this.state.gameSetupId, (updateLeaderboardErr, updatedLeaderboard) => {
               if (updateLeaderboardErr) {
-                console.log('updateLeaderboardErr:', updateLeaderboardErr);
                 this.setState({
                   feedbackMessage: `ERROR: ${updateLeaderboardErr.reason}`,
                   feedbackMessageType: 'danger',
@@ -401,9 +380,7 @@ export default class GameRunningEditorComp extends Component {
     const gameVenue = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameVenue : 'Loading...';
     const gameCity = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameCity : 'Loading...';
     const gameKickoff = this.state.gameSetupInfo ? this.state.gameSetupInfo.gameKickoff : 'Loading...';
-    const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-    const hostShotsArr = noValuesArr.filter((val, i) => (i <= this.state.gameHostTeamGoals));
-    const visitorShotsArr = noValuesArr.filter((val, i) => (i <= this.state.gameVisitorTeamGoals));
+    const noValuesArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50];
     let gameIsRunning = true;
     let startBtnText = '';
     if (!this.state.gameIsRunning) {
@@ -481,7 +458,7 @@ export default class GameRunningEditorComp extends Component {
                         value={this.state.gameHostTeamShots}
                         onChange={this.handleHostTeamShotsChange}
                       >
-                        {hostShotsArr.map(val => <option value={val}>{val}</option>)}
+                        {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
                       <div className="col-md-4 game-row1 text-center">Shots</div>
                       <select
@@ -491,7 +468,7 @@ export default class GameRunningEditorComp extends Component {
                         value={this.state.gameVisitorTeamShots}
                         onChange={this.handleVisitorTeamShotsChange}
                       >
-                        {visitorShotsArr.map(val => <option value={val}>{val}</option>)}
+                        {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
                     </div>
                     <div className="section-row form-group row justify-content-md-center">
@@ -504,7 +481,7 @@ export default class GameRunningEditorComp extends Component {
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
-                      <div className="col-md-4 game-row1 text-center">Shots On Target</div>
+                      <div className="col-md-4 game-row1 text-center shots-on-target-label">Shots On Target</div>
                       <select
                         name="form-field-name"
                         id="game-visitor-team-shots-on-target"
@@ -518,20 +495,20 @@ export default class GameRunningEditorComp extends Component {
                     <div className="section-row form-group row justify-content-md-center">
                       <select
                         name="form-field-name"
-                        id="game-host-team-dropgoals"
+                        id="game-host-team-corners"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameHostTeamDropgoals}
-                        onChange={this.handleHostTeamDropgoalsChange}
+                        value={this.state.gameHostTeamCorners}
+                        onChange={this.handleHostTeamCornersChange}
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
-                      <div className="col-md-4 game-row1 text-center">Dropgoals</div>
+                      <div className="col-md-4 game-row1 text-center">Corners</div>
                       <select
                         name="form-field-name"
-                        id="game-visitor-team-dropgoals"
+                        id="game-visitor-team-corners"
                         className="form-control input-lg col-md-2 select-dropdown-fields game-row1"
-                        value={this.state.gameVisitorTeamDropgoals}
-                        onChange={this.handleVisitorTeamDropgoalsChange}
+                        value={this.state.gameVisitorTeamCorners}
+                        onChange={this.handleVisitorTeamCornersChange}
                       >
                         {noValuesArr.map(val => <option value={val}>{val}</option>)}
                       </select>
