@@ -224,6 +224,14 @@ export default class PlayerAnalysisEditorComp extends Component {
       feedbackMessageType: 'success',
     });
     const { gameSetupId } = this.props.match.params;
+    let playerWinner = '';
+    if (this.state.gameHostScore === this.state.gameVisitorScore) {
+      playerWinner = 'DRAW';
+    } else if (this.state.gameHostScore > this.state.gameVisitorScore) {
+      playerWinner = 'HOSTTEAM';
+    } else {
+      playerWinner = 'VISITORTEAM';
+    }
     const playerGameAnalysisInfo = {
       gameSetupId: gameSetupId,
       playerHostScore: this.state.playerHostScore,
@@ -240,7 +248,7 @@ export default class PlayerAnalysisEditorComp extends Component {
       playerVisitorTeamYellowCards: this.state.playerVisitorTeamYellowCards,
       playerHostTeamRedCards: this.state.playerHostTeamRedCards,
       playerVisitorTeamRedCards: this.state.playerVisitorTeamRedCards,
-      playerWinner: (this.state.playerHostScore > this.state.playerVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
+      playerWinner,
     };
     Meteor.call('player_game_analysis.create', playerGameAnalysisInfo, (err, result) => {
       if (err) {

@@ -12,14 +12,12 @@ export default class PlayerScoreViewerComp extends Component {
     this.state = {
       playerCategoryDiff: {
         winnerTeam: 'N/A',
-        winnerScore: 'N/A',
         winnerGoals: 'N/A',
         winnerShots: 'N/A',
         winnerShotsOnTarget: 'N/A',
         winnerCorners: 'N/A',
         winnerYellowCards: 'N/A',
         winnerRedCards: 'N/A',
-        loserScore: 'N/A',
         loserGoals: 'N/A',
         loserShots: 'N/A',
         loserShotsOnTarget: 'N/A',
@@ -29,14 +27,12 @@ export default class PlayerScoreViewerComp extends Component {
       },
       playerCategoryLoss: {
         winnerTeam: 'N/A',
-        winnerScore: 'N/A',
         winnerGoals: 'N/A',
         winnerShots: 'N/A',
         winnerShotsOnTarget: 'N/A',
         winnerCorners: 'N/A',
         winnerYellowCards: 'N/A',
         winnerRedCards: 'N/A',
-        loserScore: 'N/A',
         loserGoals: 'N/A',
         loserShots: 'N/A',
         loserShotsOnTarget: 'N/A',
@@ -48,6 +44,25 @@ export default class PlayerScoreViewerComp extends Component {
       playerScore: 0,
     };
   }
+
+  // componentWillMount() {
+  //   const { gameSetupId } = this.props.match.params;
+  //   Meteor.call('game_setup.fetch', gameSetupId, (err, result) => {
+  //     if (err) {
+  //       console.log
+  //       this.setState({
+  //         winnerAlias: 'N/A',
+  //         team2Alias: 'N/A',
+  //       });
+  //     } else {
+  //       this.setState({
+  //         // gameSetupInfo: result,
+  //         winnerAlias: result.gameHostAlias,
+  //         team2Alias: result.gameVisitorAlias,
+  //       });
+  //     }
+  //   });
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (
@@ -70,8 +85,6 @@ export default class PlayerScoreViewerComp extends Component {
   render() {
     const scoreFactors = {
       winnerTeam: -3000,
-      // winnerScore: -500,
-      // loserScore: -500,
       winnerGoals: -500,
       loserGoals: -500,
       winnerShots: -50,
@@ -104,86 +117,74 @@ export default class PlayerScoreViewerComp extends Component {
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerTeam}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerTeam}</div>
           </div>
-          {/* <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner Score:</div>
-            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerScore}</div>
-            <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerScore}</div>
-            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerScore}</div>
-          </div> */}
-          {/* <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser Score:</div>
-            <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserScore}</div>
-            <div className="col-md-3 game-row6 text-center">{scoreFactors.loserScore}</div>
-            <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserScore}</div>
-          </div> */}
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner Goals:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.winnerAlias} Goals:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerGoals}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerGoals}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerGoals}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser Goals:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.loserAlias} Goals:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserGoals}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserGoals}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserGoals}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner Shots:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.winnerAlias} Shots:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerShots}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerShots}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerShots}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser Shots:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.loserAlias} Shots:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserShots}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserShots}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserShots}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner Pens:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.winnerAlias} Pens:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerShotsOnTarget}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerShotsOnTarget}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerShotsOnTarget}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser Pens:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.loserAlias} Pens:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserShotsOnTarget}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserShotsOnTarget}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserShotsOnTarget}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner D/goals:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.winnerAlias} Corners:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerCorners}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerCorners}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerCorners}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser D/goals:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.loserAlias} Corners:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserCorners}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserCorners}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserCorners}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner Yellows:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.winnerAlias} Yellows:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerYellowCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerYellowCards}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerYellowCards}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser Yellows:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.loserAlias} Yellows:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserYellowCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserYellowCards}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserYellowCards}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Winner Reds:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.winnerAlias} Reds:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.winnerRedCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.winnerRedCards}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.winnerRedCards}</div>
           </div>
           <div className="section-row row justify-content-md-center">
-            <div className="col-md-4 game-row6 text-center">Loser Reds:</div>
+            <div className="col-md-4 game-row6 text-center">{this.state.playerCategoryDiff.loserAlias} Reds:</div>
             <div className="col-md-2 game-row6 text-center">{this.state.playerCategoryDiff.loserRedCards}</div>
             <div className="col-md-3 game-row6 text-center">{scoreFactors.loserRedCards}</div>
             <div className="col-md-3 game-row6 text-center">{this.state.playerCategoryLoss.loserRedCards}</div>

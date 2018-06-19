@@ -22,12 +22,12 @@ Meteor.methods({
       gameHostTeamRedCards: String,
       gameVisitorTeamRedCards: String,
       gameWinner: String,
+      gameHostAlias: String,
+      gameVisitorAlias: String,
     });
     const { gameSetupId } = gameRunningStatsInfo;
     const scoreFactors = {
       winnerTeam: -3000,
-      // winnerScore: -500,
-      // loserScore: -500,
       winnerGoals: -500,
       loserGoals: -500,
       winnerShots: -50,
@@ -42,19 +42,21 @@ Meteor.methods({
       loserRedCards: -400,
     };
     const playerGameAnalysisCursor = PlayerGameAnalysis.find({ gameSetupId }).fetch();
-    playerGameAnalysisCursor.map((playerGameAnalysis, i) => {
+    playerGameAnalysisCursor.map((playerGameAnalysis) => {
       let playerCategoryDiff = {};
+      console.log('gameHostAlias:', gameRunningStatsInfo.gameHostAlias)
+      console.log('gameVisitorAlias:', gameRunningStatsInfo.gameVisitorAlias)
       if (gameRunningStatsInfo.gameWinner === 'HOSTTEAM') {
         playerCategoryDiff = {
           winnerTeam: playerGameAnalysis.playerWinner === 'HOSTTEAM' ? 0 : 1,
-          // winnerScore: Math.abs(gameRunningStatsInfo.gameHostScore - playerGameAnalysis.playerHostScore),
+          winnerAlias: gameRunningStatsInfo.gameHostAlias,
           winnerGoals: Math.abs(gameRunningStatsInfo.gameHostTeamGoals - playerGameAnalysis.playerHostTeamGoals),
           winnerShots: Math.abs(gameRunningStatsInfo.gameHostTeamShots - playerGameAnalysis.playerHostTeamShots),
           winnerShotsOnTarget: Math.abs(gameRunningStatsInfo.gameHostTeamShotsOnTarget - playerGameAnalysis.playerHostTeamShotsOnTarget),
           winnerCorners: Math.abs(gameRunningStatsInfo.gameHostTeamCorners - playerGameAnalysis.playerHostTeamCorners),
           winnerYellowCards: Math.abs(gameRunningStatsInfo.gameHostTeamYellowCards - playerGameAnalysis.playerHostTeamYellowCards),
           winnerRedCards: Math.abs(gameRunningStatsInfo.gameHostTeamRedCards - playerGameAnalysis.playerHostTeamRedCards),
-          // loserScore:  Math.abs(gameRunningStatsInfo.gameVisitorScore - playerGameAnalysis.playerVisitorScore),
+          loserAlias: gameRunningStatsInfo.gameVisitorAlias,
           loserGoals: Math.abs(gameRunningStatsInfo.gameVisitorTeamGoals - playerGameAnalysis.playerVisitorTeamGoals),
           loserShots: Math.abs(gameRunningStatsInfo.gameVisitorTeamShots - playerGameAnalysis.playerVisitorTeamShots),
           loserShotsOnTarget: Math.abs(gameRunningStatsInfo.gameVisitorTeamShotsOnTarget - playerGameAnalysis.playerVisitorTeamShotsOnTarget),
@@ -62,17 +64,35 @@ Meteor.methods({
           loserYellowCards: Math.abs(gameRunningStatsInfo.gameVisitorTeamYellowCards - playerGameAnalysis.playerVisitorTeamYellowCards),
           loserRedCards: Math.abs(gameRunningStatsInfo.gameVisitorTeamRedCards - playerGameAnalysis.playerVisitorTeamRedCards),
         };
-      } else {
+      } else if ((gameRunningStatsInfo.gameWinner === 'VISITORTEAM')) {
         playerCategoryDiff = {
           winnerTeam: playerGameAnalysis.playerWinner === 'VISITORTEAM' ? 0 : 1,
-          // winnerScore: Math.abs(gameRunningStatsInfo.gameVisitorScore - playerGameAnalysis.playerVisitorScore),
+          winnerAlias: gameRunningStatsInfo.gameVisitorAlias,
           winnerGoals: Math.abs(gameRunningStatsInfo.gameVisitorTeamGoals - playerGameAnalysis.playerVisitorTeamGoals),
           winnerShots: Math.abs(gameRunningStatsInfo.gameVisitorTeamShots - playerGameAnalysis.playerVisitorTeamShots),
           winnerShotsOnTarget: Math.abs(gameRunningStatsInfo.gameVisitorTeamShotsOnTarget - playerGameAnalysis.playerVisitorTeamShotsOnTarget),
           winnerCorners: Math.abs(gameRunningStatsInfo.gameVisitorTeamCorners - playerGameAnalysis.playerVisitorTeamCorners),
           winnerYellowCards: Math.abs(gameRunningStatsInfo.gameVisitorTeamYellowCards - playerGameAnalysis.playerVisitorTeamYellowCards),
           winnerRedCards: Math.abs(gameRunningStatsInfo.gameVisitorTeamRedCards - playerGameAnalysis.playerVisitorTeamRedCards),
-          // loserScore:  Math.abs(gameRunningStatsInfo.gameHostScore - playerGameAnalysis.playerHostScore),
+          loserAlias: gameRunningStatsInfo.gameHostAlias,
+          loserGoals: Math.abs(gameRunningStatsInfo.gameHostTeamGoals - playerGameAnalysis.playerHostTeamGoals),
+          loserShots: Math.abs(gameRunningStatsInfo.gameHostTeamShots - playerGameAnalysis.playerHostTeamShots),
+          loserShotsOnTarget: Math.abs(gameRunningStatsInfo.gameHostTeamShotsOnTarget - playerGameAnalysis.playerHostTeamShotsOnTarget),
+          loserCorners: Math.abs(gameRunningStatsInfo.gameHostTeamCorners - playerGameAnalysis.playerHostTeamCorners),
+          loserYellowCards: Math.abs(gameRunningStatsInfo.gameHostTeamYellowCards - playerGameAnalysis.playerHostTeamYellowCards),
+          loserRedCards: Math.abs(gameRunningStatsInfo.gameHostTeamRedCards - playerGameAnalysis.playerHostTeamRedCards),
+        }
+      } else {
+        playerCategoryDiff = {
+          winnerTeam: playerGameAnalysis.playerWinner === 'DRAW' ? 0 : 1,
+          winnerAlias: gameRunningStatsInfo.gameVisitorAlias,
+          winnerGoals: Math.abs(gameRunningStatsInfo.gameVisitorTeamGoals - playerGameAnalysis.playerVisitorTeamGoals),
+          winnerShots: Math.abs(gameRunningStatsInfo.gameVisitorTeamShots - playerGameAnalysis.playerVisitorTeamShots),
+          winnerShotsOnTarget: Math.abs(gameRunningStatsInfo.gameVisitorTeamShotsOnTarget - playerGameAnalysis.playerVisitorTeamShotsOnTarget),
+          winnerCorners: Math.abs(gameRunningStatsInfo.gameVisitorTeamCorners - playerGameAnalysis.playerVisitorTeamCorners),
+          winnerYellowCards: Math.abs(gameRunningStatsInfo.gameVisitorTeamYellowCards - playerGameAnalysis.playerVisitorTeamYellowCards),
+          winnerRedCards: Math.abs(gameRunningStatsInfo.gameVisitorTeamRedCards - playerGameAnalysis.playerVisitorTeamRedCards),
+          loserAlias: gameRunningStatsInfo.gameHostAlias,
           loserGoals: Math.abs(gameRunningStatsInfo.gameHostTeamGoals - playerGameAnalysis.playerHostTeamGoals),
           loserShots: Math.abs(gameRunningStatsInfo.gameHostTeamShots - playerGameAnalysis.playerHostTeamShots),
           loserShotsOnTarget: Math.abs(gameRunningStatsInfo.gameHostTeamShotsOnTarget - playerGameAnalysis.playerHostTeamShotsOnTarget),
@@ -83,14 +103,12 @@ Meteor.methods({
       }
       const playerCategoryLoss = {
         winnerTeam: playerCategoryDiff.winnerTeam * scoreFactors.winnerTeam,
-        // winnerScore: playerCategoryDiff.winnerScore * scoreFactors.winnerScore,
         winnerGoals: playerCategoryDiff.winnerGoals * scoreFactors.winnerGoals,
         winnerShots: playerCategoryDiff.winnerShots * scoreFactors.winnerShots,
         winnerShotsOnTarget: playerCategoryDiff.winnerShotsOnTarget * scoreFactors.winnerShotsOnTarget,
         winnerCorners: playerCategoryDiff.winnerCorners * scoreFactors.winnerCorners,
         winnerYellowCards: playerCategoryDiff.winnerYellowCards * scoreFactors.winnerYellowCards,
         winnerRedCards: playerCategoryDiff.winnerRedCards * scoreFactors.winnerRedCards,
-        // loserScore: playerCategoryDiff.loserScore * scoreFactors.loserScore,
         loserGoals: playerCategoryDiff.loserGoals * scoreFactors.loserGoals,
         loserShots: playerCategoryDiff.loserShots * scoreFactors.loserShots,
         loserShotsOnTarget: playerCategoryDiff.loserShotsOnTarget * scoreFactors.loserShotsOnTarget,
@@ -98,6 +116,7 @@ Meteor.methods({
         loserYellowCards: playerCategoryDiff.loserYellowCards * scoreFactors.loserYellowCards,
         loserRedCards: playerCategoryDiff.loserRedCards * scoreFactors.loserRedCards,
       };
+      console.log('playerCategoryDiff:', playerCategoryDiff);
       const playerScoreTotalLoss = Object.values(playerCategoryLoss).reduce((a, b) => {
         return a + b;
       }, 0);

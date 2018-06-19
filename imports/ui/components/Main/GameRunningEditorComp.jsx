@@ -280,6 +280,15 @@ export default class GameRunningEditorComp extends Component {
       feedbackMessage: 'Busy...',
       feedbackMessageType: 'success',
     });
+    let gameWinner = '';
+    if (this.state.gameHostScore === this.state.gameVisitorScore) {
+      gameWinner = 'DRAW';
+    } else if (this.state.gameHostScore > this.state.gameVisitorScore) {
+      gameWinner = 'HOSTTEAM';
+    } else {
+      gameWinner = 'VISITORTEAM';
+    }
+      // (this.state.gameHostScore > this.state.gameVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
     const { gameRunningStatsId } = this.state;
     const gameRunningStatsInfo = {
       gameSetupId: this.state.gameSetupId,
@@ -297,9 +306,9 @@ export default class GameRunningEditorComp extends Component {
       gameVisitorTeamYellowCards: this.state.gameVisitorTeamYellowCards,
       gameHostTeamRedCards: this.state.gameHostTeamRedCards,
       gameVisitorTeamRedCards: this.state.gameVisitorTeamRedCards,
-      gameWinner: (this.state.gameHostScore > this.state.gameVisitorScore) ? 'HOSTTEAM' : 'VISITORTEAM',
+      gameWinner,
     };
-
+    // Update the game stats.
     Meteor.call('game_running_statistics.update', gameRunningStatsId, gameRunningStatsInfo, (err) => {
       if (err) {
         this.setState({
@@ -311,6 +320,9 @@ export default class GameRunningEditorComp extends Component {
           feedbackMessage: 'Game Stats Updated!',
           feedbackMessageType: 'success',
         });
+        gameRunningStatsInfo.gameHostAlias = this.state.gameSetupInfo.gameHostAlias;
+        gameRunningStatsInfo.gameVisitorAlias = this.state.gameSetupInfo.gameVisitorAlias;
+        // Update the players scores.
         Meteor.call('updatePlayersScores', gameRunningStatsInfo, (gameRunningStatsInfoErr) => {
           if (gameRunningStatsInfoErr) {
             this.setState({
@@ -325,6 +337,7 @@ export default class GameRunningEditorComp extends Component {
                   feedbackMessageType: 'danger',
                 });
               } else {
+                // Update/Create game leaderboard. First check if it exists.
                 Meteor.call('game_leaderboard.fetch', this.state.gameSetupId, (errFetch, gameLeaderboard) => {
                   if (errFetch) {
                     this.setState({
