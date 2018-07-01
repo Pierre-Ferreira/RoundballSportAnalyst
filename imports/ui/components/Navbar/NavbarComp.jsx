@@ -32,7 +32,7 @@ export default class NavbarComp extends Component {
           <Navbar.Header>
             <Navbar.Brand >
               <NavLink to="/main/welcome">
-                  Roundball Sport Analyst
+                  Kallima Lifestyle Clinic
               </NavLink>
             </Navbar.Brand>
           <Navbar.Toggle />

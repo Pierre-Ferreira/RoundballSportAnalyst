@@ -29,7 +29,7 @@ export default class WelcomeComp extends Component {
     return (
       <div>
         <h1 className="text-center">
-          <ActiveGamesLayoutContainer {...this.props} />
+          {/* <ActiveGamesLayoutContainer {...this.props} /> */}
         </h1>
       </div>
     );

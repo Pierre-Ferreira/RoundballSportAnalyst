@@ -5,7 +5,7 @@ import { Nav } from 'react-bootstrap';
 const PublicNavigationLinksComp = () => (
   <Nav className="ml-auto" navbar>
     <NavLink to="/auth/login">Login</NavLink>
-    <NavLink to="/auth/signup/no_intro">signup</NavLink>
+    {/* <NavLink to="/auth/signup/no_intro">signup</NavLink> */}
   </Nav>
 );
 

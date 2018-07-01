@@ -52,24 +52,24 @@ export default class AuthenticatedNavigationLinksComp extends Component {
     } else {
       authMenuItems = (
         <div id="clients-menu-items">
-          <NavDropdown eventKey={1} title="Games" id="basic-nav-dropdown">
+          {/* <NavDropdown eventKey={1} title="Games" id="basic-nav-dropdown">
             <MenuItem eventKey="1">
               <NavLink to="/main/welcome">Weekend's Games</NavLink>
             </MenuItem>
             <MenuItem eventKey="2">
               <NavLink to="">History</NavLink>
             </MenuItem>
-          </NavDropdown>
-          <NavDropdown eventKey={2} title={`Tokens (${this.props.totalNoOfTokens})`} id="basic-nav-dropdown">
+          </NavDropdown> */}
+          {/* <NavDropdown eventKey={2} title={`Tokens (${this.props.totalNoOfTokens})`} id="basic-nav-dropdown">
             <MenuItem eventKey="1">
               <NavLink to="/get_tokens">Get tokens</NavLink>
             </MenuItem>
             <MenuItem eventKey="2">
               <NavLink to="">Tokens History</NavLink>
             </MenuItem>
-          </NavDropdown>
+          </NavDropdown> */}
           <NavDropdown eventKey={3} title={this.props.username} id="basic-nav-dropdown">
-            <MenuItem eventKey="1">
+            {/* <MenuItem eventKey="1">
               <NavLink to="/myteam">My Team</NavLink>
             </MenuItem>
             <MenuItem eventKey="2">
@@ -78,7 +78,7 @@ export default class AuthenticatedNavigationLinksComp extends Component {
             <MenuItem eventKey="2">
               <NavLink to="/contact_us">Contact Us</NavLink>
             </MenuItem>
-            <MenuItem divider />
+            <MenuItem divider /> */}
             <MenuItem eventKey="3">
               <NavLink to="/auth/login" onClick={this.logoutFN}>Logout</NavLink>
             </MenuItem>
