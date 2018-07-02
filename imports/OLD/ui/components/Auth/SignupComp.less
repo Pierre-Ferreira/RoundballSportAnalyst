@@ -1,0 +1,53 @@
+#signup-comp {
+  .modal {
+    top: 0%;
+    h1 {
+      font-weight: 900;
+    }
+    .close-button-area {
+      .close-button {
+        font-size: 15px;
+        font-weight: 700;
+        width: fit-content;
+      }
+    }
+    .form-control {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #3333338a;
+        opacity: 1; /* Firefox */
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #3333338a;;
+    }
+
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #3333338a;;
+    }
+  }
+  .modal-header {
+    display: block;
+    text-align: -webkit-center;
+  }
+  .signup-comp-scoll-area {
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    border-top: lightgrey solid 1px;
+    border-bottom: lightgrey solid 1px;
+  }
+  .signup-comp-submit-area {
+    margin: 10px 0px;
+  }
+  .introducer-group {
+     display: flex;
+     #signup-introducers-userid {
+       width: 80%;
+     }
+     #search-button {
+       width: 20%;
+     }
+  }
+}
